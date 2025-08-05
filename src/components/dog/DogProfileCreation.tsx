@@ -2,6 +2,7 @@ import React from 'react';
 import { DogProfileForm } from './DogProfileForm';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface DogProfileCreationProps {
   onComplete?: () => void;
@@ -12,16 +13,60 @@ export const DogProfileCreation: React.FC<DogProfileCreationProps> = ({ onComple
   const { toast } = useToast();
 
   const handleCreateProfile = async (data: any) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to create a dog profile",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       console.log('Creating dog profile:', data);
       
-      // TODO: Once Supabase is fully integrated, this will:
-      // 1. Upload photo to Supabase Storage
-      // 2. Create dog record in database
-      // 3. Link to current user
+      let photoUrl = null;
       
-      // For now, we'll simulate the API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Upload photo to Supabase Storage if provided
+      if (data.photo) {
+        const fileExt = data.photo.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('dog-photos')
+          .upload(fileName, data.photo);
+          
+        if (uploadError) {
+          console.error('Error uploading photo:', uploadError);
+          throw new Error('Failed to upload photo');
+        }
+        
+        // Get public URL for the uploaded photo
+        const { data: urlData } = supabase.storage
+          .from('dog-photos')
+          .getPublicUrl(fileName);
+          
+        photoUrl = urlData.publicUrl;
+      }
+      
+      // Create dog profile in database
+      const { error: insertError } = await supabase
+        .from('dog_profiles')
+        .insert({
+          user_id: user.id,
+          name: data.name,
+          breed: data.breed,
+          age: parseInt(data.age),
+          gender: data.gender,
+          bio: data.bio,
+          location: data.location,
+          photo_url: photoUrl,
+        });
+      
+      if (insertError) {
+        console.error('Error creating dog profile:', insertError);
+        throw new Error('Failed to create dog profile');
+      }
       
       toast({
         title: "Profile Created!",
@@ -35,6 +80,11 @@ export const DogProfileCreation: React.FC<DogProfileCreationProps> = ({ onComple
       
     } catch (error) {
       console.error('Error creating dog profile:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to create dog profile",
+        variant: "destructive",
+      });
       throw error;
     }
   };

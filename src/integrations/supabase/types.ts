@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      dog_profiles: {
+        Row: {
+          age: number
+          bio: string | null
+          breed: string
+          created_at: string
+          gender: string
+          id: string
+          location: string | null
+          name: string
+          photo_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age: number
+          bio?: string | null
+          breed: string
+          created_at?: string
+          gender: string
+          id?: string
+          location?: string | null
+          name: string
+          photo_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number
+          bio?: string | null
+          breed?: string
+          created_at?: string
+          gender?: string
+          id?: string
+          location?: string | null
+          name?: string
+          photo_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
