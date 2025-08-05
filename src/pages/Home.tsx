@@ -33,7 +33,7 @@ const Home = () => {
               Welcome PawPal 🐾
             </h1>
             <p className="text-xl md:text-2xl font-light mb-8 text-white/90 max-w-2xl mx-auto">
-              Ready to find your pup's perfect playmate? Let's make some paw-some connections today!
+              Welcome to the pack! Where every pup has a match!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
