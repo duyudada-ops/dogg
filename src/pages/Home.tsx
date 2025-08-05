@@ -1,11 +1,13 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Users, Calendar, MessageCircle } from 'lucide-react';
 
 const Home = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -26,7 +28,7 @@ const Home = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Discover compatible dogs in your area
             </p>
-            <Button className="w-full">Start Swiping</Button>
+            <Button className="w-full" onClick={() => navigate('/swipe')}>Start Swiping</Button>
           </CardContent>
         </Card>
 
@@ -41,7 +43,7 @@ const Home = () => {
             <p className="text-sm text-muted-foreground mb-4">
               View and chat with your matches
             </p>
-            <Button variant="outline" className="w-full">View Matches</Button>
+            <Button variant="outline" className="w-full" onClick={() => navigate('/matches')}>View Matches</Button>
           </CardContent>
         </Card>
 
@@ -56,7 +58,7 @@ const Home = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Join local dog events and playdates
             </p>
-            <Button variant="outline" className="w-full">Browse Events</Button>
+            <Button variant="outline" className="w-full" onClick={() => navigate('/events')}>Browse Events</Button>
           </CardContent>
         </Card>
 
@@ -71,7 +73,7 @@ const Home = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Chat with other dog owners
             </p>
-            <Button variant="outline" className="w-full">Open Chats</Button>
+            <Button variant="outline" className="w-full" onClick={() => navigate('/matches')}>Open Chats</Button>
           </CardContent>
         </Card>
       </div>
