@@ -83,9 +83,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     if (error) throw error;
     
-    // Mock successful signup
+    // Mock successful signup with proper UUID
     const mockUser: User = {
-      id: Math.random().toString(36),
+      id: crypto.randomUUID(),
       email,
       user_metadata: { full_name: fullName }
     };
@@ -99,9 +99,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     if (error) throw error;
     
-    // Mock successful signin
+    // Mock successful signin with proper UUID
     const mockUser: User = {
-      id: Math.random().toString(36),
+      id: crypto.randomUUID(),
       email,
       user_metadata: { full_name: 'Dog Owner' }
     };
