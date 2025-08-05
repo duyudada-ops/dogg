@@ -1,51 +1,138 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Heart, X, MapPin, Info } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
-const mockDogs = [
-  {
-    id: 1,
-    name: 'Luna',
-    breed: 'Border Collie',
-    age: 2,
-    gender: 'Female',
-    location: 'San Francisco, CA',
-    distance: '2.3 miles',
-    bio: 'Energetic Border Collie who loves agility training and hiking. Looking for active playmates!',
-    tags: ['High Energy', 'Smart', 'Loves Hiking'],
-    photos: ['/placeholder-dog.jpg']
-  },
-  {
-    id: 2,
-    name: 'Max',
-    breed: 'French Bulldog',
-    age: 4,
-    gender: 'Male',
-    location: 'San Francisco, CA',
-    distance: '1.8 miles',
-    bio: 'Chill Frenchie who enjoys park walks and meeting new friends. Great with small dogs!',
-    tags: ['Calm', 'Friendly', 'Small Dog Lover'],
-    photos: ['/placeholder-dog.jpg']
-  }
-];
+interface DogProfile {
+  id: string;
+  name: string;
+  breed: string;
+  age: number;
+  gender: string;
+  location: string | null;
+  bio: string | null;
+  photo_url: string | null;
+  user_id: string;
+}
 
 const Swipe = () => {
+  const { user } = useAuth();
+  const [dogs, setDogs] = useState<DogProfile[]>([]);
   const [currentDogIndex, setCurrentDogIndex] = useState(0);
   const [isLiked, setIsLiked] = useState<boolean | null>(null);
+  const [userDogs, setUserDogs] = useState<DogProfile[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const currentDog = mockDogs[currentDogIndex];
+  useEffect(() => {
+    if (user) {
+      fetchUserDogs();
+      fetchAvailableDogs();
+    }
+  }, [user]);
 
-  const handleSwipe = (liked: boolean) => {
+  const fetchUserDogs = async () => {
+    if (!user) return;
+    
+    const { data, error } = await supabase
+      .from('dog_profiles')
+      .select('*')
+      .eq('user_id', user.id);
+    
+    if (error) {
+      console.error('Error fetching user dogs:', error);
+      return;
+    }
+    
+    setUserDogs(data || []);
+  };
+
+  const fetchAvailableDogs = async () => {
+    if (!user) return;
+    
+    try {
+      // Get dogs that are not owned by the current user
+      const { data: allDogs, error: dogsError } = await supabase
+        .from('dog_profiles')
+        .select('*')
+        .neq('user_id', user.id);
+      
+      if (dogsError) throw dogsError;
+      
+      // Get matches involving current user's dogs to filter out already swiped dogs
+      const { data: existingMatches, error: matchesError } = await supabase
+        .from('matches')
+        .select('liked_dog_id')
+        .eq('liker_user_id', user.id);
+      
+      if (matchesError) throw matchesError;
+      
+      const swipedDogIds = new Set(existingMatches?.map(m => m.liked_dog_id) || []);
+      const availableDogs = allDogs?.filter(dog => !swipedDogIds.has(dog.id)) || [];
+      
+      setDogs(availableDogs);
+    } catch (error) {
+      console.error('Error fetching dogs:', error);
+      toast.error('Failed to load dogs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSwipe = async (liked: boolean) => {
+    if (!user || !currentDog || userDogs.length === 0) {
+      toast.error('Please create a dog profile first!');
+      return;
+    }
+
     setIsLiked(liked);
+
+    if (liked) {
+      try {
+        // Use the first user dog for matching (could be enhanced to let user choose)
+        const userDog = userDogs[0];
+        
+        const { data, error } = await supabase.rpc('check_mutual_match', {
+          p_liker_dog_id: userDog.id,
+          p_liked_dog_id: currentDog.id,
+          p_liker_user_id: user.id,
+          p_liked_user_id: currentDog.user_id
+        });
+
+        if (error) throw error;
+
+        // Check if it resulted in a match
+        const { data: matchData, error: matchError } = await supabase
+          .from('matches')
+          .select('status')
+          .eq('liker_dog_id', userDog.id)
+          .eq('liked_dog_id', currentDog.id)
+          .single();
+
+        if (matchError) throw matchError;
+
+        if (matchData?.status === 'matched') {
+          toast.success(`It's a match with ${currentDog.name}! 🎉`);
+        } else {
+          toast.success('Like sent!');
+        }
+      } catch (error) {
+        console.error('Error creating match:', error);
+        toast.error('Failed to create match');
+      }
+    }
     
     setTimeout(() => {
-      setCurrentDogIndex((prev) => (prev + 1) % mockDogs.length);
+      setCurrentDogIndex((prev) => (prev + 1) % dogs.length);
       setIsLiked(null);
     }, 300);
   };
+
+  const currentDog = dogs[currentDogIndex];
 
   if (!currentDog) {
     return (
@@ -72,7 +159,7 @@ const Swipe = () => {
             <div className="relative">
               <div className="aspect-[3/4] bg-muted rounded-t-lg flex items-center justify-center">
                 <Avatar className="h-32 w-32">
-                  <AvatarImage src={currentDog.photos[0]} />
+                  <AvatarImage src={currentDog.photo_url || undefined} />
                   <AvatarFallback className="text-4xl">🐕</AvatarFallback>
                 </Avatar>
               </div>
@@ -105,19 +192,15 @@ const Swipe = () => {
                 <p className="text-muted-foreground">
                   {currentDog.breed} • {currentDog.gender} • {currentDog.age} years old
                 </p>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                  <MapPin className="h-4 w-4" />
-                  {currentDog.location} • {currentDog.distance}
-                </div>
+                {currentDog.location && (
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                    <MapPin className="h-4 w-4" />
+                    {currentDog.location}
+                  </div>
+                )}
               </div>
               
-              <p className="text-sm">{currentDog.bio}</p>
-              
-              <div className="flex flex-wrap gap-2">
-                {currentDog.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary">{tag}</Badge>
-                ))}
-              </div>
+              {currentDog.bio && <p className="text-sm">{currentDog.bio}</p>}
             </div>
           </CardContent>
         </Card>
