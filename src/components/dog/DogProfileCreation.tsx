@@ -3,7 +3,11 @@ import { DogProfileForm } from './DogProfileForm';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
-export const DogProfileCreation: React.FC = () => {
+interface DogProfileCreationProps {
+  onComplete?: () => void;
+}
+
+export const DogProfileCreation: React.FC<DogProfileCreationProps> = ({ onComplete }) => {
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -23,6 +27,11 @@ export const DogProfileCreation: React.FC = () => {
         title: "Profile Created!",
         description: `${data.name}'s profile has been created successfully`,
       });
+      
+      // Call onComplete after a short delay to show the toast
+      setTimeout(() => {
+        onComplete?.();
+      }, 1500);
       
     } catch (error) {
       console.error('Error creating dog profile:', error);

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthPage } from '@/components/auth/AuthPage';
-import { Navbar } from '@/components/layout/Navbar';
 import { DogProfileCreation } from '@/components/dog/DogProfileCreation';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
   const [showDogProfileForm, setShowDogProfileForm] = useState(false);
 
   if (loading) {
@@ -24,12 +25,11 @@ const Index = () => {
   }
 
   if (showDogProfileForm) {
-    return <DogProfileCreation />;
+    return <DogProfileCreation onComplete={() => navigate('/')} />;
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="container mx-auto py-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">🐕 Welcome to PawConnect!</h1>

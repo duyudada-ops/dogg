@@ -5,9 +5,42 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import Swipe from "./pages/Swipe";
+import Matches from "./pages/Matches";
+import Events from "./pages/Events";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import BottomNav from "./components/layout/BottomNav";
+import { useAuth } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
+
+const AppContent = () => {
+  const { user } = useAuth();
+
+  return (
+    <>
+      <Routes>
+        {!user ? (
+          <Route path="*" element={<Index />} />
+        ) : (
+          <>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/swipe" element={<Swipe />} />
+            <Route path="/matches" element={<Matches />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="*" element={<NotFound />} />
+          </>
+        )}
+      </Routes>
+      {user && <BottomNav />}
+    </>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -16,11 +49,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="min-h-screen bg-background pb-16">
+            <AppContent />
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
