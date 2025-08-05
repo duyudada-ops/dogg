@@ -7,6 +7,7 @@ import { Heart, X, MapPin, Info } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import MatchSuccessPopup from '@/components/match/MatchSuccessPopup';
 
 interface DogProfile {
   id: string;
@@ -27,6 +28,8 @@ const Swipe = () => {
   const [isLiked, setIsLiked] = useState<boolean | null>(null);
   const [userDogs, setUserDogs] = useState<DogProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showMatchPopup, setShowMatchPopup] = useState(false);
+  const [matchedDog, setMatchedDog] = useState<DogProfile | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -116,7 +119,8 @@ const Swipe = () => {
         if (matchError) throw matchError;
 
         if (matchData?.status === 'matched') {
-          toast.success(`It's a match with ${currentDog.name}! 🎉`);
+          setMatchedDog(currentDog);
+          setShowMatchPopup(true);
         } else {
           toast.success('Like sent!');
         }
@@ -225,6 +229,16 @@ const Swipe = () => {
           </Button>
         </div>
       </div>
+
+      {/* Match Success Popup */}
+      {showMatchPopup && matchedDog && userDogs.length > 0 && (
+        <MatchSuccessPopup
+          isOpen={showMatchPopup}
+          onClose={() => setShowMatchPopup(false)}
+          userDog={userDogs[0]}
+          matchedDog={matchedDog}
+        />
+      )}
     </div>
   );
 };
