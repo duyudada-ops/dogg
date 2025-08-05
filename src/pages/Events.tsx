@@ -43,7 +43,7 @@ const Events = () => {
   const [userEvents, setUserEvents] = useState<UserEvent[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchCity, setSearchCity] = useState('London');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -53,7 +53,7 @@ const Events = () => {
       const { data, error } = await supabase.functions.invoke('fetch-events', {
         body: { 
           city: searchCity,
-          category: selectedCategory,
+          category: selectedCategory === 'all' ? '' : selectedCategory,
           limit: 20
         }
       });
@@ -330,7 +330,7 @@ const Events = () => {
                 <SelectValue placeholder="All categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All categories</SelectItem>
+                <SelectItem value="all">All categories</SelectItem>
                 <SelectItem value="103">Music</SelectItem>
                 <SelectItem value="110">Food & Drink</SelectItem>
                 <SelectItem value="108">Sports & Fitness</SelectItem>
