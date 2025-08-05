@@ -22,6 +22,7 @@ export type Database = {
           created_at: string
           gender: string
           id: string
+          is_demo: boolean | null
           location: string | null
           name: string
           photo_url: string | null
@@ -35,6 +36,7 @@ export type Database = {
           created_at?: string
           gender: string
           id?: string
+          is_demo?: boolean | null
           location?: string | null
           name: string
           photo_url?: string | null
@@ -48,6 +50,7 @@ export type Database = {
           created_at?: string
           gender?: string
           id?: string
+          is_demo?: boolean | null
           location?: string | null
           name?: string
           photo_url?: string | null
@@ -176,6 +179,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_swipes: {
+        Row: {
+          created_at: string
+          id: string
+          swipe_count: number | null
+          swipe_date: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          swipe_count?: number | null
+          swipe_date?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          swipe_count?: number | null
+          swipe_date?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -189,6 +219,14 @@ export type Database = {
           p_liked_user_id: string
         }
         Returns: string
+      }
+      get_daily_swipe_count: {
+        Args: { user_uuid: string }
+        Returns: number
+      }
+      increment_daily_swipes: {
+        Args: { user_uuid: string }
+        Returns: number
       }
     }
     Enums: {
