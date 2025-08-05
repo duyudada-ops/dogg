@@ -12,6 +12,7 @@ import Matches from "./pages/Matches";
 import Events from "./pages/Events";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import PremiumSuccess from "./pages/PremiumSuccess";
 import BottomNav from "./components/layout/BottomNav";
 import { useAuth } from "./contexts/AuthContext";
 
@@ -33,6 +34,7 @@ const AppContent = () => {
             <Route path="/matches" element={<Matches />} />
             <Route path="/events" element={<Events />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/premium-success" element={<PremiumSuccess />} />
             <Route path="*" element={<NotFound />} />
           </>
         )}

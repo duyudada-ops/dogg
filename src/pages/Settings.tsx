@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import PremiumCard from '@/components/premium/PremiumCard';
 import { 
   User, 
   Bell, 
@@ -150,6 +151,9 @@ const Settings = () => {
             </Button>
           </CardContent>
         </Card>
+
+        {/* Premium Subscription */}
+        <PremiumCard />
 
         {/* Discovery */}
         <Card>
