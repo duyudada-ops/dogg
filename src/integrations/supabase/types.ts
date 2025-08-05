@@ -59,6 +59,84 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          capacity: number | null
+          category: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          description: string | null
+          end_time: string | null
+          eventbrite_id: string | null
+          id: string
+          image_url: string | null
+          is_free: boolean | null
+          is_online: boolean | null
+          latitude: number | null
+          longitude: number | null
+          organizer_description: string | null
+          organizer_name: string | null
+          start_time: string
+          subcategory: string | null
+          ticket_url: string | null
+          title: string
+          updated_at: string
+          venue_address: string | null
+          venue_name: string | null
+        }
+        Insert: {
+          capacity?: number | null
+          category?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          end_time?: string | null
+          eventbrite_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_free?: boolean | null
+          is_online?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          organizer_description?: string | null
+          organizer_name?: string | null
+          start_time: string
+          subcategory?: string | null
+          ticket_url?: string | null
+          title: string
+          updated_at?: string
+          venue_address?: string | null
+          venue_name?: string | null
+        }
+        Update: {
+          capacity?: number | null
+          category?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          end_time?: string | null
+          eventbrite_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_free?: boolean | null
+          is_online?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          organizer_description?: string | null
+          organizer_name?: string | null
+          start_time?: string
+          subcategory?: string | null
+          ticket_url?: string | null
+          title?: string
+          updated_at?: string
+          venue_address?: string | null
+          venue_name?: string | null
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           created_at: string
@@ -178,6 +256,41 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      user_events: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          status: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_events_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_swipes: {
         Row: {
