@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthPage } from '@/components/auth/AuthPage';
 import { Navbar } from '@/components/layout/Navbar';
+import { DogProfileCreation } from '@/components/dog/DogProfileCreation';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const { user, loading } = useAuth();
+  const [showDogProfileForm, setShowDogProfileForm] = useState(false);
 
   if (loading) {
     return (
@@ -20,6 +23,10 @@ const Index = () => {
     return <AuthPage />;
   }
 
+  if (showDogProfileForm) {
+    return <DogProfileCreation />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -33,10 +40,17 @@ const Index = () => {
             <p className="text-lg mb-4">
               Hello, {user.user_metadata?.full_name || user.email}! 
             </p>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-6">
               You're now signed in and ready to start connecting with other dog owners. 
-              Next, we'll help you create your dog's profile!
+              Let's create your dog's profile to get started!
             </p>
+            <Button 
+              onClick={() => setShowDogProfileForm(true)}
+              size="lg"
+              className="text-lg px-8 py-3"
+            >
+              Create Dog Profile
+            </Button>
           </div>
         </div>
       </main>
