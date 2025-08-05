@@ -56,6 +56,54 @@ export type Database = {
         }
         Relationships: []
       }
+      matches: {
+        Row: {
+          created_at: string
+          id: string
+          liked_dog_id: string
+          liked_user_id: string
+          liker_dog_id: string
+          liker_user_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          liked_dog_id: string
+          liked_user_id: string
+          liker_dog_id: string
+          liker_user_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          liked_dog_id?: string
+          liked_user_id?: string
+          liker_dog_id?: string
+          liker_user_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_liked_dog_id_fkey"
+            columns: ["liked_dog_id"]
+            isOneToOne: false
+            referencedRelation: "dog_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_liker_dog_id_fkey"
+            columns: ["liker_dog_id"]
+            isOneToOne: false
+            referencedRelation: "dog_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -97,7 +145,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_mutual_match: {
+        Args: {
+          p_liker_dog_id: string
+          p_liked_dog_id: string
+          p_liker_user_id: string
+          p_liked_user_id: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
