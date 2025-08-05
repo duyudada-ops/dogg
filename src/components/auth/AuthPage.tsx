@@ -10,6 +10,12 @@ export const AuthPage: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-4">Hello PawPal</h1>
+          <p className="text-xl text-muted-foreground mb-8">
+            Welcome to the pack! Where every pup has a match! Ready to find your pup's perfect playmate?
+          </p>
+        </div>
         {isLogin ? (
           <LoginForm onToggleForm={toggleForm} />
         ) : (
