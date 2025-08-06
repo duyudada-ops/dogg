@@ -73,7 +73,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
         <div className="mt-4 text-center">
           <button
             onClick={onToggleForm}
-            className="text-sm text-muted-foreground hover:text-primary"
+            className="text-sm text-muted-foreground hover:text-teal-600"
           >
             Don't have an account? Sign up
           </button>
