@@ -12,7 +12,7 @@ export const AuthPage: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">Hello PawPal</h1>
-          <p className="text-xl font-semibold text-primary mb-8">
+          <p className="text-xl font-semibold text-teal-600 mb-8">
             Welcome to the pack! Where every pup has a match!
           </p>
         </div>
