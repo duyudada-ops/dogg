@@ -75,10 +75,12 @@ All colors MUST be HSL.
   }
   
   .pawpal-text::before {
-    content: "🐾 🐾 🐾 🐾 🐾";
-    @apply absolute inset-0 flex items-center justify-center text-muted-foreground/20 text-6xl pointer-events-none select-none;
+    content: "🐾 🐾 🐾";
+    @apply absolute inset-0 flex items-center justify-center text-primary/10 text-5xl pointer-events-none select-none;
     z-index: -1;
-    letter-spacing: 2rem;
+    letter-spacing: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .dark {
