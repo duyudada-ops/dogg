@@ -66,7 +66,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
               required
             />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>

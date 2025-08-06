@@ -78,7 +78,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleForm }) => {
               minLength={6}
             />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700" disabled={loading}>
             {loading ? "Creating account..." : "Sign Up"}
           </Button>
         </form>
