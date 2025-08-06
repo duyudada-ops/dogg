@@ -34,7 +34,7 @@ const Index = () => {
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Hello PawPal</h1>
           <p className="text-xl text-muted-foreground mb-8">
-            Welcome to the pack! Where every pup has a match! Ready to find your pup's perfect playmate?
+            Welcome to the pack! Where every pup has a match!
           </p>
           <div className="max-w-2xl mx-auto">
             <p className="text-lg mb-4">
