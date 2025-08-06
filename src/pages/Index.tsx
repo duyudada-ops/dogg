@@ -32,7 +32,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <main className="container mx-auto py-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Hello PawPal</h1>
+          <h1 className="text-4xl font-bold mb-4">🐾 Hello PawPal</h1>
           <p className="text-xl font-semibold text-teal-600 mb-8">
             Welcome to the pack! Where every pup has a match!
           </p>
