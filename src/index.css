@@ -70,6 +70,17 @@ All colors MUST be HSL.
     --shadow-secondary: 340 75% 70%;
   }
 
+  .pawpal-text {
+    @apply relative;
+  }
+  
+  .pawpal-text::before {
+    content: "🐾 🐾 🐾 🐾 🐾";
+    @apply absolute inset-0 flex items-center justify-center text-muted-foreground/20 text-6xl pointer-events-none select-none;
+    z-index: -1;
+    letter-spacing: 2rem;
+  }
+
   .dark {
     /* Dark theme with warm undertones */
     --background: 15 25% 8%;
