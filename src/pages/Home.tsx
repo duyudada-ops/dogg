@@ -13,9 +13,17 @@ const Home = () => {
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative container mx-auto px-4 py-12">
           <div className="text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-              Welcome to TailCircle 🐾
-            </h1>
+            <div className="flex items-center justify-center mb-6">
+              <img 
+                src="/lovable-uploads/44625680-8965-4fb7-8695-83ae9b55184c.png" 
+                alt="TailCircle Logo" 
+                className="w-24 h-24 mr-4"
+                style={{ clipPath: 'circle(50px at 150px 200px)' }}
+              />
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+                TailCircle
+              </h1>
+            </div>
             <p className="text-xl md:text-2xl font-light mb-8 text-white/90 max-w-2xl mx-auto">
               Where dog lovers meet
             </p>
