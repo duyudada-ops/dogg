@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { MessageCircle, Heart, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import PremiumMatchesSection from '@/components/home/PremiumMatchesSection';
 
 interface MatchWithDog {
   id: string;
@@ -126,8 +126,8 @@ const Matches = () => {
     <div className="container mx-auto py-6 max-w-4xl">
       <div className="space-y-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-2">Your Matches</h1>
-          <p className="text-muted-foreground">Connect with dogs that liked you back!</p>
+          <h1 className="text-3xl font-bold mb-2 font-heading">Your Matches</h1>
+          <p className="text-muted-foreground font-body">Connect with dogs that liked you back!</p>
         </div>
 
         {/* New Matches Section */}
@@ -166,63 +166,8 @@ const Matches = () => {
           </CardContent>
         </Card>
 
-        {/* All Matches Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MessageCircle className="h-5 w-5 text-blue-500" />
-              Messages
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {matches.length > 0 ? (
-              <div className="space-y-4">
-                {matches.map((match) => {
-                  const dog = getMatchedDog(match);
-                  if (!dog) return null;
-                  const isNew = newMatches.some(newMatch => newMatch.id === match.id);
-                  
-                  return (
-                    <div key={match.id} className="flex items-center gap-4 p-4 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
-                      <div className="relative">
-                        <Avatar className="h-12 w-12">
-                          <AvatarImage src={dog.photo_url || undefined} />
-                          <AvatarFallback>🐕</AvatarFallback>
-                        </Avatar>
-                        {isNew && (
-                          <div className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></div>
-                        )}
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <h3 className="font-semibold truncate">{dog.name}</h3>
-                          <span className="text-xs text-muted-foreground">{getTimeAgo(match.created_at)}</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-1">
-                          {dog.breed}
-                        </p>
-                        <p className="text-sm truncate">It's a match! Start a conversation.</p>
-                        {dog.location && (
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                            <MapPin className="h-3 w-3" />
-                            {dog.location}
-                          </div>
-                        )}
-                      </div>
-                      
-                      <Button variant="ghost" size="sm">
-                        <MessageCircle className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-center text-muted-foreground py-8">No matches yet. Keep swiping!</p>
-            )}
-          </CardContent>
-        </Card>
+        {/* Messages Section with Premium Features */}
+        <PremiumMatchesSection matches={matches} />
 
         {/* Match Stats */}
         <div className="grid grid-cols-3 gap-4">

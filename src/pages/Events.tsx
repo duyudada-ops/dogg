@@ -6,10 +6,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar, MapPin, Users, Clock, Plus, Search, Loader2, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Plus, Search, Loader2, ExternalLink, Crown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePremiumLimits } from '@/hooks/usePremiumLimits';
+import UpsellModal from '@/components/ui/upsell-modal';
 
 interface Event {
   id: string;
@@ -44,8 +46,10 @@ const Events = () => {
   const [loading, setLoading] = useState(false);
   const [searchCity, setSearchCity] = useState('London');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showUpsellModal, setShowUpsellModal] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { premiumStatus } = usePremiumLimits();
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -304,10 +308,15 @@ const Events = () => {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Events & Playdates</h1>
-            <p className="text-muted-foreground">Find and join real dog events worldwide</p>
+            <h1 className="text-3xl font-bold font-heading">Events & Playdates</h1>
+            <p className="text-muted-foreground font-body">Find and join real dog events worldwide</p>
+            {!premiumStatus.isSubscribed && (
+              <Badge variant="outline" className="mt-2 font-body">
+                Free: 10-mile radius • Premium: 50-mile radius + early access
+              </Badge>
+            )}
           </div>
-          <Button>
+          <Button className="font-heading">
             <Plus className="h-4 w-4 mr-2" />
             Create Event
           </Button>
@@ -339,7 +348,7 @@ const Events = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={fetchEvents} disabled={loading}>
+          <Button onClick={fetchEvents} disabled={loading} className="font-heading">
             {loading ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (
@@ -347,6 +356,16 @@ const Events = () => {
             )}
             Search
           </Button>
+          {!premiumStatus.isSubscribed && (
+            <Button 
+              onClick={() => setShowUpsellModal(true)}
+              variant="outline"
+              className="font-heading"
+            >
+              <Crown className="h-4 w-4 mr-2" />
+              Extend Range
+            </Button>
+          )}
         </div>
 
         <Tabs defaultValue="all" className="w-full">
@@ -414,6 +433,12 @@ const Events = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      <UpsellModal
+        isOpen={showUpsellModal}
+        onClose={() => setShowUpsellModal(false)}
+        type="events"
+      />
     </div>
   );
 };

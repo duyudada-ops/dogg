@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, MessageCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePremiumLimits } from '@/hooks/usePremiumLimits';
+import UpsellModal from '@/components/ui/upsell-modal';
 
 interface DogProfile {
   id: string;
@@ -20,8 +22,9 @@ interface DogProfile {
 const DogProfileGrid = () => {
   const { user } = useAuth();
   const [dogProfiles, setDogProfiles] = useState<DogProfile[]>([]);
-  const [viewCount, setViewCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showUpsellModal, setShowUpsellModal] = useState(false);
+  const { usageLimits, canViewProfiles, incrementProfileView, premiumStatus } = usePremiumLimits();
 
   useEffect(() => {
     if (user) {
@@ -46,14 +49,15 @@ const DogProfileGrid = () => {
     }
   };
 
-  const handleViewProfile = (dogId: string) => {
-    // Increment view count for free tier limits
-    setViewCount(prev => prev + 1);
+  const handleViewProfile = async (profileId: string) => {
+    if (!canViewProfiles()) {
+      setShowUpsellModal(true);
+      return;
+    }
     
-    // Show upsell modal after 10 views for free users
-    if (viewCount >= 9) {
-      // TODO: Show upsell modal
-      console.log('Show upsell modal - reached view limit');
+    const success = await incrementProfileView();
+    if (success) {
+      console.log(`Viewed profile ${profileId}. Total views: ${usageLimits.profileViews + 1}`);
     }
   };
 
@@ -76,10 +80,12 @@ const DogProfileGrid = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Nearby Dogs</h2>
-        <Badge variant="outline">
-          Views: {viewCount}/10 (Free)
-        </Badge>
+        <h2 className="text-2xl font-bold font-heading">Nearby Dogs</h2>
+        {!premiumStatus.isSubscribed && (
+          <Badge variant="outline" className="font-body">
+            Profile Views: {usageLimits.profileViews}/{usageLimits.maxProfileViews} Today
+          </Badge>
+        )}
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -107,12 +113,13 @@ const DogProfileGrid = () => {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="flex-1"
+                  className="flex-1 font-heading"
                   onClick={() => handleViewProfile(dog.id)}
+                  disabled={!canViewProfiles()}
                 >
-                  View Profile
+                  {canViewProfiles() ? 'View Profile' : 'Limit Reached'}
                 </Button>
-                <Button size="sm" className="flex-1">
+                <Button size="sm" className="flex-1 font-body">
                   <MessageCircle className="h-3 w-3 mr-1" />
                   Message
                 </Button>
@@ -124,9 +131,15 @@ const DogProfileGrid = () => {
 
       {dogProfiles.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No dogs found nearby. Check back later!</p>
+          <p className="text-muted-foreground font-body">No dogs found nearby. Check back later!</p>
         </div>
       )}
+      
+      <UpsellModal
+        isOpen={showUpsellModal}
+        onClose={() => setShowUpsellModal(false)}
+        type="profile-views"
+      />
     </div>
   );
 };

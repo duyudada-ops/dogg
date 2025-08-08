@@ -19,11 +19,11 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 15 25% 15%;
 
-    /* Primary - warm golden for TailCircle */
-    --primary: 38 92% 50%;
+    /* Primary - TailCircle brand color #F5A623 */
+    --primary: 41 100% 55%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - charcoal fur */
+    /* Secondary - charcoal #3B3B3B */
     --secondary: 0 0% 23%;
     --secondary-foreground: 0 0% 100%;
 
