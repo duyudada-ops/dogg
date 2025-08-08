@@ -29,10 +29,9 @@ const AppContent = () => {
         ) : (
           <>
             <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/swipe" element={<Swipe />} />
-            <Route path="/matches" element={<Matches />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/messages" element={<Matches />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/premium-success" element={<PremiumSuccess />} />
             <Route path="*" element={<NotFound />} />

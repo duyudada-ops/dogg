@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Heart, MessageCircle, Calendar, User } from 'lucide-react';
+import { Home, Calendar, MessageCircle, User, Settings } from 'lucide-react';
 
 const BottomNav = () => {
   const navItems = [
     { to: '/', icon: Home, label: 'Home' },
-    { to: '/swipe', icon: Heart, label: 'Discover' },
-    { to: '/matches', icon: MessageCircle, label: 'Matches' },
     { to: '/events', icon: Calendar, label: 'Events' },
+    { to: '/messages', icon: MessageCircle, label: 'Messages' },
     { to: '/profile', icon: User, label: 'Profile' },
+    { to: '/settings', icon: Settings, label: 'Settings' },
   ];
 
   return (

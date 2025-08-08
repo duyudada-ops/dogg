@@ -19,13 +19,13 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 15 25% 15%;
 
-    /* Primary - warm orange/amber for energy and friendliness */
-    --primary: 25 95% 53%;
-    --primary-foreground: 0 0% 98%;
+    /* Primary - warm golden for TailCircle */
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary - soft coral for warmth */
-    --secondary: 15 100% 94%;
-    --secondary-foreground: 15 25% 15%;
+    /* Secondary - charcoal fur */
+    --secondary: 0 0% 23%;
+    --secondary-foreground: 0 0% 100%;
 
     /* Muted - light cream tones */
     --muted: 45 100% 95%;
@@ -94,13 +94,13 @@ All colors MUST be HSL.
     --popover: 15 25% 10%;
     --popover-foreground: 45 100% 95%;
 
-    /* Primary - slightly muted orange for dark mode */
-    --primary: 25 85% 60%;
-    --primary-foreground: 15 25% 8%;
+    /* Primary - warm golden for dark mode */
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 23%;
 
-    /* Secondary - darker warm tone */
-    --secondary: 15 25% 15%;
-    --secondary-foreground: 45 100% 95%;
+    /* Secondary - darker charcoal */
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
 
     /* Muted - warm dark grays */
     --muted: 15 25% 15%;
