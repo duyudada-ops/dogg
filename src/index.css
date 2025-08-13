@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -195,6 +196,25 @@ All colors MUST be HSL.
     }
   }
 
+  @keyframes color-cycle {
+    0% {
+      background: linear-gradient(135deg, hsl(1 100% 73%), hsl(35 100% 65%));
+      box-shadow: 0 10px 30px -10px hsl(1 100% 73% / 0.3);
+    }
+    33% {
+      background: linear-gradient(135deg, hsl(197 71% 73%), hsl(120 61% 50%));
+      box-shadow: 0 10px 30px -10px hsl(197 71% 73% / 0.3);
+    }
+    66% {
+      background: linear-gradient(135deg, hsl(120 73% 75%), hsl(35 100% 75%));
+      box-shadow: 0 10px 30px -10px hsl(120 73% 75% / 0.3);
+    }
+    100% {
+      background: linear-gradient(135deg, hsl(1 100% 73%), hsl(35 100% 65%));
+      box-shadow: 0 10px 30px -10px hsl(1 100% 73% / 0.3);
+    }
+  }
+
   .animate-paw-bounce {
     animation: paw-bounce 2s ease-in-out infinite;
   }
@@ -205,5 +225,9 @@ All colors MUST be HSL.
 
   .animate-heart-beat {
     animation: heart-beat 1.5s ease-in-out infinite;
+  }
+
+  .animate-color-cycle {
+    animation: color-cycle 2s ease-in-out infinite;
   }
 }

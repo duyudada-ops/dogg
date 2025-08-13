@@ -1,9 +1,12 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Crown, MapPin, Heart, Calendar, ArrowRight, CheckCircle, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { AutoCarousel } from '@/components/ui/auto-carousel';
+import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const Landing = () => {
   return (
@@ -24,7 +27,7 @@ const Landing = () => {
             <div className="text-white space-y-8">
               <div>
                 <Badge className="mb-6 bg-white/20 text-white border-white/20 rounded-full px-4 py-2 font-heading animate-bounce-gentle">
-                  🏆 #1 Dog Dating App
+                  🏆 #1 Dog Connection App
                 </Badge>
                 <div className="flex items-center justify-center gap-3 mb-8">
                   <h1 className="text-5xl lg:text-8xl font-bold font-heading leading-tight bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
@@ -45,7 +48,7 @@ const Landing = () => {
                   asChild
                   size="lg" 
                   variant="warm"
-                  className="text-lg px-10 py-6 font-semibold font-heading shadow-xl animate-pulse"
+                  className="text-lg px-10 py-6 font-semibold font-heading shadow-xl animate-color-cycle"
                 >
                   <Link to="/auth">
                     <span className="mr-2">🚀</span>
@@ -57,7 +60,7 @@ const Landing = () => {
                   asChild
                   size="lg" 
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6 rounded-full font-semibold"
+                  className="border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-primary bg-gradient-to-r from-yellow-400/10 to-orange-400/10 backdrop-blur-sm text-lg px-8 py-6 rounded-full font-semibold shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 hover:scale-105"
                 >
                   <Link to="/billing">
                     Go Premium
@@ -68,18 +71,40 @@ const Landing = () => {
             </div>
             
             <div className="relative lg:flex lg:justify-center">
-              {/* Happy Dog + Owner Photo */}
+              {/* Happy Dog + Owner Photo Carousel */}
               <div className="relative">
                 <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 overflow-hidden">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-white/20 to-white/5 rounded-2xl flex items-center justify-center relative">
-                    {/* Placeholder for high-quality photo */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-coral/20 to-blue/20 rounded-xl flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <div className="text-6xl mb-4 animate-bounce-gentle">🐕‍🦺</div>
-                        <h3 className="text-xl font-semibold mb-2 font-heading">Happy Dogs & Owners</h3>
-                        <p className="text-white/80 font-body">Real connections, real friendships</p>
-                      </div>
-                    </div>
+                  <div className="aspect-[4/3] bg-gradient-to-br from-white/20 to-white/5 rounded-2xl overflow-hidden">
+                    <AutoCarousel className="w-full h-full" autoSlideInterval={5000}>
+                      <CarouselContent className="h-full">
+                        {Array.from({ length: 20 }, (_, i) => (
+                          <CarouselItem key={i} className="h-full">
+                            <div className="h-full flex items-center justify-center">
+                              <img 
+                                src={`/src/assets/dog-${i + 1}.jpg`}
+                                alt={`Happy dog ${i + 1}`}
+                                className="w-full h-full object-cover rounded-xl"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                  const fallback = target.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
+                              />
+                              <div className="hidden w-full h-full bg-gradient-to-br from-coral/20 to-blue/20 rounded-xl items-center justify-center">
+                                <div className="text-center text-white">
+                                  <div className="text-6xl mb-4 animate-bounce-gentle">🐕‍🦺</div>
+                                  <h3 className="text-xl font-semibold mb-2 font-heading">Happy Dogs & Owners</h3>
+                                  <p className="text-white/80 font-body">Real connections, real friendships</p>
+                                </div>
+                              </div>
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious className="left-2 bg-white/20 border-white/30 text-white hover:bg-white/30" />
+                      <CarouselNext className="right-2 bg-white/20 border-white/30 text-white hover:bg-white/30" />
+                    </AutoCarousel>
                   </div>
                 </div>
               </div>
@@ -295,7 +320,7 @@ const Landing = () => {
                 asChild
                 size="lg" 
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6 rounded-full font-semibold"
+                className="border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-primary bg-gradient-to-r from-yellow-400/20 to-orange-400/20 backdrop-blur-sm text-lg px-8 py-6 rounded-full font-semibold shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 hover:scale-105"
               >
                 <Link to="/billing">
                   View Premium Plans
