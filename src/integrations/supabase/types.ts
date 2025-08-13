@@ -326,10 +326,10 @@ export type Database = {
     Functions: {
       check_mutual_match: {
         Args: {
-          p_liker_dog_id: string
-          p_liked_dog_id: string
-          p_liker_user_id: string
-          p_liked_user_id: string
+          liker_user_id: string
+          liked_user_id: string
+          liker_dog_uuid: string
+          liked_dog_uuid: string
         }
         Returns: string
       }
