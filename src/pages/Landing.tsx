@@ -7,32 +7,43 @@ import { Link } from 'react-router-dom';
 
 const Landing = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Animated paw prints */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 left-10 text-primary/5 text-8xl animate-float">🐾</div>
+        <div className="absolute top-32 right-16 text-secondary/5 text-6xl animate-float" style={{animationDelay: '1s'}}>🐾</div>
+        <div className="absolute bottom-40 left-20 text-accent/5 text-7xl animate-float" style={{animationDelay: '2s'}}>🐾</div>
+        <div className="absolute bottom-16 right-32 text-primary/5 text-5xl animate-float" style={{animationDelay: '0.5s'}}>🐾</div>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-secondary">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative container mx-auto px-4 py-16 lg:py-24">
+      <section className="relative overflow-hidden bg-gradient-hero">
+        <div className="absolute inset-0 bg-white/5"></div>
+        <div className="relative container mx-auto px-4 py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-8">
               <div>
-                <Badge className="mb-4 bg-white/20 text-white border-white/20">
-                  #1 Dog Dating App
+                <Badge className="mb-6 bg-white/20 text-white border-white/20 rounded-full px-4 py-2 font-heading animate-bounce-gentle">
+                  🏆 #1 Dog Dating App
                 </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold font-heading leading-tight">
-                  Where Dog Lovers Find Their Perfect Match
+                <h1 className="text-4xl lg:text-7xl font-bold font-heading leading-tight">
+                  Where Dog Lovers Find Their 
+                  <span className="text-accent block animate-wiggle"> Perfect Match! 🐕‍🦺💕</span>
                 </h1>
-                <p className="text-xl lg:text-2xl font-light text-white/90 mt-6 max-w-lg">
-                  Connect your dog with compatible playmates and build lasting friendships in your community.
+                <p className="text-xl lg:text-2xl font-light text-white/90 mt-8 max-w-lg font-body">
+                  Connect your furry friend with compatible playmates and build pawsome friendships in your community! 🎾
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-6">
                 <Button 
                   asChild
                   size="lg" 
-                  className="bg-white text-primary hover:bg-white/90 shadow-xl text-lg px-8 py-6 rounded-full font-semibold"
+                  variant="warm"
+                  className="text-lg px-10 py-6 font-semibold font-heading shadow-xl animate-pulse"
                 >
                   <Link to="/auth">
+                    <span className="mr-2">🚀</span>
                     Try Free Now
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>

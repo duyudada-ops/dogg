@@ -7,39 +7,52 @@ const Home = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Floating paw prints background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 text-primary/10 text-6xl animate-float">🐾</div>
+        <div className="absolute top-40 right-20 text-secondary/10 text-4xl animate-float" style={{animationDelay: '1s'}}>🐾</div>
+        <div className="absolute bottom-32 left-1/4 text-accent/10 text-5xl animate-float" style={{animationDelay: '2s'}}>🐾</div>
+        <div className="absolute bottom-20 right-1/3 text-primary/10 text-3xl animate-float" style={{animationDelay: '0.5s'}}>🐾</div>
+      </div>
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary to-primary/80">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative container mx-auto px-4 py-12">
+      <div className="relative overflow-hidden bg-gradient-hero">
+        <div className="absolute inset-0 bg-white/10"></div>
+        <div className="relative container mx-auto px-4 py-16">
           <div className="text-center text-white">
-            <div className="flex items-center justify-center mb-6">
-              <img 
-                src="/lovable-uploads/44625680-8965-4fb7-8695-83ae9b55184c.png" 
-                alt="TailCircle Logo" 
-                className="w-24 h-24 mr-4"
-                style={{ clipPath: 'circle(50px at 150px 200px)' }}
-              />
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+            <div className="flex items-center justify-center mb-8 animate-bounce-gentle">
+              <div className="relative">
+                <img 
+                  src="/lovable-uploads/44625680-8965-4fb7-8695-83ae9b55184c.png" 
+                  alt="TailCircle Logo" 
+                  className="w-24 h-24 mr-4 rounded-full shadow-glow animate-paw-wiggle"
+                />
+                <div className="absolute -top-2 -right-2 text-2xl animate-heart-beat">❤️</div>
+              </div>
+              <h1 className="text-5xl md:text-7xl font-bold font-heading tracking-tight">
                 TailCircle
               </h1>
             </div>
-            <p className="text-xl md:text-2xl font-light mb-8 text-white/90 max-w-2xl mx-auto">
-              Where dog lovers meet
+            <p className="text-xl md:text-3xl font-light mb-8 text-white/90 max-w-3xl mx-auto font-body">
+              Where every tail tells a story and every walk leads to friendship! 🐕💕
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button 
                 size="lg" 
-                className="bg-white text-primary hover:bg-white/90 shadow-xl text-lg px-8 py-6 rounded-full font-semibold"
+                variant="warm"
+                className="text-lg px-10 py-6 font-semibold font-heading shadow-xl transform hover:scale-110 transition-all duration-300"
               >
-                Browse Nearby Dogs
+                <span className="mr-2">🎾</span>
+                Find Playmates
               </Button>
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6 rounded-full font-semibold"
+                className="border-white/30 text-white hover:bg-white/20 hover:text-white text-lg px-10 py-6 font-semibold font-heading backdrop-blur-sm"
               >
-                Find Events
+                <span className="mr-2">📅</span>
+                Join Events
               </Button>
             </div>
           </div>
@@ -47,7 +60,15 @@ const Home = () => {
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold font-heading text-foreground mb-4">
+            Meet Your Local Pack! 🐾
+          </h2>
+          <p className="text-lg text-muted-foreground font-body max-w-2xl mx-auto">
+            Discover amazing dogs in your neighborhood and help your furry friend make new buddies
+          </p>
+        </div>
         <DogProfileGrid />
       </main>
     </div>

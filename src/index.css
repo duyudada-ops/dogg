@@ -8,134 +8,150 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Base colors - warm and inviting */
-    --background: 45 100% 98%;
-    --foreground: 15 25% 15%;
+    /* Base colors - warm cream background */
+    --background: 38 55% 97%;
+    --foreground: 25 15% 20%;
 
     /* Card colors with subtle warmth */
     --card: 0 0% 100%;
-    --card-foreground: 15 25% 15%;
+    --card-foreground: 25 15% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 15 25% 15%;
+    --popover-foreground: 25 15% 20%;
 
-    /* Primary - TailCircle brand color #F5A623 */
-    --primary: 41 100% 55%;
+    /* Primary - Warm Orange #FF6B35 (pet-friendly) */
+    --primary: 14 100% 60%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - charcoal #3B3B3B */
-    --secondary: 0 0% 23%;
+    /* Secondary - Fresh Green #4ECDC4 (calming) */
+    --secondary: 177 54% 60%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Muted - light cream tones */
-    --muted: 45 100% 95%;
-    --muted-foreground: 25 15% 45%;
+    /* Muted - warm beige tones */
+    --muted: 38 30% 94%;
+    --muted-foreground: 25 10% 50%;
 
-    /* Accent - playful pink for highlights */
-    --accent: 340 75% 88%;
-    --accent-foreground: 340 50% 25%;
+    /* Accent - playful coral #FFB84D */
+    --accent: 35 100% 65%;
+    --accent-foreground: 25 15% 20%;
 
-    /* Destructive - warm red */
-    --destructive: 0 84% 60%;
+    /* Destructive - soft red */
+    --destructive: 0 70% 58%;
     --destructive-foreground: 0 0% 98%;
 
-    /* Success - fresh green for positive actions */
-    --success: 120 70% 50%;
+    /* Success - friendly green #52C41A */
+    --success: 102 63% 44%;
     --success-foreground: 0 0% 98%;
 
-    /* Border and inputs - subtle warm grays */
-    --border: 25 25% 88%;
-    --input: 25 25% 88%;
-    --ring: 25 95% 53%;
+    /* Border and inputs - warm neutral */
+    --border: 25 15% 85%;
+    --input: 25 15% 85%;
+    --ring: 14 100% 60%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Sidebar colors */
-    --sidebar-background: 45 100% 97%;
-    --sidebar-foreground: 15 25% 25%;
-    --sidebar-primary: 25 95% 53%;
+    --sidebar-background: 38 45% 96%;
+    --sidebar-foreground: 25 15% 25%;
+    --sidebar-primary: 14 100% 60%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 45 100% 94%;
-    --sidebar-accent-foreground: 15 25% 25%;
-    --sidebar-border: 25 25% 85%;
-    --sidebar-ring: 25 95% 53%;
+    --sidebar-accent: 38 25% 92%;
+    --sidebar-accent-foreground: 25 15% 25%;
+    --sidebar-border: 25 15% 80%;
+    --sidebar-ring: 14 100% 60%;
 
-    /* Custom gradients for dog app */
-    --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(45 95% 58%));
-    --gradient-secondary: linear-gradient(135deg, hsl(340 75% 88%), hsl(15 100% 94%));
-    --gradient-hero: linear-gradient(135deg, hsl(25 95% 53%), hsl(340 75% 65%));
+    /* Pet-friendly gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(14 100% 60%), hsl(35 100% 65%));
+    --gradient-secondary: linear-gradient(135deg, hsl(177 54% 60%), hsl(102 63% 44%));
+    --gradient-hero: linear-gradient(135deg, hsl(14 100% 60%), hsl(177 54% 60%));
+    --gradient-warm: linear-gradient(135deg, hsl(35 100% 65%), hsl(45 100% 75%));
     
-    /* Shadow colors */
-    --shadow-primary: 25 95% 53%;
-    --shadow-secondary: 340 75% 70%;
+    /* Paw-themed shadows */
+    --shadow-primary: 14 100% 60%;
+    --shadow-secondary: 177 54% 60%;
+    --shadow-warm: 35 100% 65%;
   }
 
-  .pawpal-text {
-    @apply relative;
+  .paw-pattern {
+    @apply relative overflow-hidden;
   }
   
-  .pawpal-text::before {
-    content: "🐾 🐾 🐾";
-    @apply absolute inset-0 flex items-center justify-center text-primary/10 text-5xl pointer-events-none select-none;
-    z-index: -1;
-    letter-spacing: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
+  .paw-pattern::before {
+    content: "🐾";
+    @apply absolute text-primary/10 text-8xl pointer-events-none select-none;
+    top: -20px;
+    right: -20px;
+    transform: rotate(15deg);
+    z-index: 0;
+  }
+
+  .paw-animation {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-primary;
+  }
+
+  .warm-glow {
+    @apply shadow-lg;
+    box-shadow: 0 10px 30px -10px hsl(var(--shadow-warm) / 0.3);
+  }
+
+  .pet-button {
+    @apply rounded-full px-6 py-3 font-medium transition-all duration-200 hover:scale-105 hover:shadow-primary;
   }
 
   .dark {
     /* Dark theme with warm undertones */
-    --background: 15 25% 8%;
-    --foreground: 45 100% 95%;
+    --background: 25 20% 8%;
+    --foreground: 38 40% 95%;
 
-    --card: 15 25% 10%;
-    --card-foreground: 45 100% 95%;
+    --card: 25 20% 10%;
+    --card-foreground: 38 40% 95%;
 
-    --popover: 15 25% 10%;
-    --popover-foreground: 45 100% 95%;
+    --popover: 25 20% 10%;
+    --popover-foreground: 38 40% 95%;
 
-    /* Primary - warm golden for dark mode */
-    --primary: 38 92% 50%;
-    --primary-foreground: 0 0% 23%;
+    /* Primary - warm orange for dark mode */
+    --primary: 14 90% 55%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary - darker charcoal */
-    --secondary: 0 0% 15%;
+    /* Secondary - muted teal */
+    --secondary: 177 40% 50%;
     --secondary-foreground: 0 0% 100%;
 
     /* Muted - warm dark grays */
-    --muted: 15 25% 15%;
-    --muted-foreground: 25 20% 65%;
+    --muted: 25 15% 15%;
+    --muted-foreground: 25 10% 65%;
 
-    /* Accent - muted pink for dark mode */
-    --accent: 340 60% 75%;
-    --accent-foreground: 15 25% 8%;
+    /* Accent - soft coral for dark mode */
+    --accent: 35 80% 60%;
+    --accent-foreground: 25 20% 8%;
 
     /* Destructive - slightly muted red */
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 45 100% 95%;
+    --destructive: 0 60% 55%;
+    --destructive-foreground: 38 40% 95%;
 
     /* Success - muted green */
-    --success: 120 60% 45%;
-    --success-foreground: 45 100% 95%;
+    --success: 102 50% 40%;
+    --success-foreground: 38 40% 95%;
 
-    --border: 15 25% 20%;
-    --input: 15 25% 20%;
-    --ring: 25 85% 60%;
+    --border: 25 15% 20%;
+    --input: 25 15% 20%;
+    --ring: 14 90% 55%;
 
     /* Dark sidebar */
-    --sidebar-background: 15 25% 6%;
-    --sidebar-foreground: 45 100% 90%;
-    --sidebar-primary: 25 85% 60%;
-    --sidebar-primary-foreground: 15 25% 8%;
-    --sidebar-accent: 15 25% 12%;
-    --sidebar-accent-foreground: 45 100% 90%;
-    --sidebar-border: 15 25% 18%;
-    --sidebar-ring: 25 85% 60%;
+    --sidebar-background: 25 20% 6%;
+    --sidebar-foreground: 38 40% 90%;
+    --sidebar-primary: 14 90% 55%;
+    --sidebar-primary-foreground: 25 20% 8%;
+    --sidebar-accent: 25 15% 12%;
+    --sidebar-accent-foreground: 38 40% 90%;
+    --sidebar-border: 25 15% 18%;
+    --sidebar-ring: 14 90% 55%;
 
     /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(25 85% 60%), hsl(45 85% 65%));
-    --gradient-secondary: linear-gradient(135deg, hsl(340 60% 75%), hsl(15 60% 70%));
-    --gradient-hero: linear-gradient(135deg, hsl(25 85% 60%), hsl(340 60% 70%));
+    --gradient-primary: linear-gradient(135deg, hsl(14 90% 55%), hsl(35 80% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(177 40% 50%), hsl(102 50% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(14 90% 55%), hsl(177 40% 50%));
+    --gradient-warm: linear-gradient(135deg, hsl(35 80% 60%), hsl(45 80% 65%));
   }
 }
 
@@ -148,12 +164,45 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 
-  @keyframes gradient {
+  @keyframes paw-bounce {
     0%, 100% {
-      background-position: 0% 50%;
+      transform: translateY(0);
     }
     50% {
-      background-position: 100% 50%;
+      transform: translateY(-8px);
     }
+  }
+
+  @keyframes wiggle {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-3deg);
+    }
+    75% {
+      transform: rotate(3deg);
+    }
+  }
+
+  @keyframes heart-beat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .animate-paw-bounce {
+    animation: paw-bounce 2s ease-in-out infinite;
+  }
+
+  .animate-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+  }
+
+  .animate-heart-beat {
+    animation: heart-beat 1.5s ease-in-out infinite;
   }
 }

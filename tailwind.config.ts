@@ -19,10 +19,10 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'montserrat': ['Montserrat', 'sans-serif'],
-				'lato': ['Lato', 'sans-serif'],
-				'heading': ['Montserrat', 'sans-serif'],
-				'body': ['Lato', 'sans-serif'],
+				'nunito': ['Nunito', 'sans-serif'],
+				'poppins': ['Poppins', 'sans-serif'],
+				'heading': ['Nunito', 'sans-serif'],
+				'body': ['Poppins', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -76,12 +76,15 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-secondary': 'var(--gradient-secondary)',
-				'gradient-hero': 'var(--gradient-hero)'
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-warm': 'var(--gradient-warm)'
 			},
 			boxShadow: {
 				'primary': '0 10px 30px -10px hsl(var(--shadow-primary) / 0.3)',
 				'secondary': '0 10px 30px -10px hsl(var(--shadow-secondary) / 0.3)',
-				'glow': '0 0 40px hsl(var(--shadow-primary) / 0.4)'
+				'warm': '0 10px 30px -10px hsl(var(--shadow-warm) / 0.3)',
+				'glow': '0 0 40px hsl(var(--shadow-primary) / 0.4)',
+				'paw': '0 8px 25px -8px hsl(var(--shadow-primary) / 0.4)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -132,6 +135,15 @@ export default {
 					'50%': {
 						transform: 'translateY(0)'
 					}
+				},
+				'paw-wiggle': {
+					'0%, 100%': { transform: 'rotate(0deg)' },
+					'25%': { transform: 'rotate(-5deg)' },
+					'75%': { transform: 'rotate(5deg)' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
@@ -139,7 +151,9 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'scale-in': 'scale-in 0.2s ease-out',
-				'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite'
+				'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
+				'paw-wiggle': 'paw-wiggle 1s ease-in-out infinite',
+				'float': 'float 3s ease-in-out infinite'
 			}
 		}
 	},
