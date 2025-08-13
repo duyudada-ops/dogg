@@ -100,10 +100,10 @@ const Swipe = () => {
         const userDog = userDogs[0];
         
         const { data, error } = await supabase.rpc('check_mutual_match', {
-          p_liker_dog_id: userDog.id,
-          p_liked_dog_id: currentDog.id,
-          p_liker_user_id: user.id,
-          p_liked_user_id: currentDog.user_id
+          liker_user_id: user.id,
+          liked_user_id: currentDog.user_id,
+          liker_dog_uuid: userDog.id,
+          liked_dog_uuid: currentDog.id
         });
 
         if (error) throw error;

@@ -23,7 +23,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleForm }) => {
     setLoading(true);
 
     try {
-      await signUp(email, password, fullName);
+      const { error } = await signUp(email, password);
       toast({
         title: "Account created!",
         description: "Please check your email to verify your account.",
