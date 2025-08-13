@@ -163,10 +163,10 @@ const PremiumCard = () => {
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex items-center gap-2">
                     <h4 className="font-medium">Annual Premium</h4>
-                    <Badge variant="secondary" className="text-xs">Save 58%</Badge>
+                    <Badge variant="secondary" className="text-xs">Save 50%</Badge>
                   </div>
                   <div className="text-right">
-                    <span className="font-bold">$24.99/yr</span>
+                    <span className="font-bold">$29.99/yr</span>
                     <p className="text-xs text-muted-foreground line-through">$59.88</p>
                   </div>
                 </div>
