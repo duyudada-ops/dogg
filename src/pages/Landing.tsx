@@ -24,7 +24,7 @@ const Landing = () => {
         <div className="absolute inset-0 bg-white/5"></div>
         <div className="relative container mx-auto px-4 py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-white space-y-8">
+            <div className="text-white space-y-8 text-center">
               <div>
                 <Badge className="mb-6 bg-white/20 text-white border-white/20 rounded-full px-4 py-2 font-heading animate-bounce-gentle">
                   🏆 #1 Dog Connection App
@@ -38,17 +38,17 @@ const Landing = () => {
                     <div className="text-6xl animate-float" style={{animationDelay: '0.5s'}}>🐾</div>
                   </div>
                 </div>
-                <p className="text-xl lg:text-2xl font-light text-white/90 mt-6 max-w-lg font-body text-center lg:text-left">
+                <p className="text-xl lg:text-2xl font-light text-white/90 mt-6 max-w-2xl mx-auto font-body">
                   Connect your furry friend with compatible playmates and build pawsome friendships in your community! 🎾
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-6">
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button 
                   asChild
                   size="lg" 
                   variant="warm"
-                  className="text-lg px-10 py-6 font-semibold font-heading shadow-xl animate-color-cycle"
+                  className="text-lg px-10 py-6 font-semibold font-heading shadow-xl"
                 >
                   <Link to="/auth">
                     <span className="mr-2">🚀</span>
@@ -81,8 +81,8 @@ const Landing = () => {
                           <CarouselItem key={i} className="h-full">
                             <div className="h-full flex items-center justify-center">
                               <img 
-                                src={`/src/assets/dog-${i + 1}.jpg`}
-                                alt={`Happy dog ${i + 1}`}
+                                src={`/src/assets/happy-dog-${i + 1}.jpg`}
+                                alt={`Happy dog playing ${i + 1}`}
                                 className="w-full h-full object-cover rounded-xl"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;
