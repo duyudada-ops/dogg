@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { useAuth } from "./contexts/AuthContext";
 import Landing from "./pages/Landing";
+import { AuthPage } from "./components/auth/AuthPage";
 import Onboarding from "./pages/Onboarding";
 import Discover from "./pages/Discover";
 import Matches from "./pages/Matches";
@@ -37,6 +38,7 @@ const AppContent = () => {
     <>
       <Routes>
         <Route path="/" element={!user ? <Landing /> : <Navigate to="/discover" replace />} />
+        <Route path="/auth" element={!user ? <AuthPage /> : <Navigate to="/discover" replace />} />
         <Route path="/onboarding" element={user ? <Onboarding /> : <Navigate to="/" replace />} />
         <Route path="/discover" element={user ? <Discover /> : <Navigate to="/" replace />} />
         <Route path="/matches" element={user ? <Matches /> : <Navigate to="/" replace />} />
