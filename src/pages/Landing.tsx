@@ -26,11 +26,16 @@ const Landing = () => {
                 <Badge className="mb-6 bg-white/20 text-white border-white/20 rounded-full px-4 py-2 font-heading animate-bounce-gentle">
                   🏆 #1 Dog Dating App
                 </Badge>
-                <h1 className="text-4xl lg:text-7xl font-bold font-heading leading-tight">
-                  Where Dog Lovers Find Their 
-                  <span className="text-accent block animate-wiggle"> Perfect Match! 🐕‍🦺💕</span>
-                </h1>
-                <p className="text-xl lg:text-2xl font-light text-white/90 mt-8 max-w-lg font-body">
+                <div className="flex items-center justify-center gap-3 mb-8">
+                  <h1 className="text-5xl lg:text-8xl font-bold font-heading leading-tight bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
+                    TailCircle
+                  </h1>
+                  <div className="flex flex-col gap-2">
+                    <div className="text-6xl animate-float">🐾</div>
+                    <div className="text-6xl animate-float" style={{animationDelay: '0.5s'}}>🐾</div>
+                  </div>
+                </div>
+                <p className="text-xl lg:text-2xl font-light text-white/90 mt-6 max-w-lg font-body text-center lg:text-left">
                   Connect your furry friend with compatible playmates and build pawsome friendships in your community! 🎾
                 </p>
               </div>
@@ -62,13 +67,19 @@ const Landing = () => {
               </div>
             </div>
             
-            <div className="relative">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <div className="aspect-square bg-gradient-to-br from-white/20 to-white/5 rounded-xl flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <MapPin className="h-16 w-16 mx-auto mb-4 text-white/80" />
-                    <h3 className="text-xl font-semibold mb-2">Interactive Dog Map</h3>
-                    <p className="text-white/80">See nearby dogs in real-time</p>
+            <div className="relative lg:flex lg:justify-center">
+              {/* Happy Dog + Owner Photo */}
+              <div className="relative">
+                <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 overflow-hidden">
+                  <div className="aspect-[4/3] bg-gradient-to-br from-white/20 to-white/5 rounded-2xl flex items-center justify-center relative">
+                    {/* Placeholder for high-quality photo */}
+                    <div className="absolute inset-4 bg-gradient-to-br from-coral/20 to-blue/20 rounded-xl flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <div className="text-6xl mb-4 animate-bounce-gentle">🐕‍🦺</div>
+                        <h3 className="text-xl font-semibold mb-2 font-heading">Happy Dogs & Owners</h3>
+                        <p className="text-white/80 font-body">Real connections, real friendships</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -90,38 +101,38 @@ const Landing = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="text-center hover:shadow-warm transition-all duration-300 paw-animation border-0 bg-white/80 backdrop-blur-sm">
               <CardContent className="p-8">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Heart className="h-8 w-8 text-primary" />
+                <div className="bg-gradient-to-br from-primary/20 to-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-warm">
+                  <Heart className="h-10 w-10 text-primary animate-heart-beat" />
                 </div>
-                <h3 className="text-xl font-semibold font-heading mb-4">Smart Matching</h3>
+                <h3 className="text-xl font-semibold font-heading mb-4 text-foreground">Smart Matching</h3>
                 <p className="text-muted-foreground font-body">
-                  Our algorithm considers temperament, size, and play style to find perfect playmates for your dog.
+                  Our algorithm considers temperament, size, and play style to find perfect playmates for your dog! 🎾
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="text-center hover:shadow-warm transition-all duration-300 paw-animation border-0 bg-white/80 backdrop-blur-sm">
               <CardContent className="p-8">
-                <div className="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Calendar className="h-8 w-8 text-secondary" />
+                <div className="bg-gradient-to-br from-secondary/20 to-secondary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-warm">
+                  <Calendar className="h-10 w-10 text-secondary animate-wiggle" />
                 </div>
-                <h3 className="text-xl font-semibold font-heading mb-4">Local Events</h3>
+                <h3 className="text-xl font-semibold font-heading mb-4 text-foreground">Local Events</h3>
                 <p className="text-muted-foreground font-body">
-                  Discover dog-friendly events, playdates, and meetups happening in your neighborhood.
+                  Discover dog-friendly events, playdates, and meetups happening in your neighborhood! 📍
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="text-center hover:shadow-warm transition-all duration-300 paw-animation border-0 bg-white/80 backdrop-blur-sm">
               <CardContent className="p-8">
-                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users className="h-8 w-8 text-green-600" />
+                <div className="bg-gradient-to-br from-accent/20 to-accent/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-warm">
+                  <Users className="h-10 w-10 text-accent animate-bounce-gentle" />
                 </div>
-                <h3 className="text-xl font-semibold font-heading mb-4">Safe Community</h3>
+                <h3 className="text-xl font-semibold font-heading mb-4 text-foreground">Safe Community</h3>
                 <p className="text-muted-foreground font-body">
-                  Verified profiles and safety features ensure a secure environment for you and your dog.
+                  Verified profiles and safety features ensure a secure environment for you and your dog! 🛡️
                 </p>
               </CardContent>
             </Card>
@@ -144,53 +155,53 @@ const Landing = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card>
+            <Card className="shadow-warm border-0 bg-white/90 backdrop-blur-sm hover:scale-105 transition-all duration-300">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="font-semibold text-primary">S</span>
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="font-bold text-primary text-lg">S</span>
                   </div>
                   <div>
-                    <div className="font-semibold">Sarah M.</div>
-                    <div className="text-sm text-muted-foreground">Golden Retriever owner</div>
+                    <div className="font-bold font-heading text-foreground">Sarah M. 🐕</div>
+                    <div className="text-sm text-muted-foreground font-body">Golden Retriever parent</div>
                   </div>
                 </div>
-                <p className="text-muted-foreground italic">
-                  "My dog found his best friend within a week! The matching algorithm is incredibly accurate."
+                <p className="text-muted-foreground italic font-body">
+                  "My dog found his best friend within a week! The matching algorithm is incredibly accurate and my pup is so much happier! 🎾"
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="shadow-warm border-0 bg-white/90 backdrop-blur-sm hover:scale-105 transition-all duration-300">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
-                    <span className="font-semibold text-secondary">M</span>
+                  <div className="w-14 h-14 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="font-bold text-secondary text-lg">M</span>
                   </div>
                   <div>
-                    <div className="font-semibold">Mike R.</div>
-                    <div className="text-sm text-muted-foreground">German Shepherd owner</div>
+                    <div className="font-bold font-heading text-foreground">Mike R. 🐕‍🦺</div>
+                    <div className="text-sm text-muted-foreground font-body">German Shepherd dad</div>
                   </div>
                 </div>
-                <p className="text-muted-foreground italic">
-                  "The events feature helped us find amazing dog meetups in our area. Highly recommend!"
+                <p className="text-muted-foreground italic font-body">
+                  "The events feature helped us find amazing dog meetups in our area. Both of us made new friends! Highly recommend! 🏞️"
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="shadow-warm border-0 bg-white/90 backdrop-blur-sm hover:scale-105 transition-all duration-300">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="font-semibold text-green-600">L</span>
+                  <div className="w-14 h-14 bg-gradient-to-br from-accent/20 to-accent/10 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="font-bold text-accent text-lg">L</span>
                   </div>
                   <div>
-                    <div className="font-semibold">Lisa K.</div>
-                    <div className="text-sm text-muted-foreground">Labrador owner</div>
+                    <div className="font-bold font-heading text-foreground">Lisa K. 🐾</div>
+                    <div className="text-sm text-muted-foreground font-body">Labrador mom</div>
                   </div>
                 </div>
-                <p className="text-muted-foreground italic">
-                  "Safe, easy to use, and my dog has made so many new friends. Worth every penny of Premium!"
+                <p className="text-muted-foreground italic font-body">
+                  "Safe, easy to use, and my dog has made so many new friends. Worth every penny of Premium! Best app ever! 💕"
                 </p>
               </CardContent>
             </Card>
@@ -208,38 +219,50 @@ const Landing = () => {
           </div>
           
           <div className="space-y-6">
-            <Card>
+            <Card className="shadow-warm border-0 bg-white/90 backdrop-blur-sm hover:shadow-paw transition-all duration-300">
               <CardContent className="p-6">
-                <h3 className="font-semibold font-heading mb-2">How does the matching work?</h3>
+                <h3 className="font-semibold font-heading mb-3 text-foreground flex items-center gap-2">
+                  <Heart className="h-5 w-5 text-primary" />
+                  How does the matching work?
+                </h3>
                 <p className="text-muted-foreground font-body">
-                  Our smart algorithm considers your dog's breed, size, age, temperament, and activity level to suggest compatible playmates in your area.
+                  Our smart algorithm considers your dog's breed, size, age, temperament, and activity level to suggest compatible playmates in your area! 🎯
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="shadow-warm border-0 bg-white/90 backdrop-blur-sm hover:shadow-paw transition-all duration-300">
               <CardContent className="p-6">
-                <h3 className="font-semibold font-heading mb-2">Is TailCircle safe for my dog?</h3>
+                <h3 className="font-semibold font-heading mb-3 text-foreground flex items-center gap-2">
+                  <Users className="h-5 w-5 text-accent" />
+                  Is TailCircle safe for my dog?
+                </h3>
                 <p className="text-muted-foreground font-body">
-                  Yes! All profiles are verified, and we provide safety guidelines for meetups. You control who you connect with and where you meet.
+                  Yes! All profiles are verified, and we provide safety guidelines for meetups. You control who you connect with and where you meet! 🛡️
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="shadow-warm border-0 bg-white/90 backdrop-blur-sm hover:shadow-paw transition-all duration-300">
               <CardContent className="p-6">
-                <h3 className="font-semibold font-heading mb-2">What's included in Premium?</h3>
+                <h3 className="font-semibold font-heading mb-3 text-foreground flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-secondary" />
+                  What's included in Premium?
+                </h3>
                 <p className="text-muted-foreground font-body">
-                  Premium includes unlimited likes, advanced filters, seeing who liked you, 50-mile event radius, profile boosts, and priority support.
+                  Premium includes unlimited likes, advanced filters, seeing who liked you, 50-mile event radius, profile boosts, and priority support! ⭐
                 </p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="shadow-warm border-0 bg-white/90 backdrop-blur-sm hover:shadow-paw transition-all duration-300">
               <CardContent className="p-6">
-                <h3 className="font-semibold font-heading mb-2">Can I cancel my subscription anytime?</h3>
+                <h3 className="font-semibold font-heading mb-3 text-foreground flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-success" />
+                  Can I cancel my subscription anytime?
+                </h3>
                 <p className="text-muted-foreground font-body">
-                  Absolutely! You can cancel your Premium subscription anytime from your account settings with no questions asked.
+                  Absolutely! You can cancel your Premium subscription anytime from your account settings with no questions asked! 😊
                 </p>
               </CardContent>
             </Card>
