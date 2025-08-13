@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { useAuth } from "./contexts/AuthContext";
-import { AuthPage } from "./components/auth/AuthPage";
+import Landing from "./pages/Landing";
 import Onboarding from "./pages/Onboarding";
 import Discover from "./pages/Discover";
 import Matches from "./pages/Matches";
@@ -33,26 +33,22 @@ const AppContent = () => {
     );
   }
 
-  if (!user) {
-    return <AuthPage />;
-  }
-
   return (
     <>
       <Routes>
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/discover" element={<Discover />} />
-        <Route path="/matches" element={<Matches />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/billing" element={<Billing />} />
-        <Route path="/help" element={<Help />} />
-        <Route path="/" element={<Navigate to="/discover" replace />} />
-        <Route path="*" element={<Navigate to="/discover" replace />} />
+        <Route path="/" element={!user ? <Landing /> : <Navigate to="/discover" replace />} />
+        <Route path="/onboarding" element={user ? <Onboarding /> : <Navigate to="/" replace />} />
+        <Route path="/discover" element={user ? <Discover /> : <Navigate to="/" replace />} />
+        <Route path="/matches" element={user ? <Matches /> : <Navigate to="/" replace />} />
+        <Route path="/chat" element={user ? <Chat /> : <Navigate to="/" replace />} />
+        <Route path="/events" element={user ? <Events /> : <Navigate to="/" replace />} />
+        <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" replace />} />
+        <Route path="/settings" element={user ? <Settings /> : <Navigate to="/" replace />} />
+        <Route path="/billing" element={user ? <Billing /> : <Navigate to="/" replace />} />
+        <Route path="/help" element={user ? <Help /> : <Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to={user ? "/discover" : "/"} replace />} />
       </Routes>
-      <BottomNavigation />
+      {user && <BottomNavigation />}
     </>
   );
 };
