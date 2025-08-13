@@ -21,21 +21,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      await signIn(email, password);
-      toast({
-        title: "Welcome back!",
-        description: "You've successfully signed in.",
-      });
-    } catch (error: any) {
+    const { error } = await signIn(email, password);
+    
+    if (error) {
       toast({
         title: "Error",
         description: error.message,
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
+    } else {
+      toast({
+        title: "Welcome back!",
+        description: "You've successfully signed in.",
+      });
     }
+    
+    setLoading(false);
   };
 
   return (
