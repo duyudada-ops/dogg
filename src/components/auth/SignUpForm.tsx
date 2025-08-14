@@ -15,28 +15,46 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleForm }) => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signUp } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { signUp, signInWithGoogle } = useAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const { error } = await signUp(email, password);
-      toast({
-        title: "Account created!",
-        description: "Please check your email to verify your account.",
-      });
-    } catch (error: any) {
+    const { error } = await signUp(email, password, fullName);
+    
+    if (error) {
       toast({
         title: "Error",
         description: error.message,
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
+    } else {
+      toast({
+        title: "Account created!",
+        description: "Please check your email to verify your account.",
+      });
     }
+    
+    setLoading(false);
+  };
+
+  const handleGoogleSignUp = async () => {
+    setGoogleLoading(true);
+    
+    const { error } = await signInWithGoogle();
+    
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+    
+    setGoogleLoading(false);
   };
 
   return (
@@ -82,6 +100,25 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleForm }) => {
             {loading ? "Creating account..." : "Sign Up"}
           </Button>
         </form>
+        
+        <div className="mt-4">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            </div>
+          </div>
+          <Button 
+            variant="outline" 
+            className="w-full mt-4" 
+            onClick={handleGoogleSignUp}
+            disabled={googleLoading}
+          >
+            {googleLoading ? "Signing up..." : "Sign up with Google"}
+          </Button>
+        </div>
         <div className="mt-4 text-center">
           <button
             onClick={onToggleForm}

@@ -14,7 +14,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { signIn, signInWithGoogle } = useAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,6 +38,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
     }
     
     setLoading(false);
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    
+    const { error } = await signInWithGoogle();
+    
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+    
+    setGoogleLoading(false);
   };
 
   return (
@@ -71,6 +88,25 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
+        
+        <div className="mt-4">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            </div>
+          </div>
+          <Button 
+            variant="outline" 
+            className="w-full mt-4" 
+            onClick={handleGoogleSignIn}
+            disabled={googleLoading}
+          >
+            {googleLoading ? "Signing in..." : "Sign in with Google"}
+          </Button>
+        </div>
         <div className="mt-4 text-center">
           <button
             onClick={onToggleForm}
