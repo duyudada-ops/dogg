@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -326,10 +326,10 @@ export type Database = {
     Functions: {
       check_mutual_match: {
         Args: {
-          liker_user_id: string
+          liked_dog_uuid: string
           liked_user_id: string
           liker_dog_uuid: string
-          liked_dog_uuid: string
+          liker_user_id: string
         }
         Returns: string
       }
