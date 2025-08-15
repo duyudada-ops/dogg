@@ -1,6 +1,9 @@
 // Enhanced Supabase utilities for TailCircle
 
 import { supabase } from "@/integrations/supabase/client";
+
+// Re-export for convenience
+export { supabase };
 import { trackEvent, AnalyticsEvents } from "./analytics";
 import type { DogProfile, Match, Message, Post, MarketplaceItem, Event, Profile } from "./types";
 

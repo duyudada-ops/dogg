@@ -7,10 +7,16 @@ import { Crown, MapPin, Heart, Calendar, ArrowRight, CheckCircle, Users } from '
 import { Link } from 'react-router-dom';
 import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { dogPhotos } from '../../data/dogPhotos';
+import { getRealDogPhotos } from '@/lib/realDogPhotos';
 import { SafeImage } from '@/components/SafeImage';
 
 const Landing = () => {
+  const [dogPhotos, setDogPhotos] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    getRealDogPhotos().then(setDogPhotos);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Animated paw prints */}

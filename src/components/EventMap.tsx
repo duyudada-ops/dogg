@@ -49,7 +49,7 @@ export const EventMap: React.FC<EventMapProps> = ({ events }) => {
             <div class="p-2">
               <h3 class="font-semibold">${event.title}</h3>
               <p class="text-sm text-gray-600">${event.location_name || ''}</p>
-              <p class="text-xs text-gray-500">${new Date(event.start_time).toLocaleDateString()}</p>
+              <p class="text-xs text-gray-500">${new Date(event.date).toLocaleDateString()}</p>
             </div>
           `);
 

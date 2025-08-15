@@ -95,7 +95,8 @@ export interface Event {
   host_id: string;
   title: string;
   description?: string;
-  starts_at: string;
+  date: string;
+  starts_at?: string;
   ends_at?: string;
   latitude?: number;
   longitude?: number;
