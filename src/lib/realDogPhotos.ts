@@ -32,10 +32,33 @@ export async function getRealDogPhotos(): Promise<DogPhoto[]> {
       return localPhotos;
     }
   } catch (error) {
-    console.log('Local files check failed, using API fallback');
+    console.log('Local files check failed, using Pexels fallback');
   }
   
-  // Fallback to dog.ceo API
+  // Fallback to Pexels via proxy function
+  try {
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabase = createClient(
+      'https://dxjgsiseyrkjerecrpdn.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4amdzaXNleXJramVyZWNycGRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNTU1NTgsImV4cCI6MjA2OTkzMTU1OH0.bKfcX3VKFPUXR1iIWtStmMKJLYAkGOIWpakhT2vADZ0'
+    );
+    
+    const { data, error } = await supabase.functions.invoke('pexels-proxy');
+    
+    if (!error && data?.photos) {
+      return data.photos
+        .filter((photo: any) => photo.src.includes('images.pexels.com'))
+        .map((photo: any, index: number) => ({
+          src: photo.src,
+          alt: photo.alt || `Real dog photo ${index + 1}`,
+          vibe: 'normal'
+        }));
+    }
+  } catch (error) {
+    console.error('Failed to fetch from Pexels API:', error);
+  }
+  
+  // Final fallback to dog.ceo API
   try {
     const response = await fetch('https://dog.ceo/api/breeds/image/random/25');
     const data = await response.json();

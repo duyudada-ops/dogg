@@ -148,12 +148,12 @@ export interface AnalyticsEvent {
 export const PRICING = {
   pro_month: {
     price_cents: 499, // $4.99
-    price_id: 'price_pro_month', // Replace with actual Stripe price ID
+    price_id: process.env.STRIPE_PRICE_PRO_MONTH_ID || 'price_pro_month',
     interval: 'month' as const,
   },
   pro_year: {
     price_cents: 3999, // $39.99
-    price_id: 'price_pro_year', // Replace with actual Stripe price ID
+    price_id: process.env.STRIPE_PRICE_PRO_YEAR_ID || 'price_pro_year',
     interval: 'year' as const,
   },
 } as const;

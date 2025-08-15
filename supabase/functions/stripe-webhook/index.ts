@@ -104,7 +104,44 @@ serve(async (req) => {
       const session = event.data.object as any;
       logStep("Checkout completed", { sessionId: session.id, customerId: session.customer });
       
-      // Could trigger email notifications here
+      // Send subscription receipt email
+      if (session.mode === 'subscription' && session.customer_email) {
+        try {
+          await supabaseClient.functions.invoke('send-email', {
+            body: {
+              to: session.customer_email,
+              template: 'subscription_receipt',
+              props: {
+                plan: session.display_items?.[0]?.custom?.name || 'Pro',
+                amount: session.amount_total,
+                currency: session.currency,
+                period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+              },
+            },
+          });
+          logStep("Subscription receipt email sent", { email: session.customer_email });
+        } catch (emailError) {
+          logStep("Failed to send subscription receipt", { error: emailError });
+        }
+      }
+    }
+
+    // Handle invoice payment succeeded (for recurring billing)
+    if (event.type === "invoice.payment_succeeded") {
+      const invoice = event.data.object as any;
+      logStep("Invoice payment succeeded", { invoiceId: invoice.id, customerId: invoice.customer });
+      
+      // Update orders table for marketplace items
+      if (invoice.metadata?.order_id) {
+        const { error } = await supabaseClient
+          .from("orders")
+          .update({ status: 'paid' })
+          .eq("id", invoice.metadata.order_id);
+          
+        if (!error) {
+          logStep("Order status updated to paid", { orderId: invoice.metadata.order_id });
+        }
+      }
     }
 
     return new Response(JSON.stringify({ received: true }), {
