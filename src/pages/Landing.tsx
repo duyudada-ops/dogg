@@ -7,6 +7,8 @@ import { Crown, MapPin, Heart, Calendar, ArrowRight, CheckCircle, Users } from '
 import { Link } from 'react-router-dom';
 import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { dogPhotos } from '../../data/dogPhotos';
+import { SafeImage } from '@/components/SafeImage';
 
 const Landing = () => {
   return (
@@ -74,30 +76,18 @@ const Landing = () => {
               {/* Happy Dog + Owner Photo Carousel */}
               <div className="relative">
                 <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 overflow-hidden">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-white/20 to-white/5 rounded-2xl overflow-hidden">
+                  <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-2xl">
                     <AutoCarousel className="w-full h-full" autoSlideInterval={5000}>
                       <CarouselContent className="h-full">
-                        {Array.from({ length: 20 }, (_, i) => (
+                        {dogPhotos.map((dog, i) => (
                           <CarouselItem key={i} className="h-full">
-                            <div className="h-full flex items-center justify-center">
-                              <img 
-                                src={`/src/assets/happy-dog-${i + 1}.jpg`}
-                                alt={`Happy dog playing ${i + 1}`}
-                                className="w-full h-full object-cover rounded-xl"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.style.display = 'none';
-                                  const fallback = target.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
+                            <div className="relative w-full h-full overflow-hidden rounded-xl">
+                              <SafeImage 
+                                src={dog.src}
+                                alt={dog.alt}
+                                priority={i === 0}
+                                className="w-full h-full object-cover object-center"
                               />
-                              <div className="hidden w-full h-full bg-gradient-to-br from-coral/20 to-blue/20 rounded-xl items-center justify-center">
-                                <div className="text-center text-white">
-                                  <div className="text-6xl mb-4 animate-bounce-gentle">🐕‍🦺</div>
-                                  <h3 className="text-xl font-semibold mb-2 font-heading">Happy Dogs & Owners</h3>
-                                  <p className="text-white/80 font-body">Real connections, real friendships</p>
-                                </div>
-                              </div>
                             </div>
                           </CarouselItem>
                         ))}
