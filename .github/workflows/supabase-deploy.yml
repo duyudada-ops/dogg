@@ -1,0 +1,19 @@
+name: Deploy Supabase Functions
+on: workflow_dispatch
+
+env:
+  PROJECT_REF: dxjgsiseyrkjerecrpdn
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm i -g supabase
+      - run: supabase login --token "${{ secrets.SUPABASE_ACCESS_TOKEN }}"
+      - run: supabase functions deploy stripe-webhook --project-ref $PROJECT_REF
+      - run: supabase functions deploy create-checkout --project-ref $PROJECT_REF
+      - run: supabase functions deploy customer-portal --project-ref $PROJECT_REF
