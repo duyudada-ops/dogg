@@ -1,0 +1,28 @@
+name: Deploy Supabase Functions
+on: workflow_dispatch
+
+env:
+  PROJECT_REF: dxjgsiseyrkjerecrpdn
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Show CLI version (proves npx fetch works)
+      - run: npx supabase@latest --version
+
+      # Login with your repo secret
+      - run: npx supabase@latest login --token "${{ secrets.SUPABASE_ACCESS_TOKEN }}"
+
+      # Deploy each function (one per line)
+      - run: npx supabase@latest functions deploy stripe-webhook --project-ref $PROJECT_REF
+      - run: npx supabase@latest functions deploy create-checkout --project-ref $PROJECT_REF
+      - run: npx supabase@latest functions deploy customer-portal --project-ref $PROJECT_REF
+
+      # List functions so we see final URLs in logs
+      - run: npx supabase@latest functions list --project-ref $PROJECT_REF
