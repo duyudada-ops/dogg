@@ -15,12 +15,19 @@ const Billing = () => {
   const [checkingStatus, setCheckingStatus] = useState(true);
 
   const checkSubscription = async () => {
-    if (!user) return;
+    setCheckingStatus(true);
     try {
       const status = await getSubscriptionStatus();
       setSubscription(status);
     } catch (error) {
       console.error('Error checking subscription:', error);
+      // Set a fallback state instead of showing error
+      setSubscription(null);
+      toast({
+        title: "Unable to check subscription",
+        description: "You can still upgrade to premium. Click refresh to try again.",
+        variant: "default",
+      });
     } finally {
       setCheckingStatus(false);
     }

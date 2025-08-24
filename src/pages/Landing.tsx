@@ -58,7 +58,7 @@ const Landing = () => {
                   variant="warm"
                   className="text-lg px-10 py-6 font-semibold font-heading shadow-xl"
                 >
-                  <Link to="/auth">
+                  <Link to="/auth?signup=true">
                     <span className="mr-2">🚀</span>
                     Try Free Now
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -307,7 +307,7 @@ const Landing = () => {
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90 shadow-xl text-lg px-8 py-6 rounded-full font-semibold"
               >
-                <Link to="/auth">
+                <Link to="/auth?signup=true">
                   Start Free Trial
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

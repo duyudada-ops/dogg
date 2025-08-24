@@ -32,27 +32,34 @@ export default function AuthCallback() {
         // Set a flag to prevent redirect loops
         localStorage.setItem("authCallbackProcessed", "true");
         
-        // Wait a moment for the AuthContext to process the session
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        if (!mounted) return;
-
         // Clean the URL so tokens aren't left in history
         window.history.replaceState({}, document.title, window.location.pathname);
-
-        // Check if user needs onboarding or can go to discover
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          // Check if user has completed onboarding by looking for a dog profile
-          const { data: profiles } = await supabase
-            .from('dog_profiles')
-            .select('id')
-            .eq('user_id', session.user.id)
-            .limit(1);
-            
-          const next = profiles && profiles.length > 0 ? "/discover" : "/onboarding";
-          navigate(next, { replace: true });
-        } else {
+        
+        // Wait for auth state to settle
+        let retries = 0;
+        const maxRetries = 10;
+        
+        while (retries < maxRetries && mounted) {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) {
+            // Check if user has completed onboarding by looking for a dog profile
+            const { data: profiles } = await supabase
+              .from('dog_profiles')
+              .select('id')
+              .eq('user_id', session.user.id)
+              .limit(1);
+              
+            const next = profiles && profiles.length > 0 ? "/discover" : "/onboarding";
+            navigate(next, { replace: true });
+            return;
+          }
+          
+          retries++;
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        
+        // If we get here, something went wrong
+        if (mounted) {
           navigate("/", { replace: true });
         }
         

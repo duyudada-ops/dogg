@@ -43,20 +43,13 @@ const AppContent = () => {
             localStorage.getItem("authCallbackProcessed") === "true" ? (
               (() => {
                 localStorage.removeItem("authCallbackProcessed");
-                return <Navigate to="/discover" replace />;
+                return <Navigate to="/onboarding" replace />;
               })()
             ) : <Navigate to="/discover" replace />
           )
         } />
         <Route path="/auth" element={
-          !user ? <AuthPage /> : (
-            localStorage.getItem("authCallbackProcessed") === "true" ? (
-              (() => {
-                localStorage.removeItem("authCallbackProcessed");
-                return <Navigate to="/discover" replace />;
-              })()
-            ) : <Navigate to="/discover" replace />
-          )
+          !user ? <AuthPage /> : <Navigate to="/discover" replace />
         } />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/onboarding" element={user ? <Onboarding /> : <Navigate to="/" replace />} />
