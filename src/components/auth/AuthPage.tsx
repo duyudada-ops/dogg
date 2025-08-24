@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { LoginForm } from './LoginForm';
 import { SignUpForm } from './SignUpForm';
 
 export const AuthPage: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [searchParams] = useSearchParams();
+  const [isLogin, setIsLogin] = useState(!searchParams.get('signup'));
 
   const toggleForm = () => setIsLogin(!isLogin);
 
