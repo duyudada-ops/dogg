@@ -6,7 +6,9 @@ export default function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
+    let mounted = true;
+    
+    const handleAuthCallback = async () => {
       const url = new URL(window.location.href);
 
       // Case A: Auth code in the query (OAuth/email code flow)
@@ -26,17 +28,47 @@ export default function AuthCallback() {
           // Fallback: set session directly from hash tokens (works for email confirmation links)
           await supabase.auth.setSession({ access_token, refresh_token });
         }
-      } catch (e) {
-        console.error("Auth callback error:", e);
-      } finally {
+
+        // Set a flag to prevent redirect loops
+        localStorage.setItem("authCallbackProcessed", "true");
+        
+        // Wait a moment for the AuthContext to process the session
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        if (!mounted) return;
+
         // Clean the URL so tokens aren't left in history
         window.history.replaceState({}, document.title, window.location.pathname);
 
-        // Let your existing AuthContext/routing take over
-        const next = localStorage.getItem("postAuthRedirect") || "/discover";
-        navigate(next, { replace: true });
+        // Check if user needs onboarding or can go to discover
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          // Check if user has completed onboarding by looking for a dog profile
+          const { data: profiles } = await supabase
+            .from('dog_profiles')
+            .select('id')
+            .eq('user_id', session.user.id)
+            .limit(1);
+            
+          const next = profiles && profiles.length > 0 ? "/discover" : "/onboarding";
+          navigate(next, { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
+        
+      } catch (e) {
+        console.error("Auth callback error:", e);
+        if (mounted) {
+          navigate("/", { replace: true });
+        }
       }
-    })();
+    };
+
+    handleAuthCallback();
+    
+    return () => {
+      mounted = false;
+    };
   }, [navigate]);
 
   return (

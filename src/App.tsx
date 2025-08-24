@@ -38,8 +38,26 @@ const AppContent = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={!user ? <Landing /> : <Navigate to="/discover" replace />} />
-        <Route path="/auth" element={!user ? <AuthPage /> : <Navigate to="/discover" replace />} />
+        <Route path="/" element={
+          !user ? <Landing /> : (
+            localStorage.getItem("authCallbackProcessed") === "true" ? (
+              (() => {
+                localStorage.removeItem("authCallbackProcessed");
+                return <Navigate to="/discover" replace />;
+              })()
+            ) : <Navigate to="/discover" replace />
+          )
+        } />
+        <Route path="/auth" element={
+          !user ? <AuthPage /> : (
+            localStorage.getItem("authCallbackProcessed") === "true" ? (
+              (() => {
+                localStorage.removeItem("authCallbackProcessed");
+                return <Navigate to="/discover" replace />;
+              })()
+            ) : <Navigate to="/discover" replace />
+          )
+        } />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/onboarding" element={user ? <Onboarding /> : <Navigate to="/" replace />} />
         <Route path="/discover" element={user ? <Discover /> : <Navigate to="/" replace />} />
@@ -48,7 +66,7 @@ const AppContent = () => {
         <Route path="/events" element={user ? <Events /> : <Navigate to="/" replace />} />
         <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" replace />} />
         <Route path="/settings" element={user ? <Settings /> : <Navigate to="/" replace />} />
-        <Route path="/billing" element={user ? <Billing /> : <Navigate to="/" replace />} />
+        <Route path="/billing" element={<Billing />} />
         <Route path="/help" element={user ? <Help /> : <Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to={user ? "/discover" : "/"} replace />} />
       </Routes>
