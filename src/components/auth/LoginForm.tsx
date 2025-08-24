@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { CALLBACK_URL } from '@/lib/constants';
 
 interface LoginFormProps {
   onToggleForm: () => void;
@@ -79,7 +80,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
           type: 'signup', 
           email: emailToResend,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`
+            emailRedirectTo: CALLBACK_URL
           }
         });
         toast({

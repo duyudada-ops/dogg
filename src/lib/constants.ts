@@ -1,0 +1,1 @@
+export const CALLBACK_URL = `${window.location.origin}/auth/callback`;
