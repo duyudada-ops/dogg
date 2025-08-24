@@ -16,6 +16,7 @@ import Events from "./pages/Events";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Billing from "./pages/Billing";
+import Premium from "./pages/Premium";
 import Help from "./pages/Help";
 import BottomNavigation from "./components/layout/BottomNavigation";
 
@@ -60,6 +61,7 @@ const AppContent = () => {
         <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" replace />} />
         <Route path="/settings" element={user ? <Settings /> : <Navigate to="/" replace />} />
         <Route path="/billing" element={<Billing />} />
+        <Route path="/premium" element={user ? <Premium /> : <Navigate to="/" replace />} />
         <Route path="/help" element={user ? <Help /> : <Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to={user ? "/discover" : "/"} replace />} />
       </Routes>
