@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface LoginFormProps {
   onToggleForm: () => void;
@@ -15,6 +16,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [showResendButton, setShowResendButton] = useState(false);
   const { signIn, signInWithGoogle } = useAuth();
   const { toast } = useToast();
 
@@ -25,11 +28,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
     const { error } = await signIn(email, password);
     
     if (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      if (error.message?.includes('Email not confirmed')) {
+        setShowResendButton(true);
+        toast({
+          title: "Email Not Confirmed",
+          description: "Please check your email and click the confirmation link, or resend a new confirmation email.",
+          variant: "destructive",
+        });
+        // Store email for potential resend
+        localStorage.setItem('unconfirmed_email', email);
+      } else {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     } else {
       toast({
         title: "Welcome back!",
@@ -54,6 +68,36 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
     }
     
     setGoogleLoading(false);
+  };
+
+  const handleResendConfirmation = async () => {
+    setIsResending(true);
+    try {
+      const emailToResend = localStorage.getItem('unconfirmed_email') || email;
+      if (emailToResend) {
+        await supabase.auth.resend({ 
+          type: 'signup', 
+          email: emailToResend,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`
+          }
+        });
+        toast({
+          title: "Confirmation Email Sent!",
+          description: "Please check your email for a new confirmation link.",
+        });
+        setShowResendButton(false);
+      }
+    } catch (e) {
+      console.error('Resend error:', e);
+      toast({
+        title: "Error",
+        description: "Failed to resend confirmation email. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -88,6 +132,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
+        
+        {showResendButton && (
+          <div className="mt-4">
+            <Button 
+              variant="outline" 
+              className="w-full" 
+              onClick={handleResendConfirmation}
+              disabled={isResending}
+            >
+              {isResending ? "Sending..." : "Resend Confirmation Email"}
+            </Button>
+          </div>
+        )}
         
         <div className="mt-4">
           <div className="relative">
