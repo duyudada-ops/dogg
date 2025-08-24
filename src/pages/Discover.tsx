@@ -6,12 +6,19 @@ import { X, Heart, Star, Zap, Camera } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useFeedWithDemo } from '@/hooks/useFeedWithDemo';
+import { useEntitlements } from '@/hooks/useEntitlements';
+import { useNavigate } from 'react-router-dom';
 
 const Discover = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { isPremium, loading: entLoading } = useEntitlements();
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [likesToday, setLikesToday] = useState(0);
+
+  const FREE_LIKE_CAP = 10;
 
   // Extract user location data from metadata if available
   const county = user?.user_metadata?.county ?? user?.app_metadata?.county ?? null;
@@ -27,6 +34,31 @@ const Discover = () => {
   });
 
   const currentProfile = profiles[currentIndex];
+
+  const likeCurrent = async () => {
+    if (!isPremium && likesToday >= FREE_LIKE_CAP) {
+      navigate("/premium");
+      return;
+    }
+    setLikesToday(l => l + 1);
+    await handleSwipe('like');
+  };
+
+  const superLikeCurrent = () => {
+    if (!isPremium) { 
+      navigate("/premium"); 
+      return; 
+    }
+    handleSwipe('super_like');
+  };
+
+  const boostProfile = () => {
+    if (!isPremium) { 
+      navigate("/premium"); 
+      return; 
+    }
+    toast({ title: "Profile boosted! 🚀" });
+  };
 
   const handleSwipe = async (type: 'pass' | 'like' | 'super_like') => {
     if (!user || currentIndex >= profiles.length) return;
@@ -88,12 +120,24 @@ const Discover = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 pb-20">
       <div className="max-w-md mx-auto pt-4">
+        {/* Premium upgrade banner */}
+        {!entLoading && !isPremium && (
+          <div className="mb-3 rounded-lg bg-amber-50 p-3 text-sm">
+            Free plan: {FREE_LIKE_CAP} likes/day.{" "}
+            <button className="underline" onClick={() => navigate("/premium")}>
+              Upgrade for unlimited & boosts →
+            </button>
+          </div>
+        )}
+
         {/* Daily likes meter */}
         <Card className="mb-4">
           <CardContent className="p-4">
             <div className="flex justify-between items-center text-sm">
               <span>Daily Likes</span>
-              <span className="font-medium">5/20</span>
+              <span className="font-medium">
+                {isPremium ? '∞' : `${likesToday}/${FREE_LIKE_CAP}`}
+              </span>
               {isDemo && (
                 <Badge variant="secondary" className="text-xs">
                   Demo Mode
@@ -103,7 +147,7 @@ const Discover = () => {
             <div className="w-full bg-muted rounded-full h-2 mt-2">
               <div 
                 className="bg-primary h-2 rounded-full transition-all"
-                style={{ width: '25%' }}
+                style={{ width: isPremium ? '100%' : `${(likesToday / FREE_LIKE_CAP) * 100}%` }}
               />
             </div>
           </CardContent>
@@ -174,7 +218,7 @@ const Discover = () => {
           <Button
             size="lg"
             className="rounded-full h-20 w-20 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600"
-            onClick={() => handleSwipe('like')}
+            onClick={likeCurrent}
             disabled={loading}
           >
             <Heart className="h-10 w-10" />
@@ -184,7 +228,7 @@ const Discover = () => {
             size="lg"
             variant="outline"
             className="rounded-full h-16 w-16 border-2 border-blue-500 hover:bg-blue-50"
-            onClick={() => handleSwipe('super_like')}
+            onClick={superLikeCurrent}
             disabled={loading}
           >
             <Star className="h-8 w-8 text-blue-500" />
@@ -193,7 +237,11 @@ const Discover = () => {
 
         {/* Boost Button */}
         <div className="text-center mt-4">
-          <Button variant="outline" className="text-purple-600 border-purple-600">
+          <Button 
+            variant="outline" 
+            className="text-purple-600 border-purple-600"
+            onClick={boostProfile}
+          >
             <Zap className="h-4 w-4 mr-2" />
             Boost Profile
           </Button>
