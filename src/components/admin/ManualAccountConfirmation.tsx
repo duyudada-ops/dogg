@@ -17,12 +17,26 @@ export const ManualAccountConfirmation: React.FC = () => {
 
     setLoading(true);
     try {
-      toast({
-        title: "Manual Confirmation Instructions",
-        description: "Go to your Supabase dashboard → Authentication → Users, find the user, and click 'Confirm User'.",
+      const { data, error } = await supabase.functions.invoke('confirm-user', {
+        body: { email: email.trim() }
       });
-    } catch (e) {
-      console.error('Manual confirmation error:', e);
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Success!",
+        description: data.message || "User account has been confirmed successfully.",
+      });
+      setEmail('');
+    } catch (error: any) {
+      console.error('Manual confirmation error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to confirm user account. Check console for details.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -33,7 +47,7 @@ export const ManualAccountConfirmation: React.FC = () => {
       <CardHeader>
         <CardTitle>Manual Account Confirmation</CardTitle>
         <CardDescription>
-          Manually confirm user accounts for testing purposes
+          Instantly confirm user accounts to bypass email verification
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -50,18 +64,15 @@ export const ManualAccountConfirmation: React.FC = () => {
             />
           </div>
           <Button type="submit" disabled={loading} className="w-full">
-            Show Instructions
+            {loading ? "Confirming..." : "Confirm Account"}
           </Button>
         </form>
         <div className="mt-4 text-sm text-muted-foreground">
-          <p><strong>Manual Confirmation Steps:</strong></p>
-          <ol className="list-decimal list-inside mt-2 space-y-1">
-            <li>Go to your Supabase Dashboard</li>
-            <li>Navigate to Authentication → Users</li>
-            <li>Find the user by email</li>
-            <li>Click the three dots menu</li>
-            <li>Select "Confirm User"</li>
-          </ol>
+          <p><strong>Usage:</strong></p>
+          <p className="mt-2">Enter the email address of the user account you want to confirm. This will instantly mark their email as verified so they can sign in.</p>
+          
+          <p className="mt-3"><strong>For the current issue:</strong></p>
+          <p className="mt-1">Use email: <code className="bg-muted px-1 py-0.5 rounded text-xs">ogi.akamu.pap@gmail.com</code></p>
         </div>
       </CardContent>
     </Card>
