@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      conversation_members: {
+        Row: {
+          conversation_id: string
+          joined_at: string
+          profile_id: string
+        }
+        Insert: {
+          conversation_id: string
+          joined_at?: string
+          profile_id: string
+        }
+        Update: {
+          conversation_id?: string
+          joined_at?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_members_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          created_at: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dog_profiles: {
         Row: {
           age: number
@@ -56,6 +100,27 @@ export type Database = {
           photo_url?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      dogs: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string | null
+          owner_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          owner_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          owner_id?: string
         }
         Relationships: []
       }
@@ -185,39 +250,107 @@ export type Database = {
           },
         ]
       }
+      message_attachments: {
+        Row: {
+          created_at: string
+          id: string
+          message_id: string
+          mime_type: string
+          object_bucket: string
+          object_name: string
+          size_bytes: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message_id: string
+          mime_type: string
+          object_bucket: string
+          object_name: string
+          size_bytes: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message_id?: string
+          mime_type?: string
+          object_bucket?: string
+          object_name?: string
+          size_bytes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_attachments_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string | null
+          created_at: string
+          id: string
+          profile_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id?: string | null
+          created_at?: string
+          id?: string
+          profile_id?: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string | null
+          created_at?: string
+          id?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_fk"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
-          bio: string | null
           created_at: string
-          display_name: string | null
+          full_name: string | null
           id: string
-          location: string | null
-          preferences: Json | null
           updated_at: string
-          user_id: string
+          username: string
         }
         Insert: {
           avatar_url?: string | null
-          bio?: string | null
           created_at?: string
-          display_name?: string | null
-          id?: string
-          location?: string | null
-          preferences?: Json | null
+          full_name?: string | null
+          id: string
           updated_at?: string
-          user_id: string
+          username: string
         }
         Update: {
           avatar_url?: string | null
-          bio?: string | null
           created_at?: string
-          display_name?: string | null
+          full_name?: string | null
           id?: string
-          location?: string | null
-          preferences?: Json | null
           updated_at?: string
-          user_id?: string
+          username?: string
         }
         Relationships: []
       }
@@ -226,10 +359,13 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          is_active: boolean | null
           stripe_customer_id: string | null
           subscribed: boolean
           subscription_end: string | null
+          subscription_ends_at: string | null
           subscription_tier: string | null
+          tier: string | null
           updated_at: string
           user_id: string | null
         }
@@ -237,10 +373,13 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          is_active?: boolean | null
           stripe_customer_id?: string | null
           subscribed?: boolean
           subscription_end?: string | null
+          subscription_ends_at?: string | null
           subscription_tier?: string | null
+          tier?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -248,10 +387,13 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          is_active?: boolean | null
           stripe_customer_id?: string | null
           subscribed?: boolean
           subscription_end?: string | null
+          subscription_ends_at?: string | null
           subscription_tier?: string | null
+          tier?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -291,6 +433,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
       }
       user_swipes: {
         Row: {
@@ -333,9 +496,20 @@ export type Database = {
         }
         Returns: string
       }
+      find_or_create_two_member_conversation: {
+        Args: { a_id: string; b_id: string; create_if_not_exists?: boolean }
+        Returns: string
+      }
       get_daily_swipe_count: {
         Args: { user_uuid: string }
         Returns: number
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
       }
       increment_daily_swipes: {
         Args: { user_uuid: string }
@@ -343,7 +517,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -470,6 +644,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const

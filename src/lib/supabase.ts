@@ -48,7 +48,7 @@ export const profileService = {
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
-      .eq('user_id', userId)
+      .eq('id', userId)
       .single();
     
     if (error) {
@@ -63,7 +63,7 @@ export const profileService = {
     const { error } = await supabase
       .from('profiles')
       .update(updates)
-      .eq('user_id', userId);
+      .eq('id', userId);
     
     if (error) {
       console.error('Error updating profile:', error);
@@ -76,7 +76,7 @@ export const profileService = {
     });
     
     return true;
-  },
+  }
 };
 
 /**

@@ -5,11 +5,15 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useAdminAccess } from '@/hooks/useAdminAccess';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ShieldX } from 'lucide-react';
 
 export const ManualAccountConfirmation: React.FC = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { isAdmin, loading: adminLoading, error: adminError } = useAdminAccess();
 
   const handleConfirmAccount = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +45,34 @@ export const ManualAccountConfirmation: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (adminLoading) {
+    return (
+      <Card className="w-full max-w-md">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <span className="ml-2">Checking permissions...</span>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (adminError || !isAdmin) {
+    return (
+      <Card className="w-full max-w-md">
+        <CardContent className="pt-6">
+          <Alert variant="destructive">
+            <ShieldX className="h-4 w-4" />
+            <AlertDescription>
+              {adminError ? `Error: ${adminError}` : "Access denied. Admin privileges required to use this feature."}
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full max-w-md">

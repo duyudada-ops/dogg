@@ -1,8 +1,9 @@
 // Core TailCircle types for production
 
 export interface Profile {
-  user_id: string;
+  id: string;
   full_name?: string;
+  username?: string;
   display_name?: string;
   avatar_url?: string;
   city?: string;

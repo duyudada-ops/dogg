@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   BarChart3, 
   Users, 
@@ -12,9 +13,11 @@ import {
   Download,
   TrendingUp,
   Calendar,
-  MessageSquare
+  MessageSquare,
+  ShieldX
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useAdminAccess } from '@/hooks/useAdminAccess';
 import { supabase } from '@/integrations/supabase/client';
 
 interface AdminStats {
@@ -37,6 +40,7 @@ const AdminPanel: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const { isAdmin, loading: adminLoading } = useAdminAccess();
 
   useEffect(() => {
     fetchAdminStats();
@@ -79,20 +83,32 @@ const AdminPanel: React.FC = () => {
     document.body.removeChild(link);
   };
 
-  // Check if user has admin role (you'd implement proper role checking)
-  const isAdmin = user?.email === 'admin@tailcircle.com'; // Mock admin check
+  // Check admin access
+  if (adminLoading) {
+    return (
+      <Card className="w-full">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <span className="ml-2">Loading admin panel...</span>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (!isAdmin) {
     return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardContent className="text-center py-12">
-            <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
-            <p className="text-muted-foreground">You don't have permission to access the admin panel.</p>
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="w-full">
+        <CardContent className="pt-6">
+          <Alert variant="destructive">
+            <ShieldX className="h-4 w-4" />
+            <AlertDescription>
+              Access denied. Admin privileges required to view this panel.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
     );
   }
 
