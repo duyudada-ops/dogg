@@ -23,6 +23,9 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleForm }) => {
     e.preventDefault();
     setLoading(true);
 
+    // Store email for potential resends
+    localStorage.setItem('signup_email', email);
+    
     const { error } = await signUp(email, password, fullName);
     
     if (error) {
@@ -32,8 +35,6 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleForm }) => {
         variant: "destructive",
       });
     } else {
-      // Store email for potential resend
-      localStorage.setItem('signup_email', email);
       toast({
         title: "Account created!",
         description: "Please check your email to verify your account.",
