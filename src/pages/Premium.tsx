@@ -1,15 +1,13 @@
-import { PAYMENT_LINK_MONTHLY, PAYMENT_LINK_ANNUAL } from "@/lib/payments";
+import { useNavigate } from 'react-router-dom';
+import { startCheckout, STRIPE_MONTHLY_URL, STRIPE_ANNUAL_URL } from "@/lib/payments";
 import { useEntitlements } from "@/hooks/useEntitlements";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export default function Premium() {
+  const navigate = useNavigate();
   const { isPremium, loading } = useEntitlements();
-
-  const handlePayment = (url: string) => {
-    window.location.href = url;
-  };
 
   if (loading) {
     return (
@@ -72,7 +70,7 @@ export default function Premium() {
             </ul>
             <Button 
               className="w-full" 
-              onClick={() => handlePayment(PAYMENT_LINK_MONTHLY)}
+              onClick={() => startCheckout(STRIPE_MONTHLY_URL, navigate)}
               disabled={isPremium}
             >
               {isPremium ? "Already Premium" : "Start Monthly"}
@@ -114,7 +112,7 @@ export default function Premium() {
             <Button 
               className="w-full" 
               variant="default"
-              onClick={() => handlePayment(PAYMENT_LINK_ANNUAL)}
+              onClick={() => startCheckout(STRIPE_ANNUAL_URL, navigate)}
               disabled={isPremium}
             >
               {isPremium ? "Already Premium" : "Start Annual"}

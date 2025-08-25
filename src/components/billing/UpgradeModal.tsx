@@ -10,7 +10,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Sparkles, Zap, Check, X } from 'lucide-react';
-import { createCheckoutSession, pricingConfig } from '@/lib/billing';
+import { useNavigate } from 'react-router-dom';
+import { startCheckout, STRIPE_MONTHLY_URL, STRIPE_ANNUAL_URL } from '@/lib/payments';
+import { pricingConfig } from '@/lib/billing';
 import { useToast } from '@/components/ui/use-toast';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
@@ -29,6 +31,7 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
 }) => {
   const [loading, setLoading] = useState<'pro_month' | 'pro_year' | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     if (isOpen) {
@@ -47,22 +50,9 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
     setLoading(planType);
     
     try {
-      const { url, error } = await createCheckoutSession(planType);
-      
-      if (error) {
-        toast({
-          title: "Error",
-          description: error,
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      if (url) {
-        // Open Stripe checkout in new tab
-        window.open(url, '_blank');
-        onClose();
-      }
+      const url = planType === 'pro_month' ? STRIPE_MONTHLY_URL : STRIPE_ANNUAL_URL;
+      await startCheckout(url, navigate);
+      onClose();
     } catch (error) {
       console.error('Upgrade error:', error);
       toast({
