@@ -40,9 +40,26 @@ export function useEntitlements() {
     setLoading(false);
   }, []);
 
+  const checkWithStripe = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      if (error) {
+        console.error('Error checking subscription with Stripe:', error);
+      } else {
+        console.log('Stripe subscription check result:', data);
+      }
+      // Refresh local data after Stripe check
+      await refresh();
+    } catch (error) {
+      console.error('Error calling check-subscription:', error);
+      setLoading(false);
+    }
+  }, [refresh]);
+
   useEffect(() => { 
     refresh(); 
   }, [refresh]);
 
-  return { isPremium, loading, refresh };
+  return { isPremium, loading, refresh, checkWithStripe };
 }

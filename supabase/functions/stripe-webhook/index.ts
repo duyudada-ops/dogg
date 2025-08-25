@@ -69,30 +69,29 @@ serve(async (req) => {
         plan = 'pro_month';
       }
 
-      // Find profile by stripe customer ID
+      // Find user by stripe customer ID
       const { data: existingSub } = await supabaseClient
         .from("subscribers")
-        .select("profile_id")
+        .select("user_id")
         .eq("stripe_customer_id", customer)
         .maybeSingle();
 
-      if (existingSub?.profile_id) {
+      if (existingSub?.user_id) {
         // Update existing subscription
         const { error } = await supabaseClient
           .from("subscribers")
           .update({
-            stripe_subscription_id: id,
-            plan,
-            status: status === 'active' || status === 'trialing' ? 'active' : status,
+            subscribed: status === 'active' || status === 'trialing',
+            subscription_tier: plan,
             subscription_end: new Date(current_period_end * 1000).toISOString(),
             updated_at: new Date().toISOString(),
           })
-          .eq("profile_id", existingSub.profile_id);
+          .eq("user_id", existingSub.user_id);
 
         if (error) {
           logStep("Error updating subscription", { error });
         } else {
-          logStep("Subscription updated successfully", { profileId: existingSub.profile_id });
+          logStep("Subscription updated successfully", { userId: existingSub.user_id });
         }
       } else {
         logStep("No matching profile found for customer", { customerId: customer });

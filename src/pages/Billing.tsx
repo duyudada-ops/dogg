@@ -3,14 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Crown, Check, Zap, ArrowRight } from 'lucide-react';
+import { Crown, Check, Zap, ArrowRight, RefreshCw } from 'lucide-react';
 import { getPaymentLink } from '@/lib/payments';
 import { createCustomerPortalSession, getSubscriptionStatus } from '@/lib/billing';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEntitlements } from '@/hooks/useEntitlements';
 
 const Billing = () => {
   const { user } = useAuth();
+  const { checkWithStripe, loading: entitlementsLoading } = useEntitlements();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,6 @@ const Billing = () => {
       setSubscription(status);
     } catch (error) {
       console.error('Error checking subscription:', error);
-      // Set a fallback state instead of showing error
       setSubscription(null);
       toast({
         title: "Unable to check subscription",
@@ -33,6 +34,32 @@ const Billing = () => {
       });
     } finally {
       setCheckingStatus(false);
+    }
+  };
+
+  const refreshSubscriptionStatus = async () => {
+    if (!user) return;
+    
+    try {
+      toast({
+        title: "Checking subscription",
+        description: "Verifying your subscription status with Stripe...",
+      });
+      
+      await checkWithStripe();
+      await checkSubscription();
+      
+      toast({
+        title: "Status updated",
+        description: "Your subscription status has been refreshed.",
+      });
+    } catch (error) {
+      console.error('Error refreshing subscription:', error);
+      toast({
+        title: "Refresh failed",
+        description: "Unable to refresh subscription status. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -259,10 +286,12 @@ const Billing = () => {
         <div className="text-center mt-8 space-y-4">
           <Button 
             variant="outline" 
-            onClick={checkSubscription}
-            disabled={loading}
+            onClick={refreshSubscriptionStatus}
+            disabled={loading || entitlementsLoading || checkingStatus}
+            className="gap-2"
           >
-            Refresh Status
+            <RefreshCw className={`h-4 w-4 ${(loading || entitlementsLoading || checkingStatus) ? 'animate-spin' : ''}`} />
+            {(loading || entitlementsLoading || checkingStatus) ? 'Checking...' : 'Refresh Status'}
           </Button>
           <p className="text-sm text-muted-foreground">
             All plans include a 7-day free trial. Cancel anytime.
