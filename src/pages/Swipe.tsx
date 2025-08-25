@@ -3,11 +3,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Heart, X, MapPin, Info } from 'lucide-react';
+import { Heart, X, MapPin, Info, Crown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import MatchSuccessPopup from '@/components/match/MatchSuccessPopup';
+import PaywallModal from '@/components/paywall/PaywallModal';
+import { useEntitlements } from '@/hooks/useEntitlements';
 
 interface DogProfile {
   id: string;
@@ -23,6 +25,7 @@ interface DogProfile {
 
 const Swipe = () => {
   const { user } = useAuth();
+  const { canLike, isPremium, dailyUsage, getUpgradeReason } = useEntitlements();
   const [dogs, setDogs] = useState<DogProfile[]>([]);
   const [currentDogIndex, setCurrentDogIndex] = useState(0);
   const [isLiked, setIsLiked] = useState<boolean | null>(null);
@@ -30,6 +33,7 @@ const Swipe = () => {
   const [loading, setLoading] = useState(true);
   const [showMatchPopup, setShowMatchPopup] = useState(false);
   const [matchedDog, setMatchedDog] = useState<DogProfile | null>(null);
+  const [showPaywall, setShowPaywall] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -92,6 +96,12 @@ const Swipe = () => {
       return;
     }
 
+    // Check premium limits for likes
+    if (liked && !canLike) {
+      setShowPaywall(true);
+      return;
+    }
+
     setIsLiked(liked);
 
     if (liked) {
@@ -150,8 +160,13 @@ const Swipe = () => {
   return (
     <div className="container mx-auto py-6 max-w-md">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold mb-2">Discover Dogs</h1>
-        <p className="text-muted-foreground">Swipe right to like, left to pass</p>
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <h1 className="text-2xl font-bold">Discover Dogs</h1>
+          {isPremium && <Crown className="h-6 w-6 text-yellow-500" />}
+        </div>
+        <p className="text-muted-foreground">
+          {isPremium ? 'Unlimited swipes' : `${5 - dailyUsage.likes} likes remaining today`}
+        </p>
       </div>
 
       <div className="relative">
@@ -222,10 +237,11 @@ const Swipe = () => {
           
           <Button
             size="lg"
-            className="rounded-full h-16 w-16 p-0 bg-green-500 hover:bg-green-600"
+            className={`rounded-full h-16 w-16 p-0 ${canLike ? 'bg-green-500 hover:bg-green-600' : 'bg-muted hover:bg-muted cursor-not-allowed'}`}
             onClick={() => handleSwipe(true)}
+            disabled={!canLike}
           >
-            <Heart className="h-8 w-8" />
+            <Heart className={`h-8 w-8 ${canLike ? '' : 'text-muted-foreground'}`} />
           </Button>
         </div>
       </div>
@@ -239,6 +255,13 @@ const Swipe = () => {
           matchedDog={matchedDog}
         />
       )}
+
+      {/* Paywall Modal */}
+      <PaywallModal
+        isOpen={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        trigger="out-of-likes"
+      />
     </div>
   );
 };

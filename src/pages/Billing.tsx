@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Check, Zap, ArrowRight, RefreshCw } from 'lucide-react';
 import { getPaymentLink } from '@/lib/payments';
-import { createCustomerPortalSession, getSubscriptionStatus } from '@/lib/billing';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEntitlements } from '@/hooks/useEntitlements';
+import { supabase } from '@/integrations/supabase/client';
 
 const Billing = () => {
   const { user } = useAuth();
@@ -22,8 +22,14 @@ const Billing = () => {
   const checkSubscription = async () => {
     setCheckingStatus(true);
     try {
-      const status = await getSubscriptionStatus();
-      setSubscription(status);
+      const { data, error } = await supabase
+        .from('subscribers')
+        .select('subscribed, subscription_tier, subscription_end')
+        .eq('user_id', user?.id)
+        .maybeSingle();
+      
+      if (error) throw error;
+      setSubscription(data);
     } catch (error) {
       console.error('Error checking subscription:', error);
       setSubscription(null);
@@ -79,24 +85,17 @@ const Billing = () => {
   const handleManageSubscription = async () => {
     setLoading(true);
     try {
-      const { url, error } = await createCustomerPortalSession();
+      const { data, error } = await supabase.functions.invoke('customer-portal');
+      if (error) throw error;
       
-      if (error) {
-        toast({
-          title: "Portal Error",
-          description: error,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (url) {
-        window.open(url, '_blank');
+      if (data?.url) {
+        window.location.href = data.url; // Use location.href instead of window.open for better UX
       }
     } catch (error) {
+      console.error('Error opening customer portal:', error);
       toast({
-        title: "Error",
-        description: "Failed to open customer portal",
+        title: "Error", 
+        description: "Failed to open subscription management",
         variant: "destructive",
       });
     } finally {
