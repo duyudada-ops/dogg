@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Check, Zap, ArrowRight } from 'lucide-react';
-import { createCheckoutSession, createCustomerPortalSession, getSubscriptionStatus } from '@/lib/billing';
+import { getPaymentLink } from '@/lib/payments';
+import { createCustomerPortalSession, getSubscriptionStatus } from '@/lib/billing';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Billing = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [subscription, setSubscription] = useState<any>(null);
@@ -37,43 +40,14 @@ const Billing = () => {
     checkSubscription();
   }, [user]);
 
-  const handleUpgrade = async (planType: 'pro_month' | 'pro_year') => {
+  function openCheckout(plan: "monthly" | "annual") {
     if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to upgrade your plan.",
-        variant: "destructive",
-      });
+      // send to auth and come back to billing after login
+      navigate("/auth?next=/billing", { replace: true });
       return;
     }
-
-    setLoading(true);
-    try {
-      const { url, error } = await createCheckoutSession(planType);
-      
-      if (error) {
-        toast({
-          title: "Checkout Error",
-          description: error,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (url) {
-        // Open Stripe checkout in a new tab
-        window.open(url, '_blank');
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to create checkout session",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    window.location.href = getPaymentLink(plan);
+  }
 
   const handleManageSubscription = async () => {
     setLoading(true);
@@ -224,11 +198,11 @@ const Billing = () => {
                 </div>
               </div>
               <Button 
-                onClick={() => handleUpgrade('pro_month')} 
-                disabled={loading || subscription?.subscribed}
+                onClick={() => openCheckout("monthly")} 
+                disabled={subscription?.subscribed}
                 className="w-full"
               >
-                {loading ? "Processing..." : "Upgrade Now"}
+                {subscription?.subscribed ? "Already Subscribed" : "Upgrade Now"}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </CardContent>
@@ -270,12 +244,12 @@ const Billing = () => {
                 </div>
               </div>
               <Button 
-                onClick={() => handleUpgrade('pro_year')} 
-                disabled={loading || subscription?.subscribed}
+                onClick={() => openCheckout("annual")} 
+                disabled={subscription?.subscribed}
                 variant="secondary"
                 className="w-full"
               >
-                {loading ? "Processing..." : "Upgrade Now"}
+                {subscription?.subscribed ? "Already Subscribed" : "Upgrade Now"}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </CardContent>

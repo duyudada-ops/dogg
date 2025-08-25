@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +14,7 @@ interface LoginFormProps {
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,6 +23,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
   const [showResendButton, setShowResendButton] = useState(false);
   const { signIn, signInWithGoogle } = useAuth();
   const { toast } = useToast();
+  
+  // Store next parameter for post-auth redirect
+  React.useEffect(() => {
+    const next = searchParams.get('next');
+    if (next) {
+      localStorage.setItem("postAuthRedirect", next);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

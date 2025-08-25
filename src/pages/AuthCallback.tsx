@@ -82,7 +82,16 @@ export default function AuthCallback() {
         });
       } finally {
         window.history.replaceState({}, document.title, "/auth/callback");
-        const next = localStorage.getItem("postAuthRedirect") || "/discover";
+        
+        // Check for 'next' parameter from URL first, then localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const nextFromUrl = urlParams.get("next");
+        const nextFromStorage = localStorage.getItem("postAuthRedirect");
+        const next = nextFromUrl || nextFromStorage || "/discover";
+        
+        // Clear localStorage redirect after use
+        localStorage.removeItem("postAuthRedirect");
+        
         setTimeout(() => navigate(next, { replace: true }), error ? 3000 : 1000);
       }
     })();

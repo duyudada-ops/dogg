@@ -1,12 +1,19 @@
 // src/lib/payments.ts
 import { supabase } from "@/integrations/supabase/client";
 
-// Put your real links here
-export const STRIPE_MONTHLY_URL = "https://buy.stripe.com/test_aFa9AS7nA8IncTcevu63K02";
-export const STRIPE_ANNUAL_URL = "https://buy.stripe.com/test_4gMdR823g0bR5qKevu63K01";
+export const STRIPE_LINK_MONTHLY = "https://buy.stripe.com/test_aFa9AS7nA8IncTcevu63K02";
+export const STRIPE_LINK_ANNUAL = "https://buy.stripe.com/test_4gMdR823g0bR5qKevu63K01";
+
+// Legacy constants for backwards compatibility
+export const STRIPE_MONTHLY_URL = STRIPE_LINK_MONTHLY;
+export const STRIPE_ANNUAL_URL = STRIPE_LINK_ANNUAL;
 
 // Optional: after returning from Stripe, land on this page
 export const POST_CHECKOUT_RETURN = "/billing/thank-you";
+
+export function getPaymentLink(plan: "monthly" | "annual") {
+  return plan === "annual" ? STRIPE_LINK_ANNUAL : STRIPE_LINK_MONTHLY;
+}
 
 /**
  * Opens Stripe checkout if authenticated.
