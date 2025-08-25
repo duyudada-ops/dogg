@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { X, Heart, Star, Zap, Camera } from 'lucide-react';
+import { X, Heart, Star, Zap, Camera, Crown, Infinity } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useFeedWithDemo } from '@/hooks/useFeedWithDemo';
@@ -120,7 +120,7 @@ const Discover = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 pb-20">
       <div className="max-w-md mx-auto pt-4">
-        {/* Premium upgrade banner */}
+        {/* Premium upgrade banner for non-premium users */}
         {!entLoading && !isPremium && (
           <div className="mb-3 rounded-lg bg-amber-50 p-3 text-sm">
             Free plan: {FREE_LIKE_CAP} likes/day.{" "}
@@ -130,28 +130,28 @@ const Discover = () => {
           </div>
         )}
 
-        {/* Daily likes meter */}
-        <Card className="mb-4">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center text-sm">
-              <span>Daily Likes</span>
-              <span className="font-medium">
-                {isPremium ? '∞' : `${likesToday}/${FREE_LIKE_CAP}`}
-              </span>
+        {/* Premium status card - only show for premium users */}
+        {!entLoading && isPremium && (
+          <Card className="mb-4 bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 border-primary/20">
+            <CardContent className="p-4">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-primary" />
+                  <span className="font-semibold text-primary">Premium Active</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Infinity className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium">Unlimited Likes</span>
+                </div>
+              </div>
               {isDemo && (
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="text-xs mt-2">
                   Demo Mode
                 </Badge>
               )}
-            </div>
-            <div className="w-full bg-muted rounded-full h-2 mt-2">
-              <div 
-                className="bg-primary h-2 rounded-full transition-all"
-                style={{ width: isPremium ? '100%' : `${(likesToday / FREE_LIKE_CAP) * 100}%` }}
-              />
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Profile Card */}
         <Card className="overflow-hidden shadow-xl">
