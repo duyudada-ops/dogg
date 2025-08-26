@@ -29,13 +29,21 @@ serve(async (req) => {
 
     console.log(`Fetching events for city: ${city}, category: ${category}`)
 
-    // Fetch events from Eventbrite API
+    // Fetch events from Eventbrite API with future date filtering
     const eventbriteUrl = new URL('https://www.eventbriteapi.com/v3/events/search/')
     eventbriteUrl.searchParams.append('location.address', city)
     eventbriteUrl.searchParams.append('expand', 'venue,organizer,category,subcategory')
     eventbriteUrl.searchParams.append('token', eventbriteToken)
     eventbriteUrl.searchParams.append('page_size', limit.toString())
     eventbriteUrl.searchParams.append('sort_by', 'date')
+    
+    // Only get future, live events
+    eventbriteUrl.searchParams.append('start_date.range_start', new Date().toISOString())
+    eventbriteUrl.searchParams.append('status', 'live')
+    
+    // Add dog-related search terms
+    const dogSearchTerms = 'dog OR canine OR pet OR puppy'
+    eventbriteUrl.searchParams.append('q', dogSearchTerms)
     
     if (category) {
       eventbriteUrl.searchParams.append('categories', category)

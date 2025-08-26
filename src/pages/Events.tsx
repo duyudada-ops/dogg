@@ -3,69 +3,100 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Calendar, MapPin, Users, Clock, Search } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Calendar, MapPin, Users, Clock, Search, RefreshCw } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
-interface SimpleEvent {
+interface Event {
   id: string;
   title: string;
   description?: string;
-  date: string;
-  location_name?: string;
+  start_time: string;
+  end_time?: string;
+  venue_name?: string;
+  venue_address?: string;
+  city?: string;
+  country?: string;
   latitude?: number;
   longitude?: number;
-  price_cents?: number;
-  max_attendees?: number;
+  organizer_name?: string;
+  ticket_url?: string;
+  image_url?: string;
+  category?: string;
+  subcategory?: string;
+  is_free: boolean;
+  is_online: boolean;
+  capacity?: number;
   created_at: string;
 }
 
 const Events = () => {
   const { user } = useAuth();
-  const [events, setEvents] = useState<SimpleEvent[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCity, setSelectedCity] = useState('London');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchEvents = async (refresh = false) => {
+    if (refresh) setRefreshing(true);
+    else setLoading(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('fetch-events', {
+        body: {
+          city: selectedCity,
+          category: selectedCategory,
+          limit: 50
+        }
+      });
+
+      if (error) throw error;
+
+      setEvents(data.events || []);
+      if (refresh) {
+        toast.success(`Found ${data.events?.length || 0} upcoming events`);
+      }
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      toast.error('Failed to load events. Please try again.');
+      setEvents([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    // Mock data for now - will be replaced once migration is complete
-    setEvents([
-      {
-        id: '1',
-        title: 'Dog Park Playdate',
-        description: 'Social gathering for dogs and their owners',
-        date: '2024-01-20',
-        location_name: 'Central Park',
-        price_cents: 0,
-        max_attendees: 20,
-        created_at: '2024-01-01'
-      },
-      {
-        id: '2', 
-        title: 'Training Workshop',
-        description: 'Basic obedience training session',
-        date: '2024-01-25',
-        location_name: 'Community Center',
-        price_cents: 2500,
-        max_attendees: 15,
-        created_at: '2024-01-02'
-      }
-    ]);
-    setLoading(false);
+    fetchEvents();
     trackEvent({ eventName: AnalyticsEvents.PAGE_VIEW, properties: { page: 'events' } });
-  }, []);
+  }, [selectedCity, selectedCategory]);
 
   const filteredEvents = events.filter(event =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    event.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    event.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.venue_name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const formatPrice = (cents: number) => {
-    if (cents === 0) return 'Free';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(cents / 100);
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    return new Date(dateString).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
   };
 
   if (loading) {
@@ -89,11 +120,20 @@ const Events = () => {
               Discover local events and meetups for you and your dog
             </p>
           </div>
+          <Button 
+            onClick={() => fetchEvents(true)} 
+            disabled={refreshing}
+            variant="outline"
+            size="sm"
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
         </div>
 
-        {/* Search */}
-        <div className="mb-6">
-          <div className="relative max-w-md">
+        {/* Filters */}
+        <div className="mb-6 flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search events..."
@@ -102,6 +142,34 @@ const Events = () => {
               className="pl-10"
             />
           </div>
+          
+          <Select value={selectedCity} onValueChange={setSelectedCity}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Select city" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="London">London</SelectItem>
+              <SelectItem value="New York">New York</SelectItem>
+              <SelectItem value="Los Angeles">Los Angeles</SelectItem>
+              <SelectItem value="Chicago">Chicago</SelectItem>
+              <SelectItem value="Toronto">Toronto</SelectItem>
+              <SelectItem value="Berlin">Berlin</SelectItem>
+              <SelectItem value="Paris">Paris</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="All categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All categories</SelectItem>
+              <SelectItem value="training">Training</SelectItem>
+              <SelectItem value="meetup">Meetup</SelectItem>
+              <SelectItem value="competition">Competition</SelectItem>
+              <SelectItem value="charity">Charity</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Events Grid */}
@@ -119,15 +187,28 @@ const Events = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEvents.map((event) => (
               <Card key={event.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
+                <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <CardTitle className="text-lg">{event.title}</CardTitle>
-                    <Badge variant={event.price_cents === 0 ? "secondary" : "default"}>
-                      {formatPrice(event.price_cents || 0)}
+                    <CardTitle className="text-lg leading-tight">{event.title}</CardTitle>
+                    <Badge variant={event.is_free ? "secondary" : "default"}>
+                      {event.is_free ? 'Free' : 'Paid'}
                     </Badge>
                   </div>
+                  {event.category && (
+                    <Badge variant="outline" className="w-fit text-xs">
+                      {event.category}
+                    </Badge>
+                  )}
                 </CardHeader>
                 <CardContent className="space-y-3">
+                  {event.image_url && (
+                    <img 
+                      src={event.image_url} 
+                      alt={event.title}
+                      className="w-full h-32 object-cover rounded-md"
+                    />
+                  )}
+                  
                   {event.description && (
                     <p className="text-sm text-muted-foreground line-clamp-2">
                       {event.description}
@@ -136,28 +217,48 @@ const Events = () => {
                   
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="h-4 w-4" />
-                    {new Date(event.date).toLocaleDateString()}
+                    {formatDate(event.start_time)}
                   </div>
                   
-                  {event.location_name && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    {formatTime(event.start_time)}
+                  </div>
+                  
+                  {event.venue_name && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <MapPin className="h-4 w-4" />
-                      {event.location_name}
+                      <span className="truncate">{event.venue_name}</span>
                     </div>
                   )}
                   
-                  {event.max_attendees && (
+                  {event.venue_address && (
+                    <p className="text-xs text-muted-foreground truncate">
+                      {event.venue_address}
+                    </p>
+                  )}
+                  
+                  {event.capacity && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Users className="h-4 w-4" />
-                      Max {event.max_attendees} attendees
+                      Max {event.capacity} attendees
                     </div>
                   )}
 
-                  <Button className="w-full" onClick={() => {
-                    toast.success('RSVP functionality coming soon!');
-                  }}>
-                    RSVP
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      className="flex-1" 
+                      onClick={() => {
+                        if (event.ticket_url) {
+                          window.open(event.ticket_url, '_blank');
+                        } else {
+                          toast.success('RSVP functionality coming soon!');
+                        }
+                      }}
+                    >
+                      {event.ticket_url ? 'View Event' : 'RSVP'}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
