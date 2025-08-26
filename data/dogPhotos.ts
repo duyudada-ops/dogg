@@ -1,4 +1,4 @@
-export type DogVibe = 'cute' | 'adorable' | 'fat' | 'normal' | 'sleeping';
+export type DogVibe = 'cute' | 'adorable' | 'fat' | 'extra-fat' | 'normal' | 'sleeping' | 'playing' | 'swimming' | 'sunglasses' | 'show';
 
 export type DogPhoto = {
   src: string;
@@ -32,4 +32,19 @@ export const dogPhotos: DogPhoto[] = [
   { src: '/src/assets/dog-23.jpg', alt: 'adorable boxer playful stance', vibe: 'adorable' },
   { src: '/src/assets/dog-24.jpg', alt: 'normal pointer standing tall', vibe: 'normal' },
   { src: '/src/assets/dog-25.jpg', alt: 'sleeping great dane on rug', vibe: 'sleeping' },
+  { src: '/src/assets/dog-26.jpg', alt: 'dog playing fetch in park', vibe: 'playing' },
+  { src: '/src/assets/dog-27.jpg', alt: 'dog swimming in lake', vibe: 'swimming' },
+  { src: '/src/assets/dog-28.jpg', alt: 'dog wearing cool sunglasses', vibe: 'sunglasses' },
+  { src: '/src/assets/dog-29.jpg', alt: 'extra fat corgi lying down', vibe: 'extra-fat' },
+  { src: '/src/assets/dog-30.jpg', alt: 'dog at professional dog show', vibe: 'show' },
+  { src: '/src/assets/dog-31.jpg', alt: 'playing retriever with tennis ball', vibe: 'playing' },
+  { src: '/src/assets/dog-32.jpg', alt: 'dog swimming with life vest', vibe: 'swimming' },
+  { src: '/src/assets/dog-33.jpg', alt: 'fashionable dog with sunglasses', vibe: 'sunglasses' },
+  { src: '/src/assets/dog-34.jpg', alt: 'extra chubby bulldog relaxing', vibe: 'extra-fat' },
+  { src: '/src/assets/dog-35.jpg', alt: 'champion dog at show ring', vibe: 'show' },
+  { src: '/src/assets/happy-dog-1.jpg', alt: 'happy dog playing outdoors', vibe: 'playing' },
+  { src: '/src/assets/happy-dog-2.jpg', alt: 'joyful dog swimming happily', vibe: 'swimming' },
+  { src: '/src/assets/happy-dog-3.jpg', alt: 'stylish dog with aviator sunglasses', vibe: 'sunglasses' },
+  { src: '/src/assets/happy-dog-4.jpg', alt: 'extremely chubby happy dog', vibe: 'extra-fat' },
+  { src: '/src/assets/happy-dog-5.jpg', alt: 'show dog in perfect stance', vibe: 'show' },
 ];

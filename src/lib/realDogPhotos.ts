@@ -21,12 +21,13 @@ export async function getRealDogPhotos(): Promise<DogPhoto[]> {
     // If we have at least 3 local files, use local set
     if (existingCount >= 3) {
       const localPhotos: DogPhoto[] = [];
-      for (let i = 1; i <= 25; i++) {
+      const vibes = ['cute', 'adorable', 'normal', 'sleeping', 'playing', 'swimming', 'sunglasses', 'fat', 'extra-fat', 'show'];
+      for (let i = 1; i <= 40; i++) {
         const num = i.toString().padStart(2, '0');
         localPhotos.push({
           src: `/dogs/dog${num}.jpg`,
           alt: `Adorable dog photo ${i}`,
-          vibe: ['cute', 'adorable', 'normal', 'sleeping'][i % 4]
+          vibe: vibes[i % vibes.length]
         });
       }
       return localPhotos;
@@ -46,12 +47,14 @@ export async function getRealDogPhotos(): Promise<DogPhoto[]> {
     const { data, error } = await supabase.functions.invoke('pexels-proxy');
     
     if (!error && data?.photos) {
+      const vibes = ['cute', 'adorable', 'normal', 'sleeping', 'playing', 'swimming', 'sunglasses', 'fat', 'extra-fat', 'show'];
       return data.photos
         .filter((photo: any) => photo.src.includes('images.pexels.com'))
+        .slice(0, 40)
         .map((photo: any, index: number) => ({
           src: photo.src,
           alt: photo.alt || `Real dog photo ${index + 1}`,
-          vibe: 'normal'
+          vibe: vibes[index % vibes.length]
         }));
     }
   } catch (error) {
@@ -60,16 +63,18 @@ export async function getRealDogPhotos(): Promise<DogPhoto[]> {
   
   // Final fallback to dog.ceo API
   try {
-    const response = await fetch('https://dog.ceo/api/breeds/image/random/25');
+    const response = await fetch('https://dog.ceo/api/breeds/image/random/40');
     const data = await response.json();
     
     if (data.status === 'success' && Array.isArray(data.message)) {
+      const vibes = ['cute', 'adorable', 'normal', 'sleeping', 'playing', 'swimming', 'sunglasses', 'fat', 'extra-fat', 'show'];
       return data.message
         .filter((url: string) => url.includes('images.dog.ceo'))
+        .slice(0, 40)
         .map((url: string, index: number) => ({
           src: url,
           alt: `Real dog photo ${index + 1}`,
-          vibe: 'normal'
+          vibe: vibes[index % vibes.length]
         }));
     }
   } catch (error) {

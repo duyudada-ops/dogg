@@ -16,28 +16,47 @@ serve(async (req) => {
       throw new Error("PEXELS_API_KEY is not configured");
     }
 
-    const response = await fetch(
-      "https://api.pexels.com/v1/search?query=cute+dog+puppy&per_page=30&orientation=landscape",
-      {
-        headers: {
-          Authorization: pexelsApiKey,
-        },
+    // Multiple searches for diverse dog photos without children
+    const searches = [
+      "dog playing fetch outdoor",
+      "dog sleeping peacefully",
+      "dog swimming pool water",
+      "dog wearing sunglasses cool",
+      "chubby fat dog adorable",
+      "dog at dog show competition",
+      "excited happy dog portrait"
+    ];
+    
+    const allPhotos = [];
+    
+    for (const query of searches) {
+      try {
+        const response = await fetch(
+          `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=6&orientation=landscape`,
+          {
+            headers: {
+              Authorization: pexelsApiKey,
+            },
+          }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          const photos = data.photos?.slice(0, 6) || [];
+          allPhotos.push(...photos);
+        }
+      } catch (error) {
+        console.error(`Error fetching photos for query "${query}":`, error);
       }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Pexels API error: ${response.status}`);
     }
 
-    const data = await response.json();
-    
-    // Extract and format photo URLs
-    const photos = data.photos?.map((photo: any) => ({
+    // Extract and format photo URLs, limit to 40 total
+    const photos = allPhotos.slice(0, 40).map((photo: any) => ({
       src: photo.src.large,
-      alt: `${photo.alt || 'Cute dog photo'} - Photo by ${photo.photographer} on Pexels`,
+      alt: `${photo.alt || 'Adorable dog photo'} - Photo by ${photo.photographer} on Pexels`,
       photographer: photo.photographer,
       url: photo.url,
-    })) || [];
+    }));
 
     return new Response(JSON.stringify({ photos }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

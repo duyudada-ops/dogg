@@ -16,10 +16,19 @@ export const SafeImage: React.FC<SafeImageProps> = ({
   const [imgSrc, setImgSrc] = React.useState(src);
   const [isLoading, setIsLoading] = React.useState(true);
   const [hasError, setHasError] = React.useState(false);
+  
+  React.useEffect(() => {
+    setImgSrc(src);
+    setIsLoading(true);
+    setHasError(false);
+  }, [src]);
 
   const handleError = () => {
     if (!hasError) {
-      setImgSrc('/src/assets/dog-1.jpg'); // fallback to first dog image
+      // Cycle through multiple fallback images
+      const fallbacks = ['/src/assets/dog-1.jpg', '/src/assets/dog-2.jpg', '/src/assets/dog-3.jpg'];
+      const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+      setImgSrc(randomFallback);
       setHasError(true);
     }
   };
@@ -32,7 +41,7 @@ export const SafeImage: React.FC<SafeImageProps> = ({
     <div className="relative w-full h-full overflow-hidden">
       {isLoading && (
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 animate-pulse flex items-center justify-center">
-          <div className="text-6xl animate-bounce-gentle">🐾</div>
+          <div className="text-4xl animate-bounce">🐾</div>
         </div>
       )}
       <img
