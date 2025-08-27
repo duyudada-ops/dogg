@@ -142,6 +142,7 @@ export type Database = {
           longitude: number | null
           organizer_description: string | null
           organizer_name: string | null
+          source: string | null
           start_time: string
           subcategory: string | null
           ticket_url: string | null
@@ -167,6 +168,7 @@ export type Database = {
           longitude?: number | null
           organizer_description?: string | null
           organizer_name?: string | null
+          source?: string | null
           start_time: string
           subcategory?: string | null
           ticket_url?: string | null
@@ -192,6 +194,7 @@ export type Database = {
           longitude?: number | null
           organizer_description?: string | null
           organizer_name?: string | null
+          source?: string | null
           start_time?: string
           subcategory?: string | null
           ticket_url?: string | null

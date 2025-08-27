@@ -81,6 +81,7 @@ serve(async (req) => {
       is_free: event.is_free || false,
       is_online: event.online_event || false,
       capacity: event.capacity ? parseInt(event.capacity) : null,
+      source: 'eventbrite'
     })) || []
 
     // Store events in database (upsert to avoid duplicates)
