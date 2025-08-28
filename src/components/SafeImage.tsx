@@ -25,8 +25,8 @@ export const SafeImage: React.FC<SafeImageProps> = ({
 
   const handleError = () => {
     if (!hasError) {
-      // Cycle through multiple fallback images
-      const fallbacks = ['/src/assets/dog-1.jpg', '/src/assets/dog-2.jpg', '/src/assets/dog-3.jpg'];
+      // Cycle through verified clean dog photos
+      const fallbacks = ['/src/assets/dog-clean-1.jpg', '/src/assets/dog-clean-2.jpg', '/src/assets/dog-clean-3.jpg'];
       const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
       setImgSrc(randomFallback);
       setHasError(true);
