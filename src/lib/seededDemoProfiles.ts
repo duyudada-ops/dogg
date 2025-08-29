@@ -42,15 +42,36 @@ const SIZES: Array<DemoProfile["size"]> = ["Small","Medium","Large"];
 const TRAITS = ["Friendly","Energetic","Playful","Calm","Social","Smart","Gentle","Goofy","Curious","Athletic"];
 const AREAS = ["Downtown","Riverside","North Park","South Hills","Midtown","Capitol","Lakeside","Old Town","Uptown","Harbor"];
 
-// Desired actions for photo diversity
-const ACTIONS = ["playful","sleeping","eating","jumping","swimming","costume","running","beach","park","hiking"];
+// Import verified clean dog photos
+import { dogPhotos, type DogVibe } from '../../data/dogPhotos';
+
+// Map actions to appropriate dog photo vibes
+const ACTION_TO_VIBE_MAP: Record<string, DogVibe> = {
+  playful: 'playing',
+  sleeping: 'sleeping', 
+  eating: 'normal',
+  jumping: 'playing',
+  swimming: 'swimming',
+  costume: 'sunglasses',
+  running: 'normal',
+  beach: 'swimming',
+  park: 'playing',
+  hiking: 'normal'
+};
+
+const ACTIONS = Object.keys(ACTION_TO_VIBE_MAP);
 
 /**
- * MVP photo source: Unsplash Source (no key). Replace with Pexels/Unsplash API
- * + attribution before production.
+ * Get a verified clean dog photo based on action and deterministic seed
  */
-function dogPhotoUrl(action: string, sig: number) {
-  return `https://source.unsplash.com/800x600/?dog,${encodeURIComponent(action)}&sig=${sig}`;
+function getDogPhotoUrl(action: string, seed: number): string {
+  const vibe = ACTION_TO_VIBE_MAP[action] || 'normal';
+  const vibePhotos = dogPhotos.filter(photo => photo.vibe === vibe);
+  const fallbackPhotos = dogPhotos.filter(photo => photo.vibe === 'normal');
+  const photoArray = vibePhotos.length > 0 ? vibePhotos : fallbackPhotos;
+  
+  const photoIndex = seed % photoArray.length;
+  return photoArray[photoIndex].src;
 }
 
 /** Build a stable county key, e.g. "CA|Los Angeles County" */
@@ -116,7 +137,7 @@ export function getDemoProfilesForRegion(regionKey: string, count = 25): DemoPro
       about,
       lastActiveISO: new Date(Date.now() - Math.floor(rng()*6*60)*60*1000).toISOString(),
       verified: rng() > 0.6,
-      photoUrl: dogPhotoUrl(action, seed + i),
+      photoUrl: getDogPhotoUrl(action, seed + i),
     });
   }
   return out;
