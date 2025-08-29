@@ -7,15 +7,12 @@ import { Crown, MapPin, Heart, Calendar, ArrowRight, CheckCircle, Users } from '
 import { Link } from 'react-router-dom';
 import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { getRealDogPhotos } from '@/lib/realDogPhotos';
+import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
 
 const Landing = () => {
-  const [dogPhotos, setDogPhotos] = React.useState<any[]>([]);
-
-  React.useEffect(() => {
-    getRealDogPhotos().then(setDogPhotos);
-  }, []);
+  // Use only verified clean dog photos - no external API calls
+  const displayPhotos = dogPhotos.slice(0, 12); // Show first 12 photos for carousel
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -85,7 +82,7 @@ const Landing = () => {
                   <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-2xl">
                     <AutoCarousel className="w-full h-full" autoSlideInterval={5000}>
                       <CarouselContent className="h-full">
-                        {dogPhotos.map((dog, i) => (
+                        {displayPhotos.map((dog, i) => (
                           <CarouselItem key={i} className="h-full">
                             <div className="relative w-full h-full overflow-hidden rounded-xl">
                               <SafeImage 
