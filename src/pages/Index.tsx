@@ -4,6 +4,10 @@ import { AuthPage } from '@/components/auth/AuthPage';
 import { DogProfileCreation } from '@/components/dog/DogProfileCreation';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { AutoCarousel } from '@/components/ui/auto-carousel';
+import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { dogPhotos } from '../../data/dogPhotos';
+import { SafeImage } from '@/components/SafeImage';
 
 const Index = () => {
   const { user, loading } = useAuth();
@@ -30,30 +34,66 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto py-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Hello Pupulation 🐾</h1>
-          <p className="text-xl font-semibold text-teal-600 mb-8">
-            Welcome to the pack! Where every pup has a match!
-          </p>
-          <div className="max-w-2xl mx-auto">
-            <p className="text-lg mb-4">
-              Hello, {user.user_metadata?.full_name || user.email}! 
-            </p>
-            <p className="text-muted-foreground mb-6">
-              You're now signed in and ready to start connecting with other dog owners. 
-              Let's create your dog's profile to get started!
-            </p>
-            <Button 
-              onClick={() => setShowDogProfileForm(true)}
-              size="lg"
-              className="text-lg px-8 py-3"
-            >
-              Create Dog Profile
-            </Button>
+      {/* Hero Section with Photo Gallery */}
+      <section className="relative overflow-hidden bg-gradient-hero">
+        <div className="absolute inset-0 bg-white/5"></div>
+        <div className="relative container mx-auto px-4 py-16">
+          <div className="text-center text-white space-y-8">
+            <div>
+              <h1 className="text-4xl lg:text-6xl font-bold mb-4">
+                Hello Pupulation! 🐾
+              </h1>
+              <p className="text-xl lg:text-2xl font-light text-white/90 mb-8">
+                Welcome to the pack! Where every pup has a match!
+              </p>
+            </div>
+            
+            {/* Photo Gallery Carousel */}
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 overflow-hidden">
+                <h3 className="text-xl font-semibold mb-6 text-white">Meet Our Happy Community</h3>
+                <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-2xl">
+                  <AutoCarousel className="w-full h-full" autoSlideInterval={4000}>
+                    <CarouselContent className="h-full">
+                      {dogPhotos.slice(0, 15).map((dog, i) => (
+                        <CarouselItem key={i} className="h-full">
+                          <div className="relative w-full h-full overflow-hidden rounded-xl">
+                            <SafeImage 
+                              src={dog.src}
+                              alt={dog.alt}
+                              priority={i === 0}
+                              className="w-full h-full object-cover object-center"
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-2 bg-white/20 border-white/30 text-white hover:bg-white/30" />
+                    <CarouselNext className="right-2 bg-white/20 border-white/30 text-white hover:bg-white/30" />
+                  </AutoCarousel>
+                </div>
+              </div>
+            </div>
+            
+            <div className="max-w-2xl mx-auto">
+              <p className="text-lg mb-4">
+                Hello, {user.user_metadata?.full_name || user.email}! 
+              </p>
+              <p className="text-white/80 mb-6">
+                You're now signed in and ready to start connecting with other dog owners. 
+                Let's create your dog's profile to get started!
+              </p>
+              <Button 
+                onClick={() => setShowDogProfileForm(true)}
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 shadow-xl text-lg px-8 py-3"
+              >
+                Create Dog Profile
+              </Button>
+            </div>
           </div>
         </div>
-      </main>
+      </section>
     </div>
   );
 };

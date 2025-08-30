@@ -43,8 +43,5 @@ export const dogPhotos: DogPhoto[] = [
   { src: '/src/assets/dog-clean-16.jpg', alt: 'show dog German Shepherd in perfect stance', vibe: 'show' },
   { src: '/src/assets/dog-replacement-7.jpg', alt: 'show dog German Shepherd in perfect stance at dog show', vibe: 'show' },
   { src: '/src/assets/dog-replacement-1.jpg', alt: 'cute golden retriever puppy playing outdoors', vibe: 'playing' },
-  { src: '/src/assets/dog-replacement-3.jpg', alt: 'sleeping husky dog curled up on cozy blanket', vibe: 'swimming' },
   { src: '/src/assets/dog-replacement-8.jpg', alt: 'normal mixed breed dog with cool sunglasses', vibe: 'sunglasses' },
-  { src: '/src/assets/dog-clean-1.jpg', alt: 'extra chubby golden retriever puppy', vibe: 'extra-fat' },
-  { src: '/src/assets/dog-clean-2.jpg', alt: 'show quality beagle in competition', vibe: 'show' },
 ];
