@@ -4,10 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Camera, MapPin, Calendar, Heart, Plus } from 'lucide-react';
+import { Edit, Camera, MapPin, Calendar, Heart, Plus, TrendingUp, Users, Award } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { DogProfileCreation } from '@/components/dog/DogProfileCreation';
+import { DogNewsWidget } from '@/components/profile/DogNewsWidget';
+import { ToyGallery } from '@/components/profile/ToyGallery';
+import { DogTipsWidget } from '@/components/profile/DogTipsWidget';
+import { PhotoShowcase } from '@/components/profile/PhotoShowcase';
 
 interface DogProfile {
   id: string;
@@ -90,10 +94,47 @@ const Profile = () => {
   }
 
   return (
-    <div className="container mx-auto py-6 max-w-4xl">
-      <div className="space-y-6">
-        {/* Dog Profiles */}
-        {dogProfiles.length === 0 ? (
+    <div className="container mx-auto py-6 max-w-7xl">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Left Sidebar - Dog News & Tips */}
+        <aside className="lg:col-span-1 space-y-4">
+          <DogNewsWidget />
+          <DogTipsWidget />
+        </aside>
+
+        {/* Main Content */}
+        <main className="lg:col-span-2 space-y-6">
+          {/* Profile Stats */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-center">
+                    <Heart className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="text-2xl font-bold text-primary">12</div>
+                  <div className="text-sm text-muted-foreground">Matches</div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-center">
+                    <TrendingUp className="h-5 w-5 text-accent" />
+                  </div>
+                  <div className="text-2xl font-bold text-accent">89</div>
+                  <div className="text-sm text-muted-foreground">Profile Views</div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-center">
+                    <Award className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div className="text-2xl font-bold text-secondary">5</div>
+                  <div className="text-sm text-muted-foreground">Achievements</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Dog Profiles */}
+          {dogProfiles.length === 0 ? (
           <Card>
             <CardHeader>
               <CardTitle className="text-center">No Dog Profiles Yet</CardTitle>
@@ -163,8 +204,12 @@ const Profile = () => {
                           Joined {new Date(dog.created_at).toLocaleDateString()}
                         </div>
                         <div className="flex items-center gap-1">
-                          <Heart className="h-4 w-4" />
-                          0 matches
+                          <Heart className="h-4 w-4 text-primary" />
+                          3 matches
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="h-4 w-4 text-accent" />
+                          24 views
                         </div>
                       </div>
                     </div>
@@ -185,54 +230,48 @@ const Profile = () => {
           </>
         )}
 
-        {/* Owner Profile Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              Owner Profile
-              <Button variant="outline" size="sm">
-                <Edit className="h-4 w-4 mr-2" />
-                Edit
-              </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16">
-                <AvatarImage src={user?.user_metadata?.avatar_url} />
-                <AvatarFallback>
-                  {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h3 className="text-lg font-semibold">
-                  {user?.user_metadata?.full_name || 'Dog Owner'}
-                </h3>
-                <p className="text-muted-foreground">{user?.email}</p>
-                <p className="text-sm text-muted-foreground">Dog lover since 2020</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Photo Gallery */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Photo Gallery</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-3 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                  <Camera className="h-8 w-8 text-muted-foreground" />
+          {/* Owner Profile Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Owner Profile
+                <Button variant="outline" size="sm">
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-4">
+                <Avatar className="h-16 w-16">
+                  <AvatarImage src={user?.user_metadata?.avatar_url} />
+                  <AvatarFallback>
+                    {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold">
+                    {user?.user_metadata?.full_name || 'Dog Owner'}
+                  </h3>
+                  <p className="text-muted-foreground">{user?.email}</p>
+                  <div className="flex items-center gap-4 mt-2">
+                    <p className="text-sm text-muted-foreground">Dog lover since 2020</p>
+                    <Badge variant="outline" className="text-xs">
+                      <Award className="h-3 w-3 mr-1" />
+                      Premium Member
+                    </Badge>
+                  </div>
                 </div>
-              ))}
-            </div>
-            <Button variant="outline" className="w-full mt-4">
-              Add Photos
-            </Button>
-          </CardContent>
-        </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+
+        {/* Right Sidebar - Interactive Content */}
+        <aside className="lg:col-span-1 space-y-4">
+          <PhotoShowcase />
+          <ToyGallery />
+        </aside>
       </div>
     </div>
   );
