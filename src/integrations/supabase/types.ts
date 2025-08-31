@@ -205,6 +205,48 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_photos: {
+        Row: {
+          alt: string
+          created_at: string
+          credited_to: string | null
+          height: number | null
+          id: string
+          is_public: boolean
+          source: string
+          source_id: string | null
+          src: string
+          vibe: string | null
+          width: number | null
+        }
+        Insert: {
+          alt: string
+          created_at?: string
+          credited_to?: string | null
+          height?: number | null
+          id?: string
+          is_public?: boolean
+          source: string
+          source_id?: string | null
+          src: string
+          vibe?: string | null
+          width?: number | null
+        }
+        Update: {
+          alt?: string
+          created_at?: string
+          credited_to?: string | null
+          height?: number | null
+          id?: string
+          is_public?: boolean
+          source?: string
+          source_id?: string | null
+          src?: string
+          vibe?: string | null
+          width?: number | null
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           created_at: string
