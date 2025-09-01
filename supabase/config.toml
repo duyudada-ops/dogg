@@ -21,3 +21,6 @@ verify_jwt = false
 
 [functions.confirm-user]
 verify_jwt = true
+
+[functions.refresh-gallery]
+verify_jwt = false
