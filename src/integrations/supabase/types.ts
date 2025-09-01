@@ -216,6 +216,7 @@ export type Database = {
           source: string
           source_id: string | null
           src: string
+          user_id: string | null
           vibe: string | null
           width: number | null
         }
@@ -229,6 +230,7 @@ export type Database = {
           source: string
           source_id?: string | null
           src: string
+          user_id?: string | null
           vibe?: string | null
           width?: number | null
         }
@@ -242,6 +244,7 @@ export type Database = {
           source?: string
           source_id?: string | null
           src?: string
+          user_id?: string | null
           vibe?: string | null
           width?: number | null
         }
