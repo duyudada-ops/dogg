@@ -8,6 +8,7 @@ import { Edit, Camera, MapPin, Calendar, Heart, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { DogProfileCreation } from '@/components/dog/DogProfileCreation';
+import { PhotoGallery } from '@/components/gallery/PhotoGallery';
 
 interface DogProfile {
   id: string;
@@ -217,20 +218,8 @@ const Profile = () => {
 
         {/* Photo Gallery */}
         <Card>
-          <CardHeader>
-            <CardTitle>Photo Gallery</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-3 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                  <Camera className="h-8 w-8 text-muted-foreground" />
-                </div>
-              ))}
-            </div>
-            <Button variant="outline" className="w-full mt-4">
-              Add Photos
-            </Button>
+          <CardContent className="p-6">
+            <PhotoGallery />
           </CardContent>
         </Card>
       </div>

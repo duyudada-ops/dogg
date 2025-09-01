@@ -9,10 +9,30 @@ import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
+import { galleryService, GalleryPhoto } from '@/lib/galleryService';
 
 const Landing = () => {
-  // Use only verified clean dog photos - no external API calls
-  const displayPhotos = dogPhotos.slice(0, 12); // Show first 12 photos for carousel
+  const [displayPhotos, setDisplayPhotos] = React.useState<(GalleryPhoto | { src: string; alt: string; vibe: string })[]>(
+    dogPhotos.slice(0, 12) // Fallback to static photos
+  );
+
+  // Load gallery photos on mount
+  React.useEffect(() => {
+    const loadGalleryPhotos = async () => {
+      try {
+        const galleryPhotos = await galleryService.getPublicPhotos(12);
+        if (galleryPhotos.length > 0) {
+          setDisplayPhotos(galleryPhotos);
+        }
+        // If no gallery photos, keep static photos as fallback
+      } catch (error) {
+        console.error('Error loading gallery photos:', error);
+        // Keep static photos as fallback
+      }
+    };
+
+    loadGalleryPhotos();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">

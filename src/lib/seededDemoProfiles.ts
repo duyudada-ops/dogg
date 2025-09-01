@@ -44,6 +44,7 @@ const AREAS = ["Downtown","Riverside","North Park","South Hills","Midtown","Capi
 
 // Import verified clean dog photos
 import { dogPhotos, type DogVibe } from '../../data/dogPhotos';
+import { galleryService } from './galleryService';
 
 // Map actions to appropriate dog photo vibes
 const ACTION_TO_VIBE_MAP: Record<string, DogVibe> = {
@@ -63,6 +64,7 @@ const ACTIONS = Object.keys(ACTION_TO_VIBE_MAP);
 
 /**
  * Get a verified clean dog photo based on action and deterministic seed
+ * First tries gallery photos, falls back to static photos
  */
 function getDogPhotoUrl(action: string, seed: number): string {
   const vibe = ACTION_TO_VIBE_MAP[action] || 'normal';

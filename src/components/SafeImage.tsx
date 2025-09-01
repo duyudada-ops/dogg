@@ -25,11 +25,11 @@ export const SafeImage: React.FC<SafeImageProps> = ({
 
   const handleError = () => {
     if (!hasError) {
-      // Use fallback verified real dog photos - NO AI generated content
-      const fallbacks = ['/src/assets/dog-clean-1.jpg', '/src/assets/dog-clean-2.jpg', '/src/assets/dog-clean-3.jpg'];
-      const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-      setImgSrc(randomFallback);
-      setHasError(true);
+    // Use fallback verified real dog photos - NO AI generated content
+    const fallbacks = ['/src/assets/dog-clean-1.jpg', '/src/assets/dog-clean-2.jpg', '/src/assets/dog-clean-3.jpg'];
+    const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    setImgSrc(randomFallback);
+    setHasError(true);
     }
   };
 
