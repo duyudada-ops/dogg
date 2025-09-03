@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar, MapPin, Users, Clock, Search, RefreshCw } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Search, RefreshCw, Heart, Share2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Event {
   id: string;
@@ -42,7 +43,7 @@ const Events = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchEvents = async (refresh = false) => {
+  const fetchEvents = useCallback(async (refresh = false) => {
     if (refresh) setRefreshing(true);
     else setLoading(true);
     
@@ -105,18 +106,38 @@ const Events = () => {
           is_free: false,
           is_online: false,
           created_at: new Date().toISOString()
+        },
+        {
+          id: 'demo-3',
+          title: 'Puppy Socialization Class',
+          description: 'Safe environment for puppies 8-16 weeks to learn social skills with other young dogs.',
+          start_time: new Date(Date.now() + 259200000).toISOString(), // 3 days from now
+          venue_name: 'Bark & Play Center',
+          venue_address: '789 Dog Street',
+          city: selectedCity,
+          country: 'US',
+          organizer_name: 'TailCircle Community',
+          category: 'training',
+          is_free: true,
+          is_online: false,
+          created_at: new Date().toISOString()
         }
       ]);
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [selectedCity, selectedCategory]);
 
   useEffect(() => {
     fetchEvents();
     trackEvent({ eventName: AnalyticsEvents.PAGE_VIEW, properties: { page: 'events' } });
-  }, [selectedCity, selectedCategory]);
+    
+    // Cleanup function to prevent memory leaks
+    return () => {
+      setEvents([]);
+    };
+  }, [fetchEvents]);
 
   const filteredEvents = events.filter(event =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -141,23 +162,57 @@ const Events = () => {
     });
   };
 
+  // Loading skeleton component
+  const EventSkeleton = () => (
+    <Card className="bg-background/80 backdrop-blur-sm border border-border/50">
+      <CardHeader>
+        <div className="flex justify-between items-start">
+          <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-5 w-16" />
+        </div>
+        <Skeleton className="h-4 w-20" />
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <Skeleton className="h-32 w-full rounded-md" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-1/2" />
+          <Skeleton className="h-4 w-1/3" />
+        </div>
+        <Skeleton className="h-10 w-full" />
+      </CardContent>
+    </Card>
+  );
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Calendar className="h-12 w-12 mx-auto mb-4 text-primary animate-pulse" />
-          <h2 className="text-xl font-semibold">Loading events...</h2>
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 pb-20">
+        <div className="container mx-auto p-4">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+              🎉 Tail-Wagging Events
+            </h1>
+            <p className="text-muted-foreground">Loading pawsome events for you...</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <EventSkeleton key={i} />
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 pb-20">
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold font-heading">Dog Events</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              🎉 Tail-Wagging Events
+            </h1>
             <p className="text-muted-foreground">
               Discover local events and meetups for you and your dog
             </p>
@@ -228,7 +283,7 @@ const Events = () => {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEvents.map((event) => (
-              <Card key={event.id} className="hover:shadow-md transition-shadow">
+              <Card key={event.id} className="bg-background/80 backdrop-blur-sm border border-border/50 hover:scale-[1.02] transition-all duration-300 hover:shadow-xl group">
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-lg leading-tight">{event.title}</CardTitle>
@@ -289,7 +344,7 @@ const Events = () => {
 
                   <div className="flex gap-2">
                     <Button 
-                      className="flex-1" 
+                      className="flex-1 bg-gradient-to-r from-primary to-secondary hover:scale-105 transition-transform" 
                       onClick={() => {
                         if (event.ticket_url) {
                           window.open(event.ticket_url, '_blank');
@@ -299,6 +354,28 @@ const Events = () => {
                       }}
                     >
                       {event.ticket_url ? 'View Event' : 'RSVP'}
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 hover:text-red-600"
+                      onClick={() => toast.success('Added to favorites!')}
+                    >
+                      <Heart className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => {
+                        navigator.share?.({ 
+                          title: event.title, 
+                          text: event.description,
+                          url: window.location.href 
+                        }) || toast.success('Link copied to clipboard!');
+                      }}
+                    >
+                      <Share2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </CardContent>

@@ -110,7 +110,7 @@ export const SwipeDeck: React.FC<SwipeDeckProps> = ({ dogs, onSwipe }) => {
     <div className="relative max-w-sm mx-auto">
       {/* Next card (behind) */}
       {nextDog && (
-        <Card className="absolute inset-0 transform scale-95 opacity-50">
+        <Card className="absolute inset-0 transform scale-95 opacity-50 bg-background/80 backdrop-blur-sm border border-border/30">
           <CardContent className="p-0 h-96">
             <div className="relative h-full rounded-lg overflow-hidden">
               <img
@@ -129,12 +129,12 @@ export const SwipeDeck: React.FC<SwipeDeckProps> = ({ dogs, onSwipe }) => {
       {/* Current card */}
       <Card 
         ref={cardRef}
-        className="relative cursor-grab active:cursor-grabbing select-none"
+        className="relative cursor-grab active:cursor-grabbing select-none bg-background/90 backdrop-blur-md border border-border/50 shadow-2xl"
         style={{
           transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${getRotation()}deg)`,
           opacity: getOpacity(),
           zIndex: 10,
-          transition: isDragging ? 'none' : 'transform 0.3s ease-out, opacity 0.3s ease-out',
+          transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out',
         }}
         onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
         onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
@@ -148,7 +148,7 @@ export const SwipeDeck: React.FC<SwipeDeckProps> = ({ dogs, onSwipe }) => {
           <div className="relative h-full rounded-lg overflow-hidden">
             {/* Swipe overlay */}
             <div 
-              className="absolute inset-0 flex items-center justify-center z-10"
+              className="absolute inset-0 flex items-center justify-center z-10 backdrop-blur-sm"
               style={{ backgroundColor: getSwipeColor() }}
             >
               {getSwipeIcon()}
