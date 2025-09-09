@@ -72,11 +72,18 @@ export default function Discover() {
           </div>
         </div>
 
-        <div className="mt-5 flex w-full max-w-md items-center justify-between">
-          <CircleBtn label="Nope" onClick={nope}>✖️</CircleBtn>
-          <CircleBtn big label="Playdate" onClick={like}>🐾</CircleBtn>
-          <CircleBtn label="Save" onClick={() => { /* favorite later */ }}>⭐</CircleBtn>
-        </div>
+{/* Floating actions above bottom nav */}
+<div
+  className="fixed inset-x-0 z-30 grid place-items-center"
+  style={{ bottom: "calc(88px + env(safe-area-inset-bottom))" }} // ~height of your bottom tabs
+>
+  <div className="flex items-center gap-6 rounded-full bg-white/90 px-6 py-3 shadow-xl backdrop-blur">
+    <CircleBtn label="Nope" onClick={nope}>✖️</CircleBtn>
+    <CircleBtn big label="Playdate" onClick={like}>🐾</CircleBtn>
+    <CircleBtn label="Save" onClick={() => { /* favorite later */ }}>⭐</CircleBtn>
+  </div>
+</div>
+
 
         <p className="mt-3 text-xs text-slate-600">Tap Playdate or Nope to cycle demo cards.</p>
       </div>
