@@ -295,3 +295,6 @@ function CornerLabel({ side }: { side: "left" | "right" }) {
   const right = "right-6 rotate-[12deg] border-emerald-500 text-emerald-600 bg-white/90";
   return <div className={`${base} ${side === "left" ? left : right}`}>{side === "left" ? "NOPE" : "PLAYDATE"}</div>;
 }
+// ---- compatibility exports for various routers ----
+export const Component = Discover;
+export const Page = Discover;
