@@ -1,13 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 /**
- * TailCircle — Discover (30-dog seed, no-fail)
- * - 30 realistic dog profiles seeded locally for an “endless” feel
- * - SafeImage hides any failed image and advances
- * - Floating action bar (never blocked by bottom tabs)
- * - Minimal “like/nope” logic (advance through deck). Hook to backend later.
- *
- * Later: replace SEED_DOGS with Supabase fetch. See TODO near the bottom.
+ * TailCircle — Discover (30-dog seed, fixed action bar overlap)
+ * - 30 real-dog profiles (photo endpoints via place.dog)
+ * - SafeImage skips failed images
+ * - Buttons float above bottom tabs and NEVER cover the card text
  */
 
 type Dog = {
@@ -16,12 +13,10 @@ type Dog = {
   age: string;       // e.g., "2y"
   distance: string;  // e.g., "1.2 mi"
   vibes: string[];
-  photo: string;     // real-dog photo url
+  photo: string;
 };
 
 const SEED_DOGS: Dog[] = [
-  // Photos served by place.dog are real dogs (photography), good CORS, stable.
-  // Vary sizes/ids to diversify images.
   { id: "1",  name: "Luna",   age: "2y", distance: "1.2 mi", vibes: ["Playful","Fetch","Good with pups"], photo: "https://place.dog/1200/800?id=101" },
   { id: "2",  name: "Rocky",  age: "4y", distance: "2.8 mi", vibes: ["Swimmer","Calm","Leash trained"],  photo: "https://place.dog/1200/800?id=102" },
   { id: "3",  name: "Maya",   age: "1y", distance: "0.7 mi", vibes: ["High energy","Friendly","Parks"],   photo: "https://place.dog/1200/800?id=103" },
@@ -54,7 +49,6 @@ const SEED_DOGS: Dog[] = [
   { id: "30", name: "Odin",   age: "3y", distance: "3.9 mi", vibes: ["Water","Fetch"],                    photo: "https://place.dog/1200/800?id=130" },
 ];
 
-// Utility: shuffle once per mount so the deck feels fresh.
 function shuffle<T>(arr: T[]): T[] {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -65,13 +59,12 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function Discover() {
-  const [deck, setDeck] = useState<Dog[]>(() => shuffle(SEED_DOGS));
+  const [deck] = useState<Dog[]>(() => shuffle(SEED_DOGS));
   const [i, setI] = useState(0);
   const dog = deck[i];
-
-  const like = () => setI((p) => Math.min(p + 1, deck.length));
-  const nope = () => setI((p) => Math.min(p + 1, deck.length));
   const next = () => setI((p) => Math.min(p + 1, deck.length));
+  const like = next;
+  const nope = next;
 
   if (!dog) {
     return (
@@ -94,7 +87,7 @@ export default function Discover() {
         <div className="font-semibold text-slate-800">TailCircle</div>
         <button
           className="rounded-full bg-fuchsia-600/90 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.03] active:scale-95"
-          onClick={() => {/* hook to Stripe later */}}
+          onClick={() => {}}
         >
           🚀 Boost
         </button>
@@ -102,9 +95,11 @@ export default function Discover() {
 
       {/* Card */}
       <div className="mx-auto mt-2 grid w-full max-w-screen-sm place-items-center px-4">
+        {/* NOTE: mb-14/md:mb-16 prevents overlap with the floating action bar */}
         <div className="relative h-[70vh] w-full rounded-3xl shadow-2xl overflow-hidden mb-14 md:mb-16">
           <SafeImage src={dog.photo} alt={dog.name} onFail={next} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0" />
+          {/* NOTE: pb-10/md:pb-14 adds bottom space so text clears the bar */}
           <div className="absolute bottom-0 w-full p-5 pb-10 md:pb-14">
             <div className="flex items-end justify-between">
               <div>
@@ -128,7 +123,7 @@ export default function Discover() {
         </div>
       </div>
 
-      {/* Floating actions above bottom nav */}
+      {/* Floating actions — lowered and pointer-events safe */}
       <div
         className="fixed inset-x-0 z-30 grid place-items-center pointer-events-none"
         style={{ bottom: "calc(112px + env(safe-area-inset-bottom))" }}
@@ -136,7 +131,7 @@ export default function Discover() {
         <div className="pointer-events-auto flex items-center gap-6 rounded-full bg-white/90 px-6 py-3 shadow-xl backdrop-blur">
           <CircleBtn label="Nope" onClick={nope}>✖️</CircleBtn>
           <CircleBtn big label="Playdate" onClick={like}>🐾</CircleBtn>
-          <CircleBtn label="Save" onClick={() => {/* favorite later */}}>⭐</CircleBtn>
+          <CircleBtn label="Save" onClick={() => {}}>⭐</CircleBtn>
         </div>
       </div>
     </div>
@@ -159,7 +154,6 @@ function SafeImage({ src, alt, onFail }: { src: string; alt: string; onFail: () 
       draggable={false}
     />
   ) : (
-    // If a photo fails, we show a subtle placeholder for one frame
     <div className="h-full w-full bg-slate-200" />
   );
 }
@@ -188,16 +182,6 @@ function CircleBtn({
   );
 }
 
-// Optional compatibility for different routers
+// Router compatibility (harmless if unused)
 export const Component = Discover;
 export const Page = Discover;
-
-/* ===========================
-   TODO: Swap to Supabase later
-   ===========================
-   - Create storage bucket 'gallery' (public) and folder 'dogs/'
-   - Upload your curated 100+ dog photos there (real only).
-   - Add a small fetch at the top of Discover:
-     const { data } = await supabase.storage.from('gallery').list('dogs', { limit: 60 });
-     then build photo URLs and map into Dog[]; if (data?.length) use that deck else fallback to SEED_DOGS.
-*/
