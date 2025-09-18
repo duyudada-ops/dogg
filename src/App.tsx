@@ -14,7 +14,7 @@ import Onboarding from "./pages/Onboarding";
 import Discover from "./pages/Discover";
 import Matches from "./pages/Matches";
 import Chat from "./pages/Chat";
-import Events from "./pages/Events";
+import TipsAndTricks from "./pages/TipsAndTricks";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Billing from "./pages/Billing";
@@ -60,7 +60,7 @@ const AppContent = () => {
         <Route path="/discover" element={user ? <Discover /> : <Navigate to="/" replace />} />
         <Route path="/matches" element={user ? <Matches /> : <Navigate to="/" replace />} />
         <Route path="/chat" element={user ? <Chat /> : <Navigate to="/" replace />} />
-        <Route path="/events" element={user ? <Events /> : <Navigate to="/" replace />} />
+        <Route path="/tips-and-tricks" element={user ? <TipsAndTricks /> : <Navigate to="/" replace />} />
         <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" replace />} />
         <Route path="/settings" element={user ? <Settings /> : <Navigate to="/" replace />} />
         <Route path="/billing" element={<Billing />} />

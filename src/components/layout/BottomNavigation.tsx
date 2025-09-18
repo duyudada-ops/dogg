@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { 
   Heart, 
   MessageCircle, 
-  Calendar, 
+  BookOpen, 
   User, 
   MoreHorizontal,
   Compass
@@ -14,7 +14,7 @@ const BottomNavigation = () => {
     { to: '/discover', icon: Compass, label: 'Discover' },
     { to: '/matches', icon: Heart, label: 'Matches' },
     { to: '/chat', icon: MessageCircle, label: 'Chat' },
-    { to: '/events', icon: Calendar, label: 'Events' },
+    { to: '/tips-and-tricks', icon: BookOpen, label: 'Tips' },
     { to: '/profile', icon: User, label: 'Profile' },
   ];
 
