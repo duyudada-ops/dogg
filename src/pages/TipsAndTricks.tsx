@@ -203,9 +203,9 @@ export default function TipsAndTricks() {
         </p>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
           {visibleTips.map((tip) => (
-            <div
+            <li
               key={tip.id}
               className="bg-background/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 p-6 hover:shadow-warm transition-all duration-300 cursor-pointer group paw-animation"
             >
@@ -251,6 +251,7 @@ export default function TipsAndTricks() {
                 <Link 
                   to={`/tips/${tip.slug}${location.search}`}
                   className="flex items-center text-primary font-medium text-sm group-hover:text-secondary transition-colors"
+                  aria-label={`Learn more about ${tip.title}`}
                 >
                   Learn More
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -261,9 +262,9 @@ export default function TipsAndTricks() {
                   {tip.popular ? 'Popular' : 'Guide'}
                 </div>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
         {/* No Results */}
         {visibleTips.length === 0 && (
