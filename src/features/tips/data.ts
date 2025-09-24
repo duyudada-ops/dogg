@@ -316,7 +316,7 @@ export const tips: Tip[] = [
           'Daily tooth brushing or VOHC-approved chews'
         ]
       }
-  },
+  ,
   {
     id: 'senior-care',
     slug: 'senior-dog-care',
