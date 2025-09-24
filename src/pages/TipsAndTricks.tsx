@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { ChevronRight, Star, Clock, Users, Award, BookOpen, ArrowUpDown } from 'lucide-react';
 import { tips } from '../features/tips/data';
 import { filterTips, sortTips } from '../features/tips/selectors';
@@ -35,6 +35,7 @@ function useDebounced<T>(value: T, ms = 250) {
 
 export default function TipsAndTricks() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
 
   // Derive state from URL params
   const q = searchParams.get('q') || '';
@@ -241,7 +242,7 @@ export default function TipsAndTricks() {
               {/* Action Button */}
               <div className="flex items-center justify-between">
                 <Link 
-                  to={`/tips/${tip.slug}`}
+                  to={`/tips/${tip.slug}${location.search}`}
                   className="flex items-center text-primary font-medium text-sm group-hover:text-secondary transition-colors"
                 >
                   Learn More

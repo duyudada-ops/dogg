@@ -15,7 +15,7 @@ import Discover from "./pages/Discover";
 import Matches from "./pages/Matches";
 import Chat from "./pages/Chat";
 import TipsAndTricks from "./pages/TipsAndTricks";
-import TipDetail from "./pages/TipDetail";
+import TipDetail from "./features/tips/TipDetail";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Billing from "./pages/Billing";
