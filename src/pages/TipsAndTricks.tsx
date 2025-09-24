@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronRight, Star, Clock, Users, Award, BookOpen } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { ChevronRight, Star, Clock, Users, Award, BookOpen, ArrowUpDown } from 'lucide-react';
 
 interface TipCategory {
   id: string;
@@ -151,15 +151,40 @@ const tipCategories: TipCategory[] = [
 ];
 
 export default function TipsAndTricks() {
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [sortByRating, setSortByRating] = useState(false);
 
-  const filteredCategories = tipCategories.filter(category => {
-    const matchesSearch = category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         category.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDifficulty = selectedDifficulty === 'All' || category.difficulty === selectedDifficulty;
-    return matchesSearch && matchesDifficulty;
-  });
+  const searchTerm = searchParams.get('q') || '';
+  const selectedDifficulty = searchParams.get('level') || 'All';
+  const sortParam = searchParams.get('sort');
+
+  useEffect(() => {
+    setSortByRating(sortParam === 'rating');
+  }, [sortParam]);
+
+  const updateSearchParams = (key: string, value: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (value && value !== 'All') {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+    setSearchParams(newParams);
+  };
+
+  const filteredAndSortedCategories = tipCategories
+    .filter(category => {
+      const matchesSearch = category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           category.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesDifficulty = selectedDifficulty === 'All' || category.difficulty === selectedDifficulty;
+      return matchesSearch && matchesDifficulty;
+    })
+    .sort((a, b) => {
+      if (sortByRating) {
+        return b.popularity - a.popularity;
+      }
+      return 0; // Keep original order
+    });
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -201,15 +226,15 @@ export default function TipsAndTricks() {
               type="text"
               placeholder="Search tips and guides..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => updateSearchParams('q', e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-background/50 backdrop-blur-sm transition-colors"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {['All', 'Beginner', 'Intermediate', 'Advanced'].map((difficulty) => (
               <button
                 key={difficulty}
-                onClick={() => setSelectedDifficulty(difficulty)}
+                onClick={() => updateSearchParams('level', difficulty)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                   selectedDifficulty === difficulty
                     ? 'bg-primary text-primary-foreground shadow-lg'
@@ -219,17 +244,32 @@ export default function TipsAndTricks() {
                 {difficulty}
               </button>
             ))}
+            <button
+              onClick={() => {
+                setSortByRating(!sortByRating);
+                updateSearchParams('sort', !sortByRating ? 'rating' : '');
+              }}
+              className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
+                sortByRating
+                  ? 'bg-secondary text-secondary-foreground shadow-lg'
+                  : 'bg-background/50 text-foreground border border-border hover:bg-accent/50'
+              }`}
+            >
+              <ArrowUpDown className="w-4 h-4" />
+              Rating
+            </button>
           </div>
         </div>
 
         {/* Results Count */}
         <p className="text-muted-foreground mb-6">
-          Showing {filteredCategories.length} of {tipCategories.length} guides
+          Showing {filteredAndSortedCategories.length} of {tipCategories.length} guides
+          {sortByRating && <span className="ml-2 text-secondary">• Sorted by rating</span>}
         </p>
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCategories.map((category) => (
+          {filteredAndSortedCategories.map((category) => (
             <div
               key={category.id}
               className="bg-background/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 p-6 hover:shadow-warm transition-all duration-300 cursor-pointer group paw-animation"
@@ -273,10 +313,13 @@ export default function TipsAndTricks() {
 
               {/* Action Button */}
               <div className="flex items-center justify-between">
-                <button className="flex items-center text-primary font-medium text-sm group-hover:text-secondary transition-colors">
+                <Link 
+                  to={`/tips/${category.id}`}
+                  className="flex items-center text-primary font-medium text-sm group-hover:text-secondary transition-colors"
+                >
                   Learn More
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </Link>
                 
                 <div className="flex items-center text-muted-foreground text-sm">
                   <Users className="w-4 h-4 mr-1" />
@@ -288,7 +331,7 @@ export default function TipsAndTricks() {
         </div>
 
         {/* No Results */}
-        {filteredCategories.length === 0 && (
+        {filteredAndSortedCategories.length === 0 && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-lg font-medium text-foreground mb-2">No guides found</h3>
@@ -297,8 +340,8 @@ export default function TipsAndTricks() {
             </p>
             <button
               onClick={() => {
-                setSearchTerm('');
-                setSelectedDifficulty('All');
+                setSearchParams(new URLSearchParams());
+                setSortByRating(false);
               }}
               className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
             >
