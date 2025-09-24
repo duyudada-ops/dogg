@@ -1,198 +1,91 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ChevronRight, Star, Clock, Users, Award, BookOpen, ArrowUpDown } from 'lucide-react';
+import { tips } from '../features/tips/data';
+import { filterTips, sortTips } from '../features/tips/selectors';
 
-interface TipCategory {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  estimatedTime: string;
-  popularity: number;
-}
-
-const tipCategories: TipCategory[] = [
-  {
-    id: 'obedience',
-    title: 'Step-by-Step Obedience Programs',
-    description: 'Structured video courses from basic commands to advanced training techniques',
-    icon: '🎓',
-    difficulty: 'Beginner',
-    estimatedTime: '2-8 weeks',
-    popularity: 5
-  },
-  {
-    id: 'puppy-essentials',
-    title: 'Puppy Training Essentials',
-    description: 'Crate training, housebreaking, and crucial socialization techniques',
-    icon: '🐶',
-    difficulty: 'Beginner',
-    estimatedTime: '4-12 weeks',
-    popularity: 5
-  },
-  {
-    id: 'behavior-problems',
-    title: 'Behavior Problem Solver',
-    description: 'Proven methods to curb barking, chewing, aggression, and other issues',
-    icon: '🔧',
-    difficulty: 'Intermediate',
-    estimatedTime: '2-6 weeks',
-    popularity: 4
-  },
-  {
-    id: 'breed-guides',
-    title: 'Breed-Specific Care Guides',
-    description: 'Tailored advice and training tips for popular dog breeds',
-    icon: '🏷️',
-    difficulty: 'Beginner',
-    estimatedTime: '1-2 weeks',
-    popularity: 4
-  },
-  {
-    id: 'nutrition',
-    title: 'Nutrition & Feeding Plans',
-    description: 'Vet-approved diets, weight management, and feeding schedules',
-    icon: '🥘',
-    difficulty: 'Beginner',
-    estimatedTime: '1 week',
-    popularity: 4
-  },
-  {
-    id: 'mental-enrichment',
-    title: 'Mental Enrichment Games',
-    description: 'Puzzle toys, scent work, and DIY enrichment activities',
-    icon: '🧩',
-    difficulty: 'Beginner',
-    estimatedTime: 'Ongoing',
-    popularity: 5
-  },
-  {
-    id: 'grooming',
-    title: 'Grooming Tutorials',
-    description: 'Nail clipping, brushing techniques, and managing shedding',
-    icon: '✂️',
-    difficulty: 'Beginner',
-    estimatedTime: '30-60 mins',
-    popularity: 3
-  },
-  {
-    id: 'health-basics',
-    title: 'First-Aid & Health Basics',
-    description: 'Recognizing illness signs, emergency tips, and basic care',
-    icon: '🏥',
-    difficulty: 'Intermediate',
-    estimatedTime: '2-3 hours',
-    popularity: 4
-  },
-  {
-    id: 'senior-care',
-    title: 'Senior Dog Care',
-    description: 'Mobility exercises, dietary adjustments for aging dogs',
-    icon: '👴',
-    difficulty: 'Intermediate',
-    estimatedTime: 'Ongoing',
-    popularity: 3
-  },
-  {
-    id: 'travel',
-    title: 'Traveling with Your Dog',
-    description: 'Packing checklists, hotel policies, airline requirements',
-    icon: '✈️',
-    difficulty: 'Beginner',
-    estimatedTime: '1-2 hours prep',
-    popularity: 3
-  },
-  {
-    id: 'venues',
-    title: 'Dog-Friendly Venues',
-    description: 'Restaurants, parks, trails with user reviews and ratings',
-    icon: '📍',
-    difficulty: 'Beginner',
-    estimatedTime: 'As needed',
-    popularity: 4
-  },
-  {
-    id: 'seasonal-safety',
-    title: 'Seasonal Safety Tips',
-    description: 'Heatstroke prevention, winter paw care, weather prep',
-    icon: '🌡️',
-    difficulty: 'Beginner',
-    estimatedTime: '30 mins',
-    popularity: 4
-  },
-  {
-    id: 'myths-debunked',
-    title: 'Training Myths Debunked',
-    description: 'Evidence-based answers to common training misconceptions',
-    icon: '🔍',
-    difficulty: 'Intermediate',
-    estimatedTime: '1-2 hours',
-    popularity: 3
-  },
-  {
-    id: 'product-reviews',
-    title: 'Product Reviews & Discounts',
-    description: 'Curated gear lists with honest reviews and affiliate offers',
-    icon: '🛒',
-    difficulty: 'Beginner',
-    estimatedTime: '15-30 mins',
-    popularity: 4
-  },
-  {
-    id: 'advanced-sports',
-    title: 'Advanced Sports & Activities',
-    description: 'Agility training, obedience competitions, nose work',
-    icon: '🏆',
-    difficulty: 'Advanced',
-    estimatedTime: '3-6 months',
-    popularity: 2
-  }
-];
+// Icon mapping for the tips
+const tipIcons: Record<string, string> = {
+  'obedience': '🎓',
+  'puppy-essentials': '🐶',
+  'behavior-problems': '🔧',
+  'breed-guides': '🏷️',
+  'nutrition': '🥘',
+  'mental-enrichment': '🧩',
+  'grooming': '✂️',
+  'health-basics': '🏥',
+  'senior-care': '👴',
+  'travel': '✈️',
+  'venues': '📍',
+  'seasonal-safety': '🌡️',
+  'myths-debunked': '🔍',
+  'product-reviews': '🛒',
+  'advanced-sports': '🏆'
+};
 
 export default function TipsAndTricks() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortByRating, setSortByRating] = useState(false);
 
-  const searchTerm = searchParams.get('q') || '';
-  const selectedDifficulty = searchParams.get('level') || 'All';
-  const sortParam = searchParams.get('sort');
+  // Derive state from URL params
+  const q = searchParams.get('q') || '';
+  const levelParam = searchParams.get('level') || 'all';
+  const sortParam = searchParams.get('sort') || 'rating-desc';
 
-  useEffect(() => {
-    setSortByRating(sortParam === 'rating');
-  }, [sortParam]);
+  // Map UI difficulty labels to data format
+  const difficultyMapping = {
+    'All': 'all',
+    'Beginner': 'beginner', 
+    'Intermediate': 'intermediate',
+    'Advanced': 'advanced'
+  } as const;
+
+  const reverseDifficultyMapping = {
+    'all': 'All',
+    'beginner': 'Beginner',
+    'intermediate': 'Intermediate', 
+    'advanced': 'Advanced'
+  } as const;
+
+  const selectedDifficultyUI = reverseDifficultyMapping[levelParam as keyof typeof reverseDifficultyMapping] || 'All';
 
   const updateSearchParams = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
-    if (value && value !== 'All') {
+    if (value && value !== 'all' && value !== '') {
       newParams.set(key, value);
     } else {
       newParams.delete(key);
     }
-    setSearchParams(newParams);
+    setSearchParams(newParams, { replace: true });
   };
 
-  const filteredAndSortedCategories = tipCategories
-    .filter(category => {
-      const matchesSearch = category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           category.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesDifficulty = selectedDifficulty === 'All' || category.difficulty === selectedDifficulty;
-      return matchesSearch && matchesDifficulty;
-    })
-    .sort((a, b) => {
-      if (sortByRating) {
-        return b.popularity - a.popularity;
-      }
-      return 0; // Keep original order
-    });
+  const handleDifficultyClick = (difficulty: string) => {
+    const mappedValue = difficultyMapping[difficulty as keyof typeof difficultyMapping];
+    updateSearchParams('level', mappedValue);
+  };
+
+  const handleSortClick = () => {
+    const newSort = sortParam === 'rating-desc' ? 'popular' : 'rating-desc';
+    updateSearchParams('sort', newSort);
+  };
+
+  // Compute visible tips using selectors
+  const visibleTips = useMemo(() => {
+    const level = levelParam === 'all' ? undefined : levelParam;
+    const filtered = filterTips(tips, { q, level: level as any });
+    return sortTips(filtered, { sort: sortParam as any });
+  }, [q, levelParam, sortParam]);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Beginner': return 'bg-emerald-100/80 text-emerald-800 border-emerald-200';
-      case 'Intermediate': return 'bg-amber-100/80 text-amber-800 border-amber-200';
-      case 'Advanced': return 'bg-rose-100/80 text-rose-800 border-rose-200';
+      case 'beginner': return 'bg-emerald-100/80 text-emerald-800 border-emerald-200';
+      case 'intermediate': return 'bg-amber-100/80 text-amber-800 border-amber-200';
+      case 'advanced': return 'bg-rose-100/80 text-rose-800 border-rose-200';
       default: return 'bg-muted text-muted-foreground border-border';
     }
+  };
+
+  const formatDifficultyLabel = (difficulty: string) => {
+    return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
   };
 
   return (
@@ -225,7 +118,7 @@ export default function TipsAndTricks() {
             <input
               type="text"
               placeholder="Search tips and guides..."
-              value={searchTerm}
+              value={q}
               onChange={(e) => updateSearchParams('q', e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-background/50 backdrop-blur-sm transition-colors"
             />
@@ -234,9 +127,9 @@ export default function TipsAndTricks() {
             {['All', 'Beginner', 'Intermediate', 'Advanced'].map((difficulty) => (
               <button
                 key={difficulty}
-                onClick={() => updateSearchParams('level', difficulty)}
+                onClick={() => handleDifficultyClick(difficulty)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  selectedDifficulty === difficulty
+                  selectedDifficultyUI === difficulty
                     ? 'bg-primary text-primary-foreground shadow-lg'
                     : 'bg-background/50 text-foreground border border-border hover:bg-accent/50'
                 }`}
@@ -245,44 +138,41 @@ export default function TipsAndTricks() {
               </button>
             ))}
             <button
-              onClick={() => {
-                setSortByRating(!sortByRating);
-                updateSearchParams('sort', !sortByRating ? 'rating' : '');
-              }}
+              onClick={handleSortClick}
               className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
-                sortByRating
+                sortParam === 'popular'
                   ? 'bg-secondary text-secondary-foreground shadow-lg'
                   : 'bg-background/50 text-foreground border border-border hover:bg-accent/50'
               }`}
             >
               <ArrowUpDown className="w-4 h-4" />
-              Rating
+              {sortParam === 'popular' ? 'Popular' : 'Rating'}
             </button>
           </div>
         </div>
 
         {/* Results Count */}
         <p className="text-muted-foreground mb-6">
-          Showing {filteredAndSortedCategories.length} of {tipCategories.length} guides
-          {sortByRating && <span className="ml-2 text-secondary">• Sorted by rating</span>}
+          Showing {visibleTips.length} of {tips.length} guides
+          {sortParam === 'popular' && <span className="ml-2 text-secondary">• Sorted by popularity</span>}
         </p>
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAndSortedCategories.map((category) => (
+          {visibleTips.map((tip) => (
             <div
-              key={category.id}
+              key={tip.id}
               className="bg-background/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 p-6 hover:shadow-warm transition-all duration-300 cursor-pointer group paw-animation"
             >
               {/* Category Header */}
               <div className="flex items-start justify-between mb-4">
-                <div className="text-3xl mb-2">{category.icon}</div>
+                <div className="text-3xl mb-2">{tipIcons[tip.id] || '📖'}</div>
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
                       className={`w-4 h-4 ${
-                        i < category.popularity
+                        i < tip.rating
                           ? 'text-amber-400 fill-current'
                           : 'text-muted-foreground/30'
                       }`}
@@ -292,29 +182,29 @@ export default function TipsAndTricks() {
               </div>
 
               <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                {category.title}
+                {tip.title}
               </h3>
               
               <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
-                {category.description}
+                {tip.summary}
               </p>
 
               {/* Meta Information */}
               <div className="flex items-center justify-between mb-4">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getDifficultyColor(category.difficulty)}`}>
-                  {category.difficulty}
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getDifficultyColor(tip.difficulty)}`}>
+                  {formatDifficultyLabel(tip.difficulty)}
                 </span>
                 
                 <div className="flex items-center text-muted-foreground text-sm">
                   <Clock className="w-4 h-4 mr-1" />
-                  {category.estimatedTime}
+                  {tip.durationLabel}
                 </div>
               </div>
 
               {/* Action Button */}
               <div className="flex items-center justify-between">
                 <Link 
-                  to={`/tips/${category.id}`}
+                  to={`/tips/${tip.slug}`}
                   className="flex items-center text-primary font-medium text-sm group-hover:text-secondary transition-colors"
                 >
                   Learn More
@@ -323,7 +213,7 @@ export default function TipsAndTricks() {
                 
                 <div className="flex items-center text-muted-foreground text-sm">
                   <Users className="w-4 h-4 mr-1" />
-                  Popular
+                  {tip.popular ? 'Popular' : 'Guide'}
                 </div>
               </div>
             </div>
@@ -331,7 +221,7 @@ export default function TipsAndTricks() {
         </div>
 
         {/* No Results */}
-        {filteredAndSortedCategories.length === 0 && (
+        {visibleTips.length === 0 && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-lg font-medium text-foreground mb-2">No guides found</h3>
@@ -339,10 +229,7 @@ export default function TipsAndTricks() {
               Try adjusting your search terms or filter settings
             </p>
             <button
-              onClick={() => {
-                setSearchParams(new URLSearchParams());
-                setSortByRating(false);
-              }}
+              onClick={() => setSearchParams(new URLSearchParams(), { replace: true })}
               className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
             >
               Clear Filters
