@@ -279,11 +279,16 @@ export const tips: Tip[] = [
           'Dog-safe shampoo; rinse until water runs clear',
           'Cotton in ears for splash protection',
           'Dry thoroughly to prevent hot spots'
-        ]
-      }
-    ]
-  },
-  {
+        ] 
+    }  
+  ]    
+}      
+];    
+
+export function getTipBySlug(slug: string): Tip | undefined {
+  return tips.find((t) => t.slug === slug);
+}
+
     id: 'health-basics',
     slug: 'first-aid-and-health-basics',
     title: 'First-Aid & Health Basics',
