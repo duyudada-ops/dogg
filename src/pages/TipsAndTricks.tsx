@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { Link, useSearchParams, useLocation } from 'react-router-dom';
+import { Link, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronRight, Star, Clock, Users, Award, BookOpen, ArrowUpDown } from 'lucide-react';
 import { tips } from '../features/tips/data';
 import { filterTips, sortTips } from '../features/tips/selectors';
@@ -36,6 +36,7 @@ function useDebounced<T>(value: T, ms = 250) {
 export default function TipsAndTricks() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Derive state from URL params
   const q = searchParams.get('q') || '';
@@ -124,6 +125,12 @@ export default function TipsAndTricks() {
     return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
   };
 
+  const handleCardClick = (e: React.MouseEvent, slug: string) => {
+    // Prevent navigation if clicking on interactive elements
+    if ((e.target as HTMLElement).closest('a, button')) return;
+    navigate(`/tips/${slug}${location.search}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 pb-20">
       {/* Header */}
@@ -208,6 +215,7 @@ export default function TipsAndTricks() {
             <li
               key={tip.id}
               className="bg-background/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 p-6 hover:shadow-warm transition-all duration-300 cursor-pointer group paw-animation"
+              onClick={(e) => handleCardClick(e, tip.slug)}
             >
               {/* Category Header */}
               <div className="flex items-start justify-between mb-4">
