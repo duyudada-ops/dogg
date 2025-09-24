@@ -20,7 +20,6 @@ export type Tip = {
 
 export const tips: Tip[] = [
   {
-      {
     id: 'obedience',
     slug: 'step-by-step-obedience-programs',
     title: 'Step-by-Step Obedience Programs',
