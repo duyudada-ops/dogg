@@ -558,13 +558,11 @@ export const tips: Tip[] = [
           'Pair odor with food initially; build independent searching',
           'Vary hide heights and locations weekly',
           'Log finds to track progression'
-        ]
-      }
-    ]
-  }
-
-  }
-];
+ ]
+ }
+ ]
+ }
+ ];
 
 export function getTipBySlug(slug: string): Tip | undefined {
   return tips.find((t) => t.slug === slug);
