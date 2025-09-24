@@ -287,8 +287,7 @@ export const tips: Tip[] = [
 
 export function getTipBySlug(slug: string): Tip | undefined {
   return tips.find((t) => t.slug === slug);
-}
-
+  {
     id: 'health-basics',
     slug: 'first-aid-and-health-basics',
     title: 'First-Aid & Health Basics',
@@ -312,7 +311,9 @@ export function getTipBySlug(slug: string): Tip | undefined {
           'Muzzle conditioning for safe handling in pain',
           'Vet, ER, and poison control numbers on your phone'
         ]
-      },
+      }
+    ]
+  },
       {
         heading: 'Preventives',
         points: [
