@@ -94,9 +94,8 @@ export default function TipsAndTricks() {
     updateSearchParams('level', mappedValue);
   };
 
-  const handleSortClick = () => {
-    const newSort = sortParam === 'rating-desc' ? 'popular' : 'rating-desc';
-    updateSearchParams('sort', newSort);
+  const handleSortChange = (sortValue: string) => {
+    updateSearchParams('sort', sortValue);
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
@@ -175,17 +174,25 @@ export default function TipsAndTricks() {
                 {difficulty}
               </button>
             ))}
-            <button
-              onClick={handleSortClick}
-              className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
-                sortParam === 'popular'
-                  ? 'bg-secondary text-secondary-foreground shadow-lg'
-                  : 'bg-background/50 text-foreground border border-border hover:bg-accent/50'
-              }`}
-            >
-              <ArrowUpDown className="w-4 h-4" />
-              {sortParam === 'popular' ? 'Popular' : 'Rating'}
-            </button>
+            <div className="flex gap-1 bg-background/50 border border-border rounded-lg p-1">
+              {[
+                { value: 'rating-desc', label: 'Top rated' },
+                { value: 'rating-asc', label: 'Rising' },
+                { value: 'popular', label: 'Popular' }
+              ].map((sortOption) => (
+                <button
+                  key={sortOption.value}
+                  onClick={() => handleSortChange(sortOption.value)}
+                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                    sortParam === sortOption.value
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-foreground hover:bg-accent/50'
+                  }`}
+                >
+                  {sortOption.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
