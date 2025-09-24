@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ChevronRight, Star, Clock, Users, Award, BookOpen, ArrowUpDown } from 'lucide-react';
 import { tips } from '../features/tips/data';
@@ -23,6 +23,16 @@ const tipIcons: Record<string, string> = {
   'advanced-sports': '🏆'
 };
 
+// Debounce hook
+function useDebounced<T>(value: T, ms = 250) {
+  const [v, setV] = useState(value);
+  useEffect(() => {
+    const id = setTimeout(() => setV(value), ms);
+    return () => clearTimeout(id);
+  }, [value, ms]);
+  return v;
+}
+
 export default function TipsAndTricks() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -30,6 +40,26 @@ export default function TipsAndTricks() {
   const q = searchParams.get('q') || '';
   const levelParam = searchParams.get('level') || 'all';
   const sortParam = searchParams.get('sort') || 'rating-desc';
+
+  // Local search input state for immediate UI feedback
+  const [searchInput, setSearchInput] = useState(q);
+  const debouncedSearch = useDebounced(searchInput);
+
+  // Update URL when debounced search changes
+  useEffect(() => {
+    const newParams = new URLSearchParams(searchParams);
+    if (debouncedSearch && debouncedSearch !== '') {
+      newParams.set('q', debouncedSearch);
+    } else {
+      newParams.delete('q');
+    }
+    setSearchParams(newParams, { replace: true });
+  }, [debouncedSearch, searchParams, setSearchParams]);
+
+  // Sync input with URL when URL changes externally (e.g., back button)
+  useEffect(() => {
+    setSearchInput(q);
+  }, [q]);
 
   // Map UI difficulty labels to data format
   const difficultyMapping = {
@@ -66,6 +96,12 @@ export default function TipsAndTricks() {
   const handleSortClick = () => {
     const newSort = sortParam === 'rating-desc' ? 'popular' : 'rating-desc';
     updateSearchParams('sort', newSort);
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setSearchInput('');
+    }
   };
 
   // Compute visible tips using selectors
@@ -118,8 +154,9 @@ export default function TipsAndTricks() {
             <input
               type="text"
               placeholder="Search tips and guides..."
-              value={q}
-              onChange={(e) => updateSearchParams('q', e.target.value)}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
               className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-background/50 backdrop-blur-sm transition-colors"
             />
           </div>
