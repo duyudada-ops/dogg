@@ -279,14 +279,10 @@ export const tips: Tip[] = [
           'Dog-safe shampoo; rinse until water runs clear',
           'Cotton in ears for splash protection',
           'Dry thoroughly to prevent hot spots'
-        ] 
-    }  
-  ]    
-}      
-];    
-
-export function getTipBySlug(slug: string): Tip | undefined {
-  return tips.find((t) => t.slug === slug);
+        ]
+      }
+    ]
+  },
   {
     id: 'health-basics',
     slug: 'first-aid-and-health-basics',
@@ -299,131 +295,125 @@ export function getTipBySlug(slug: string): Tip | undefined {
       {
         heading: 'Know the Signs',
         points: [
-          'Emergency: bloat, collapse, seizures, heatstroke',
-          'Track appetite, water intake, urination/defecation changes',
-          'Check gums weekly (color, moisture, capillary refill)'
+          'Lethargy beyond normal tiredness',
+          'Loss of appetite for more than 24 hours',
+          'Vomiting or diarrhea (especially bloody)',
+          'Difficulty breathing or excessive panting',
+          'Pale or blue gums',
+          'Distended or painful abdomen'
         ]
       },
       {
-        heading: 'Kit & Skills',
+        heading: 'Emergency First-Aid',
         points: [
-          'First-aid kit: bandage, non-stick pads, saline, tweezers',
+          'Control bleeding with direct pressure',
+          'Check airways and breathing',
+          'Keep injured dog warm and calm',
           'Muzzle conditioning for safe handling in pain',
           'Vet, ER, and poison control numbers on your phone'
+        ]
+      },
+      {
+        heading: 'Preventives',
+        points: [
+          'Annual vet checkups and vaccinations',
+          'Monthly heartworm and flea prevention',
+          'Dental care and regular teeth cleaning',
+          'Weight management and body condition scoring',
+          'Safe household (toxic foods, plants, chemicals)'
         ]
       }
     ]
   },
-      {
-        heading: 'Preventives',
-        points: [
-          'Core vaccines per vet schedule',
-          'Flea/tick/heartworm preventives as advised',
-          'Daily tooth brushing or VOHC-approved chews'
-        ]
-      }
-  ,
   {
     id: 'senior-care',
-    slug: 'senior-dog-care',
-    title: 'Senior Dog Care',
-    summary: 'Mobility exercises, dietary adjustments for aging dogs',
+    slug: 'caring-for-senior-dogs',
+    title: 'Caring for Senior Dogs',
+    summary: 'Age-appropriate care, comfort, and quality-of-life management',
     difficulty: 'intermediate',
-    durationLabel: 'Ongoing',
-    rating: 3,
+    durationLabel: '30–45 min',
+    rating: 5,
     sections: [
       {
-        heading: 'Comfort & Mobility',
+        heading: 'Physical Comfort',
         points: [
-          'Add rugs/booties for traction on slick floors',
-          'Low-impact walks; avoid repetitive jumping',
-          'Gentle range-of-motion exercises as guided by your vet'
+          'Orthopedic bedding for joint support',
+          'Ramps or steps to reduce jumping',
+          'Non-slip rugs on smooth floors',
+          'Gentle, shorter exercise sessions',
+          'Warm, draft-free sleeping areas'
         ]
       },
       {
-        heading: 'Food & Meds',
+        heading: 'Health Monitoring',
         points: [
-          'Senior diets with joint support (omega-3s, glucosamine) as advised',
-          'Feed smaller, more frequent meals if digestion changes',
-          'Use a medication tracker (morning/evening log)'
-        ]
-      },
-      {
-        heading: 'Quality of Life',
-        points: [
-          'Use a QOL scale monthly to guide decisions',
-          'Keep routines predictable; add calm enrichment',
-          'Schedule semiannual wellness checks'
+          'Twice-yearly vet visits for early detection',
+          'Watch for vision or hearing changes',
+          'Monitor appetite and bathroom habits',
+          'Check for lumps or bumps during petting',
+          'Note changes in mobility or behavior'
         ]
       }
     ]
   },
   {
     id: 'travel',
-    slug: 'traveling-with-your-dog',
-    title: 'Traveling with Your Dog',
-    summary: 'Packing checklists, hotel policies, airline requirements',
-    difficulty: 'beginner',
-    durationLabel: '1–2 hours prep',
-    rating: 3,
+    slug: 'traveling-with-dogs',
+    title: 'Traveling with Dogs',
+    summary: 'Car trips, flying, hotels, and keeping dogs comfortable on the go',
+    difficulty: 'intermediate',
+    durationLabel: '1–2 hours',
+    rating: 4,
     sections: [
       {
-        heading: 'Road Trip Basics',
+        heading: 'Car Travel',
         points: [
-          'Crash-tested crate or seat-belt harness only',
-          'Pack water, bowl, food, meds, vaccine records',
-          'Plan leash-only potty stops; never leave in hot cars'
+          'Secure restraint (harness, crate, or barrier)',
+          'Never leave dogs unattended in vehicles',
+          'Frequent stops for water and bathroom breaks',
+          'Familiar blanket or toy for comfort',
+          'Gradual conditioning to longer car rides'
         ]
       },
       {
-        heading: 'Lodging Etiquette',
+        heading: 'Flying & Hotels',
         points: [
-          'Confirm pet fee and size limits before booking',
-          'Bring a mat/bed to reduce anxiety and fur on furniture',
-          'Exercise before check-in to help settling'
-        ]
-      },
-      {
-        heading: 'Air Travel',
-        points: [
-          'Airline-approved carrier; confirm dimensions',
-          'Acclimate to carrier 2–3 weeks before flight',
-          'Direct flights minimize stress and risk'
+          'Research airline pet policies well in advance',
+          'Health certificate from vet (usually within 10 days)',
+          'Properly sized, airline-approved carrier',
+          'Call hotels to confirm pet-friendly policies',
+          'Pack familiar food, bowls, leash, and cleanup bags'
         ]
       }
     ]
   },
   {
     id: 'venues',
-    slug: 'dog-friendly-venues',
-    title: 'Dog-Friendly Venues',
-    summary: 'Restaurants, parks, trails with user reviews and ratings',
+    slug: 'dog-friendly-venues-and-events',
+    title: 'Dog-Friendly Venues & Events',
+    summary: 'Restaurants, parks, markets, and public spaces with your dog',
     difficulty: 'beginner',
-    durationLabel: 'As needed',
+    durationLabel: '20–30 min',
     rating: 4,
     sections: [
       {
-        heading: 'Before You Go',
+        heading: 'Preparation',
         points: [
-          'Verify leash laws, hours, and vaccination rules',
-          'Pack poop bags and a portable water bowl',
-          'Check heat index and trail difficulty'
+          'Confirm venue allows dogs (call ahead)',
+          'Ensure your dog is well-socialized and obedient',
+          'Bring water, waste bags, and a comfortable mat',
+          'Keep leash short and dog close to your table/space',
+          'Have an exit strategy if your dog becomes overwhelmed'
         ]
       },
       {
-        heading: 'On-Site Manners',
+        heading: 'Etiquette',
         points: [
-          'Practice settle on a mat under the table',
-          'Keep 6 ft from other dogs unless invited',
-          'Reward quiet behavior; take short decompression walks'
-        ]
-      },
-      {
-        heading: 'Trail Safety',
-        points: [
-          'Long line in wildlife areas; recall games at trailheads',
-          'Tick check after hikes; rinse paws if salted in winter',
-          'Leave no trace — pack out waste'
+          'Dogs should not approach other people/dogs uninvited',
+          'Clean up any accidents immediately',
+          'Keep noise level down (excessive barking)',
+          'Respect "no dogs" areas within dog-friendly venues',
+          'Tip well and thank staff for accommodating your pet'
         ]
       }
     ]
@@ -432,143 +422,128 @@ export function getTipBySlug(slug: string): Tip | undefined {
     id: 'seasonal-safety',
     slug: 'seasonal-safety-tips',
     title: 'Seasonal Safety Tips',
-    summary: 'Heatstroke prevention, winter paw care, weather prep',
+    summary: 'Hot weather, cold weather, holidays, and seasonal hazards',
     difficulty: 'beginner',
-    durationLabel: '30 mins',
+    durationLabel: '15–25 min',
     rating: 4,
     sections: [
       {
-        heading: 'Summer',
+        heading: 'Summer Safety',
         points: [
-          'Walk at dawn/dusk; asphalt test with back of hand',
-          'Carry water; use shade breaks every 10–15 minutes',
-          'Never leave dogs in cars — it heats deadly fast'
+          'Never leave dogs in hot cars (even with windows cracked)',
+          'Walk on grass or shaded paths to protect paw pads',
+          'Provide plenty of fresh water and shade',
+          'Watch for signs of overheating (excessive panting, drooling)',
+          'Consider cooling mats or vests for very hot days'
         ]
       },
       {
-        heading: 'Winter',
+        heading: 'Winter & Holiday Safety',
         points: [
-          'Rinse de-icing salts; use paw balm/booties',
-          'Shorter, more frequent walks in extreme cold',
-          'Add a drying station near the door'
-        ]
-      },
-      {
-        heading: 'Storms & Wildfire',
-        points: [
-          'ID tag + microchip up to date',
-          'Create a go-bag: food, meds, copies of records',
-          'Desensitize to thunder with low-volume sound sessions'
+          'Protect paws from salt and ice with booties or balm',
+          'Shorter walks in extreme cold weather',
+          'Keep dogs away from holiday foods (chocolate, grapes, xylitol)',
+          'Secure Christmas trees and decorations (choking hazards)',
+          'Provide warm, dry shelter and check for frostbite'
         ]
       }
     ]
   },
   {
     id: 'myths-debunked',
-    slug: 'training-myths-debunked',
-    title: 'Training Myths Debunked',
-    summary: 'Evidence-based answers to common training misconceptions',
+    slug: 'common-training-myths-debunked',
+    title: 'Common Training Myths Debunked',
+    summary: 'Separating fact from fiction in popular dog training beliefs',
     difficulty: 'intermediate',
-    durationLabel: '1–2 hours',
-    rating: 3,
+    durationLabel: '20–30 min',
+    rating: 5,
     sections: [
       {
-        heading: 'Common Myths',
+        heading: 'Dominance Myths',
         points: [
-          '“Guilty look” ≠ guilt — it’s appeasement behavior',
-          'Dominance is not a training plan; teach skills instead',
-          'Punishment often suppresses signals, not the emotion'
+          'MYTH: You must be the "alpha" or "pack leader"',
+          'FACT: Dogs don\'t see humans as pack members to dominate',
+          'MYTH: Dogs who pull on leash are trying to dominate you',
+          'FACT: Pulling is usually excitement or lack of leash training',
+          'Focus on positive reinforcement, not dominance-based methods'
         ]
       },
       {
-        heading: 'What Works',
+        heading: 'Training Myths',
         points: [
-          'Reinforce what you like; manage what you don’t',
-          'Set up easy wins and raise criteria gradually',
-          'Track reps; consistency beats intensity'
-        ]
-      },
-      {
-        heading: 'Choosing Advice',
-        points: [
-          'Prefer sources citing peer-reviewed evidence',
-          'Beware of “quick cure” guarantees',
-          'Your dog’s welfare and consent are core metrics'
+          'MYTH: Old dogs can\'t learn new tricks',
+          'FACT: Dogs can learn throughout their lives with patience',
+          'MYTH: Food rewards create "spoiled" or dependent dogs',
+          'FACT: Treats are effective motivators when used correctly',
+          'MYTH: Punishment is necessary for serious behavior problems',
+          'FACT: Positive methods are more effective and humane'
         ]
       }
     ]
   },
   {
     id: 'product-reviews',
-    slug: 'product-reviews-and-discounts',
-    title: 'Product Reviews & Discounts',
-    summary: 'Curated gear lists with honest reviews and affiliate offers',
+    slug: 'product-reviews-and-recommendations',
+    title: 'Product Reviews & Recommendations',
+    summary: 'Leashes, toys, food, beds, and gear for every dog\'s needs',
     difficulty: 'beginner',
-    durationLabel: '15–30 mins',
+    durationLabel: '30–45 min',
     rating: 4,
     sections: [
       {
-        heading: 'Safety-First Picks',
+        heading: 'Essential Gear',
         points: [
-          'Look for crash-test data on car restraints',
-          'Check materials: no sharp hardware, rust-proof clips',
-          'Prefer harnesses that don’t restrict shoulder movement'
+          'Collar: Adjustable, with ID tags and reflective material',
+          'Leash: 6-foot standard for training, retractable for experienced dogs',
+          'Harness: Front-clip for pullers, back-clip for trained walkers',
+          'Crate: Size allows standing and turning, but not too spacious',
+          'Bed: Orthopedic for seniors, chew-resistant for puppies'
         ]
       },
       {
-        heading: 'Value & Fit',
+        heading: 'Food & Treats',
         points: [
-          'Measure girth/neck; consult brand fit charts',
-          'Trial window and warranty beat rock-bottom price',
-          'Read reviews from similar breed/size owners'
-        ]
-      },
-      {
-        heading: 'Deals',
-        points: [
-          'Set price alerts; buy staples during seasonal sales',
-          'Bundle subscriptions for food/treat savings',
-          'Rotate toys to extend lifespan'
+          'High-quality kibble with named meat as first ingredient',
+          'Avoid foods with excessive fillers, by-products, or artificial colors',
+          'Training treats: small, soft, and highly motivating',
+          'Puzzle feeders and slow-feed bowls for fast eaters',
+          'Always transition foods gradually over 7-10 days'
         ]
       }
     ]
   },
   {
     id: 'advanced-sports',
-    slug: 'advanced-sports-and-activities',
-    title: 'Advanced Sports & Activities',
-    summary: 'Agility training, obedience competitions, nose work',
+    slug: 'advanced-dog-sports-and-activities',
+    title: 'Advanced Dog Sports & Activities',
+    summary: 'Agility, tracking, therapy work, and competitive dog sports',
     difficulty: 'advanced',
-    durationLabel: '3–6 months',
-    rating: 2,
+    durationLabel: '1–3 hours',
+    rating: 5,
     sections: [
       {
-        heading: 'Agility Foundations',
+        heading: 'Agility Training',
         points: [
-          'Teach forward focus and tight turns with cones',
-          'Build drive with toy rewards; short, crisp reps',
-          'Condition shoulders/core before jumps'
+          'Start with basic obedience and impulse control',
+          'Introduce obstacles gradually (tunnels, jumps, weave poles)',
+          'Focus on handler-dog communication and teamwork',
+          'Build confidence with positive reinforcement',
+          'Join local clubs for proper equipment and instruction'
         ]
       },
       {
-        heading: 'Rally/Obedience',
+        heading: 'Specialized Work',
         points: [
-          'Heeling: reward position, not just movement',
-          'Proof sits/downs with handler motion and turns',
-          'Use video to refine footwork and timing'
+          'Therapy dog certification through recognized organizations',
+          'Search and rescue requires extensive training and commitment',
+          'Tracking and scent work tap into natural abilities',
+          'Competitive obedience demands precision and consistency',
+          'Each sport has specific physical and mental requirements'
         ]
-      },
-      {
-        heading: 'Nose Work',
-        points: [
-          'Pair odor with food initially; build independent searching',
-          'Vary hide heights and locations weekly',
-          'Log finds to track progression'
- ]
- }
- ]
- }
- ];
+      }
+    ]
+  }
+];
 
 export function getTipBySlug(slug: string): Tip | undefined {
   return tips.find((t) => t.slug === slug);
