@@ -25,11 +25,15 @@ export const SafeImage: React.FC<SafeImageProps> = ({
 
   const handleError = () => {
     if (!hasError) {
-    // Use fallback verified real dog photos - NO AI generated content
-    const fallbacks = ['/src/assets/dog-clean-1.jpg', '/src/assets/dog-clean-2.jpg', '/src/assets/dog-clean-3.jpg'];
-    const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-    setImgSrc(randomFallback);
-    setHasError(true);
+      // Use verified real dog photos from Pexels as fallbacks
+      const fallbacks = [
+        'https://images.pexels.com/photos/19846653/pexels-photo-19846653.jpeg?auto=compress&cs=tinysrgb&w=800',
+        'https://images.pexels.com/photos/16539152/pexels-photo-16539152.jpeg?auto=compress&cs=tinysrgb&w=800',
+        'https://images.pexels.com/photos/21821337/pexels-photo-21821337.jpeg?auto=compress&cs=tinysrgb&w=800'
+      ];
+      const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+      setImgSrc(randomFallback);
+      setHasError(true);
     }
   };
 

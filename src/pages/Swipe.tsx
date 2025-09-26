@@ -10,6 +10,9 @@ import { toast } from 'sonner';
 import MatchSuccessPopup from '@/components/match/MatchSuccessPopup';
 import PaywallModal from '@/components/paywall/PaywallModal';
 import { useEntitlements } from '@/hooks/useEntitlements';
+import { Confetti } from '@/components/ui/confetti';
+import { StatusBadge } from '@/components/ui/status-badge';
+import { SafeImage } from '@/components/SafeImage';
 
 interface DogProfile {
   id: string;
@@ -34,6 +37,7 @@ const Swipe = () => {
   const [showMatchPopup, setShowMatchPopup] = useState(false);
   const [matchedDog, setMatchedDog] = useState<DogProfile | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -131,6 +135,8 @@ const Swipe = () => {
         if (matchData?.status === 'matched') {
           setMatchedDog(currentDog);
           setShowMatchPopup(true);
+          setShowConfetti(true);
+          toast.success('It\'s a match! 🎉');
         } else {
           toast.success('Like sent!');
         }
@@ -170,78 +176,96 @@ const Swipe = () => {
       </div>
 
       <div className="relative">
-        <Card className={`transition-transform duration-300 ${
-          isLiked === true ? 'translate-x-full opacity-0' : 
+        <Card className={`swipe-card-gradient shadow-warm transition-all duration-300 hover:scale-[1.02] ${
+          isLiked === true ? 'translate-x-full opacity-0 animate-match-celebration' : 
           isLiked === false ? '-translate-x-full opacity-0' : ''
         }`}>
           <CardContent className="p-0">
-            <div className="relative">
-              <div className="aspect-[3/4] bg-muted rounded-t-lg flex items-center justify-center">
-                <Avatar className="h-32 w-32">
-                  <AvatarImage src={currentDog.photo_url || undefined} />
-                  <AvatarFallback className="text-4xl">🐕</AvatarFallback>
-                </Avatar>
+            <div className="relative overflow-hidden rounded-t-lg">
+              <div className="aspect-[3/4] bg-gradient-to-br from-primary/5 to-secondary/5">
+                <SafeImage
+                  src={currentDog.photo_url || ''}
+                  alt={`${currentDog.name} - ${currentDog.breed}`}
+                  className="w-full h-full object-cover"
+                  priority
+                />
               </div>
               
-              {/* Like/Pass indicators */}
+              {/* Status badges overlay */}
+              <div className="absolute top-4 left-4 flex gap-2">
+                <StatusBadge status="verified" />
+                <StatusBadge status="active" />
+              </div>
+              
+              {/* Enhanced Like/Pass indicators */}
               {isLiked === true && (
-                <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center">
-                  <div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold text-xl">
-                    LIKE
+                <div className="absolute inset-0 bg-gradient-to-br from-success/30 to-success/10 backdrop-blur-sm flex items-center justify-center">
+                  <div className="bg-success text-success-foreground px-8 py-4 rounded-full font-bold text-2xl shadow-glow animate-glow-pulse border-2 border-success/30">
+                    💚 LIKE
                   </div>
                 </div>
               )}
               {isLiked === false && (
-                <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
-                  <div className="bg-red-500 text-white px-6 py-3 rounded-full font-bold text-xl">
-                    PASS
+                <div className="absolute inset-0 bg-gradient-to-br from-destructive/30 to-destructive/10 backdrop-blur-sm flex items-center justify-center">
+                  <div className="bg-destructive text-destructive-foreground px-8 py-4 rounded-full font-bold text-2xl shadow-lg border-2 border-destructive/30">
+                    ✖️ PASS
                   </div>
                 </div>
               )}
             </div>
             
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-4 bg-gradient-to-t from-card/95 to-card/80 backdrop-blur-sm">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-2xl font-bold">{currentDog.name}</h2>
-                  <Button variant="ghost" size="sm">
+                  <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                    {currentDog.name}
+                  </h1>
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10">
                     <Info className="h-4 w-4" />
                   </Button>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-lg text-muted-foreground font-medium">
                   {currentDog.breed} • {currentDog.gender} • {currentDog.age} years old
                 </p>
                 {currentDog.location && (
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2 bg-muted/30 rounded-full px-3 py-1 w-fit">
                     <MapPin className="h-4 w-4" />
                     {currentDog.location}
                   </div>
                 )}
               </div>
               
-              {currentDog.bio && <p className="text-sm">{currentDog.bio}</p>}
+              {currentDog.bio && (
+                <div className="bg-muted/20 rounded-lg p-4">
+                  <p className="text-sm leading-relaxed">{currentDog.bio}</p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-4 mt-6">
+        {/* Enhanced Action Buttons */}
+        <div className="flex justify-center gap-6 mt-8">
           <Button
             variant="outline"
             size="lg"
-            className="rounded-full h-16 w-16 p-0 border-red-200 hover:bg-red-50"
+            className="rounded-full h-20 w-20 p-0 border-2 border-destructive/20 hover:bg-destructive/10 hover:border-destructive/40 hover:scale-110 transition-all duration-200 shadow-lg"
             onClick={() => handleSwipe(false)}
           >
-            <X className="h-8 w-8 text-red-500" />
+            <X className="h-10 w-10 text-destructive" />
           </Button>
           
           <Button
             size="lg"
-            className={`rounded-full h-16 w-16 p-0 ${canLike ? 'bg-green-500 hover:bg-green-600' : 'bg-muted hover:bg-muted cursor-not-allowed'}`}
+            className={`rounded-full h-20 w-20 p-0 transition-all duration-200 shadow-lg ${
+              canLike 
+                ? 'bg-success hover:bg-success/90 hover:scale-110 shadow-success/30 animate-glow-pulse' 
+                : 'bg-muted hover:bg-muted cursor-not-allowed opacity-50'
+            }`}
             onClick={() => handleSwipe(true)}
             disabled={!canLike}
           >
-            <Heart className={`h-8 w-8 ${canLike ? '' : 'text-muted-foreground'}`} />
+            <Heart className={`h-10 w-10 ${canLike ? 'text-white' : 'text-muted-foreground'}`} />
           </Button>
         </div>
       </div>
@@ -262,6 +286,9 @@ const Swipe = () => {
         onClose={() => setShowPaywall(false)}
         trigger="out-of-likes"
       />
+
+      {/* Confetti Effect */}
+      <Confetti trigger={showConfetti} />
     </div>
   );
 };
