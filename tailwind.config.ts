@@ -86,7 +86,10 @@ export default {
 				'warm': '0 10px 30px -10px hsl(var(--shadow-warm) / 0.3)',
 				'glow': '0 0 40px hsl(var(--shadow-primary) / 0.4)',
 				'paw': '0 8px 25px -8px hsl(var(--shadow-primary) / 0.4)',
-				'tag': '0 4px 12px -4px hsl(var(--shadow-primary) / 0.2)'
+				'tag': '0 4px 12px -4px hsl(var(--shadow-primary) / 0.2)',
+				'card': 'var(--shadow-card)',
+				'card-hover': 'var(--shadow-card-hover)',
+				'floating': 'var(--shadow-floating)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -155,7 +158,9 @@ export default {
 				'scale-in': 'scale-in 0.2s ease-out',
 				'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
 				'paw-wiggle': 'paw-wiggle 1s ease-in-out infinite',
-				'float': 'float 3s ease-in-out infinite'
+				'float': 'float 3s ease-in-out infinite',
+				'shimmer': 'shimmer 2s infinite ease-in-out',
+				'confetti-fall': 'confetti-fall 3s linear forwards'
 			}
 		}
 	},

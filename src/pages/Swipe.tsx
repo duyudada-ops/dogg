@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import MatchSuccessPopup from '@/components/match/MatchSuccessPopup';
 import PaywallModal from '@/components/paywall/PaywallModal';
 import { useEntitlements } from '@/hooks/useEntitlements';
+import { Confetti } from '@/components/ui/confetti';
 
 interface DogProfile {
   id: string;
@@ -34,6 +35,7 @@ const Swipe = () => {
   const [showMatchPopup, setShowMatchPopup] = useState(false);
   const [matchedDog, setMatchedDog] = useState<DogProfile | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -131,6 +133,7 @@ const Swipe = () => {
         if (matchData?.status === 'matched') {
           setMatchedDog(currentDog);
           setShowMatchPopup(true);
+          setShowConfetti(true);
         } else {
           toast.success('Like sent!');
         }
@@ -240,28 +243,28 @@ const Swipe = () => {
           </CardContent>
         </Card>
 
-        {/* Action Buttons with enhanced styling */}
+        {/* Action Buttons with enhanced micro-interactions */}
         <div className="flex justify-center gap-8 mt-8 px-6">
           <Button
             variant="outline"
             size="lg"
-            className="rounded-full h-20 w-20 p-0 border-3 border-destructive/30 hover:border-destructive hover:bg-destructive/10 transition-all duration-300 hover:scale-110 shadow-tag"
+            className="rounded-full h-20 w-20 p-0 border-3 border-destructive/30 hover:border-destructive hover:bg-destructive/10 transition-all duration-300 hover:scale-110 shadow-card button-tap"
             onClick={() => handleSwipe(false)}
           >
-            <X className="h-10 w-10 text-destructive" />
+            <X className="h-10 w-10 text-destructive transition-transform hover:rotate-90 duration-300" />
           </Button>
           
           <Button
             size="lg"
-            className={`rounded-full h-20 w-20 p-0 transition-all duration-300 hover:scale-110 shadow-tag ${
+            className={`rounded-full h-20 w-20 p-0 transition-all duration-300 hover:scale-110 shadow-card button-tap ${
               canLike 
-                ? 'bg-gradient-to-r from-success to-accent hover:shadow-glow' 
+                ? 'bg-gradient-to-r from-success to-accent hover:shadow-floating' 
                 : 'bg-muted hover:bg-muted cursor-not-allowed opacity-50'
             }`}
             onClick={() => handleSwipe(true)}
             disabled={!canLike}
           >
-            <Heart className={`h-10 w-10 ${canLike ? 'text-white animate-heart-beat' : 'text-muted-foreground'}`} />
+            <Heart className={`h-10 w-10 transition-all duration-300 ${canLike ? 'text-white hover:scale-125 animate-pulse' : 'text-muted-foreground'}`} />
           </Button>
         </div>
       </div>
@@ -281,6 +284,12 @@ const Swipe = () => {
         isOpen={showPaywall}
         onClose={() => setShowPaywall(false)}
         trigger="out-of-likes"
+      />
+
+      {/* Confetti Animation */}
+      <Confetti 
+        isActive={showConfetti} 
+        onComplete={() => setShowConfetti(false)} 
       />
     </div>
   );
