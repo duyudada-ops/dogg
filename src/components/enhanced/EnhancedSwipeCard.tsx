@@ -69,74 +69,72 @@ const EnhancedSwipeCard = ({ dog, onSwipe }: EnhancedSwipeCardProps) => {
       }}
       onMouseDown={handleMouseDown}
     >
-      {/* Glass card effect with enhanced styling */}
-      <div className="absolute inset-0 bg-gradient-card-bg backdrop-blur-md rounded-3xl border-2 border-border/30 shadow-paw overflow-hidden hover:shadow-glow transition-all duration-300">
-        {/* Dog image with overlay */}
+      {/* Glass card effect */}
+      <div className="absolute inset-0 bg-background/90 backdrop-blur-md rounded-3xl border border-border/50 shadow-2xl overflow-hidden">
+        {/* Dog image */}
         <div className="relative h-64 overflow-hidden">
           <SafeImage
             src={dog.photo_url}
             alt={dog.name}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute top-4 right-4 bg-card/90 rounded-full p-3 backdrop-blur-sm border border-border/30">
-            <Camera className="w-5 h-5 text-primary" />
+          <div className="absolute top-4 right-4 bg-background/90 rounded-full p-2 backdrop-blur-sm">
+            <Camera className="w-5 h-5 text-foreground" />
           </div>
           
-          {/* Enhanced gradient overlay */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent h-24"></div>
+          {/* Gradient overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent h-20"></div>
         </div>
 
-        {/* Dog info with improved typography */}
-        <div className="p-8">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-display font-heading text-foreground">
+        {/* Dog info */}
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-2xl font-bold text-foreground">
               {dog.name}, {dog.age}
             </h3>
             {dog.rating && (
-              <div className="flex items-center gap-2 bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 rounded-full">
-                <Star className="w-5 h-5 text-yellow-500 fill-current" />
-                <span className="text-h3 font-bold text-yellow-700 dark:text-yellow-300">{dog.rating}</span>
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                <span className="text-foreground font-medium">{dog.rating}</span>
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-2 text-accent mb-4">
-            <MapPin className="w-5 h-5" />
-            <span className="text-h3 font-medium">{dog.location}</span>
+          <div className="flex items-center gap-2 text-muted-foreground mb-3">
+            <MapPin className="w-4 h-4" />
+            <span className="text-sm">{dog.location}</span>
           </div>
 
-          <div className="flex flex-wrap gap-3 mb-6">
-            <span className="tag-water px-4 py-2 rounded-full text-h3 font-medium shadow-tag">
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-medium">
               {dog.breed}
             </span>
             {dog.traits?.slice(0, 2).map((trait, index) => (
               <span
                 key={index}
-                className={`px-4 py-2 rounded-full text-h3 font-medium shadow-tag ${
-                  index === 0 ? 'tag-fetch' : 'tag-parks'
-                }`}
+                className="bg-secondary/20 text-secondary-foreground px-3 py-1 rounded-full text-xs font-medium"
               >
                 {trait}
               </span>
             ))}
           </div>
 
-          <p className="text-body-relaxed text-foreground/80 leading-relaxed">
+          <p className="text-muted-foreground text-sm line-clamp-2">
             {dog.bio || 'A lovely dog looking for new friends to play with!'}
           </p>
         </div>
       </div>
 
-      {/* Enhanced swipe indicators */}
+      {/* Swipe indicators */}
       {position.x > 50 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-success to-accent text-white px-10 py-6 rounded-full font-bold text-h1 rotate-12 border-4 border-white/30 shadow-glow backdrop-blur-sm animate-scale-in">
-          ❤️ LIKE
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white px-8 py-4 rounded-full font-bold text-xl rotate-12 border-4 border-green-400 shadow-lg backdrop-blur-sm">
+          LIKE
         </div>
       )}
       
       {position.x < -50 && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-destructive to-red-600 text-white px-10 py-6 rounded-full font-bold text-h1 -rotate-12 border-4 border-white/30 shadow-glow backdrop-blur-sm animate-scale-in">
-          ✖️ NOPE
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white px-8 py-4 rounded-full font-bold text-xl -rotate-12 border-4 border-red-400 shadow-lg backdrop-blur-sm">
+          NOPE
         </div>
       )}
     </div>
