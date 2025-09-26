@@ -158,90 +158,110 @@ const Swipe = () => {
   }
 
   return (
-    <div className="container mx-auto py-6 max-w-md">
-      <div className="text-center mb-6">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <h1 className="text-2xl font-bold">Discover Dogs</h1>
-          {isPremium && <Crown className="h-6 w-6 text-yellow-500" />}
+    <div className="container mx-auto py-8 max-w-md bg-gradient-card-bg rounded-2xl shadow-warm min-h-screen">
+      <div className="text-center mb-8 px-6">
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <h1 className="text-display font-heading text-foreground">Discover Dogs</h1>
+          {isPremium && <Crown className="h-8 w-8 text-yellow-500 animate-float" />}
         </div>
-        <p className="text-muted-foreground">
-          {isPremium ? 'Unlimited swipes' : `${5 - dailyUsage.likes} likes remaining today`}
+        <p className="text-h3 text-muted-foreground font-medium">
+          {isPremium ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="text-primary font-semibold">Unlimited swipes</span>
+              <Crown className="h-5 w-5 text-yellow-500" />
+            </span>
+          ) : (
+            <span className="bg-muted/60 px-4 py-2 rounded-full backdrop-blur-sm">
+              {5 - dailyUsage.likes} likes remaining today
+            </span>
+          )}
         </p>
       </div>
 
-      <div className="relative">
-        <Card className={`transition-transform duration-300 ${
-          isLiked === true ? 'translate-x-full opacity-0' : 
-          isLiked === false ? '-translate-x-full opacity-0' : ''
+      <div className="relative px-6">
+        <Card className={`bg-card/80 backdrop-blur-sm border border-border/30 shadow-paw transition-all duration-500 ${
+          isLiked === true ? 'translate-x-full opacity-0 rotate-12' : 
+          isLiked === false ? '-translate-x-full opacity-0 -rotate-12' : 'hover:shadow-glow'
         }`}>
           <CardContent className="p-0">
             <div className="relative">
-              <div className="aspect-[3/4] bg-muted rounded-t-lg flex items-center justify-center">
-                <Avatar className="h-32 w-32">
-                  <AvatarImage src={currentDog.photo_url || undefined} />
-                  <AvatarFallback className="text-4xl">🐕</AvatarFallback>
+              <div className="aspect-[3/4] bg-gradient-warm rounded-t-lg flex items-center justify-center overflow-hidden">
+                <Avatar className="h-40 w-40 border-4 border-white/20 shadow-lg">
+                  <AvatarImage 
+                    src={currentDog.photo_url || undefined} 
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                  <AvatarFallback className="text-6xl bg-gradient-secondary">🐕</AvatarFallback>
                 </Avatar>
               </div>
               
-              {/* Like/Pass indicators */}
+              {/* Like/Pass indicators with improved styling */}
               {isLiked === true && (
-                <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center">
-                  <div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold text-xl">
-                    LIKE
+                <div className="absolute inset-0 bg-success/30 flex items-center justify-center backdrop-blur-sm">
+                  <div className="bg-gradient-to-r from-success to-accent text-white px-8 py-4 rounded-full font-bold text-h2 shadow-glow border-4 border-white/30 animate-scale-in">
+                    ❤️ LIKE
                   </div>
                 </div>
               )}
               {isLiked === false && (
-                <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
-                  <div className="bg-red-500 text-white px-6 py-3 rounded-full font-bold text-xl">
-                    PASS
+                <div className="absolute inset-0 bg-destructive/30 flex items-center justify-center backdrop-blur-sm">
+                  <div className="bg-gradient-to-r from-destructive to-red-600 text-white px-8 py-4 rounded-full font-bold text-h2 shadow-glow border-4 border-white/30 animate-scale-in">
+                    ✖️ PASS
                   </div>
                 </div>
               )}
             </div>
             
-            <div className="p-6 space-y-4">
+            <div className="p-8 space-y-6 bg-gradient-to-b from-card/95 to-card">
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-2xl font-bold">{currentDog.name}</h2>
-                  <Button variant="ghost" size="sm">
-                    <Info className="h-4 w-4" />
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-display font-heading text-foreground">{currentDog.name}</h2>
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 transition-colors">
+                    <Info className="h-5 w-5 text-primary" />
                   </Button>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-h2 text-muted-foreground font-medium">
                   {currentDog.breed} • {currentDog.gender} • {currentDog.age} years old
                 </p>
                 {currentDog.location && (
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                    <MapPin className="h-4 w-4" />
-                    {currentDog.location}
+                  <div className="flex items-center gap-2 text-h3 text-accent mt-3">
+                    <MapPin className="h-5 w-5" />
+                    <span className="font-medium">{currentDog.location}</span>
                   </div>
                 )}
               </div>
               
-              {currentDog.bio && <p className="text-sm">{currentDog.bio}</p>}
+              {currentDog.bio && (
+                <p className="text-body-relaxed text-foreground/80 leading-relaxed bg-muted/30 p-4 rounded-xl">
+                  {currentDog.bio}
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-4 mt-6">
+        {/* Action Buttons with enhanced styling */}
+        <div className="flex justify-center gap-8 mt-8 px-6">
           <Button
             variant="outline"
             size="lg"
-            className="rounded-full h-16 w-16 p-0 border-red-200 hover:bg-red-50"
+            className="rounded-full h-20 w-20 p-0 border-3 border-destructive/30 hover:border-destructive hover:bg-destructive/10 transition-all duration-300 hover:scale-110 shadow-tag"
             onClick={() => handleSwipe(false)}
           >
-            <X className="h-8 w-8 text-red-500" />
+            <X className="h-10 w-10 text-destructive" />
           </Button>
           
           <Button
             size="lg"
-            className={`rounded-full h-16 w-16 p-0 ${canLike ? 'bg-green-500 hover:bg-green-600' : 'bg-muted hover:bg-muted cursor-not-allowed'}`}
+            className={`rounded-full h-20 w-20 p-0 transition-all duration-300 hover:scale-110 shadow-tag ${
+              canLike 
+                ? 'bg-gradient-to-r from-success to-accent hover:shadow-glow' 
+                : 'bg-muted hover:bg-muted cursor-not-allowed opacity-50'
+            }`}
             onClick={() => handleSwipe(true)}
             disabled={!canLike}
           >
-            <Heart className={`h-8 w-8 ${canLike ? '' : 'text-muted-foreground'}`} />
+            <Heart className={`h-10 w-10 ${canLike ? 'text-white animate-heart-beat' : 'text-muted-foreground'}`} />
           </Button>
         </div>
       </div>

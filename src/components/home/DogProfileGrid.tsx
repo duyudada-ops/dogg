@@ -78,49 +78,58 @@ const DogProfileGrid = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 p-6 bg-gradient-card-bg rounded-2xl">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold font-heading">Nearby Dogs</h2>
+        <h2 className="text-h1 font-heading text-foreground">Nearby Dogs</h2>
         {!premiumStatus.isSubscribed && (
-          <Badge variant="outline" className="font-body">
+          <Badge variant="outline" className="font-body text-small-relaxed bg-muted/80 backdrop-blur-sm">
             Profile Views: {usageLimits.profileViews}/{usageLimits.maxProfileViews} Today
           </Badge>
         )}
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {dogProfiles.map((dog) => (
-          <Card key={dog.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="relative h-48">
+          <Card key={dog.id} className="overflow-hidden hover:shadow-warm transition-all duration-300 bg-card/80 backdrop-blur-sm border border-border/50">
+            <div className="relative h-56 overflow-hidden">
               <img
                 src={dog.photo_url || '/placeholder.svg'}
                 alt={dog.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             </div>
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-semibold text-lg">{dog.name}</h3>
-                <Badge variant="secondary">{dog.age}y</Badge>
+            <CardContent className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <h3 className="text-display font-heading text-foreground">{dog.name}</h3>
+                <Badge variant="secondary" className="text-h3 px-3 py-1 bg-primary/10 text-primary border-primary/20">
+                  {dog.age}y
+                </Badge>
               </div>
-              <p className="text-sm text-muted-foreground mb-1">{dog.breed}</p>
-              <div className="flex items-center text-sm text-muted-foreground mb-3">
-                <MapPin className="h-3 w-3 mr-1" />
-                {dog.location}
+              
+              <p className="text-h3 text-muted-foreground font-medium">{dog.breed}</p>
+              
+              <div className="flex items-center text-h3 text-muted-foreground">
+                <MapPin className="h-4 w-4 mr-2 text-accent" />
+                <span>{dog.location}</span>
               </div>
-              <p className="text-sm mb-4 line-clamp-2">{dog.bio}</p>
-              <div className="flex gap-2">
+              
+              <p className="text-body-relaxed text-foreground/80 line-clamp-3 leading-relaxed">
+                {dog.bio}
+              </p>
+              
+              <div className="flex gap-3 pt-2">
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="flex-1 font-heading"
+                  className="flex-1 text-h3 py-3 font-medium border-2 hover:bg-primary hover:text-primary-foreground transition-colors"
                   onClick={() => handleViewProfile(dog.id)}
                   disabled={!canViewProfiles()}
                 >
                   {canViewProfiles() ? 'View Profile' : 'Limit Reached'}
                 </Button>
-                <Button size="sm" className="flex-1 font-body">
-                  <MessageCircle className="h-3 w-3 mr-1" />
+                <Button size="sm" className="flex-1 text-h3 py-3 bg-gradient-primary hover:shadow-glow transition-all">
+                  <MessageCircle className="h-4 w-4 mr-2" />
                   Message
                 </Button>
               </div>
