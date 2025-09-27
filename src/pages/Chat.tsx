@@ -90,60 +90,73 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
-      {/* Chat Header */}
-      <div className="bg-background/80 backdrop-blur-sm border-b border-border/50 p-4 shadow-sm">
+    <div className="flex flex-col h-screen bg-gradient-warm relative overflow-hidden">
+      {/* Premium Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 right-10 text-primary/3 text-8xl animate-float">💬</div>
+        <div className="absolute bottom-40 left-12 text-secondary/3 text-6xl animate-wiggle">💕</div>
+        <div className="absolute top-1/2 right-1/3 text-accent/3 text-7xl animate-heart-beat">✨</div>
+      </div>
+      
+      {/* Premium Chat Header */}
+      <div className="relative glass-morphism border-b border-white/20 p-6 shadow-xl">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://images.unsplash.com/photo-1544568100-847a948585b9?w=48&h=48&fit=crop&crop=face"
-              alt="Chat partner"
-              className="w-12 h-12 rounded-full border-2 border-primary/20"
-            />
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <img
+                src="https://images.unsplash.com/photo-1544568100-847a948585b9?w=56&h=56&fit=crop&crop=face"
+                alt="Chat partner"
+                className="w-14 h-14 rounded-full border-4 border-white/30 shadow-lg"
+              />
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white animate-glow-pulse"></div>
+            </div>
             <div>
-              <h2 className="font-bold text-foreground">Sarah & Max</h2>
-              <p className="text-sm text-green-500">Online now</p>
+              <h2 className="text-xl font-bold text-foreground">Sarah & Max</h2>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <p className="text-sm text-green-600 font-medium">Online now • Active</p>
+              </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button size="icon" variant="outline" className="rounded-full">
-              <Phone className="w-5 h-5" />
+          <div className="flex gap-3">
+            <Button size="icon" variant="outline" className="rounded-full glass-morphism border-white/30 hover:scale-110 transition-all">
+              <Phone className="w-5 h-5 text-primary" />
             </Button>
-            <Button size="icon" variant="outline" className="rounded-full">
-              <Video className="w-5 h-5" />
+            <Button size="icon" variant="outline" className="rounded-full glass-morphism border-white/30 hover:scale-110 transition-all">
+              <Video className="w-5 h-5 text-secondary" />
             </Button>
-            <Button size="icon" variant="outline" className="rounded-full">
-              <MoreVertical className="w-5 h-5" />
+            <Button size="icon" variant="outline" className="rounded-full glass-morphism border-white/30 hover:scale-110 transition-all">
+              <MoreVertical className="w-5 h-5 text-accent" />
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24">
+      {/* Premium Messages Area */}
+      <div className="relative flex-1 overflow-y-auto p-6 space-y-6 pb-24">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'} group`}
           >
-            <div className={`flex items-end gap-2 max-w-xs ${message.sender === 'me' ? 'flex-row-reverse' : 'flex-row'}`}>
+            <div className={`flex items-end gap-3 max-w-sm ${message.sender === 'me' ? 'flex-row-reverse' : 'flex-row'}`}>
               {message.sender === 'other' && message.avatar && (
                 <img
                   src={message.avatar}
                   alt="Avatar"
-                  className="w-8 h-8 rounded-full"
+                  className="w-10 h-10 rounded-full border-2 border-white/30 shadow-lg group-hover:scale-110 transition-transform"
                 />
               )}
               <div
-                className={`px-4 py-2 rounded-2xl shadow-sm backdrop-blur-sm ${
+                className={`px-6 py-4 rounded-3xl shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:scale-105 ${
                   message.sender === 'me'
-                    ? 'bg-primary text-primary-foreground rounded-br-md'
-                    : 'bg-background/80 text-foreground rounded-bl-md border border-border/50'
+                    ? 'bg-gradient-primary text-white rounded-br-lg shadow-primary/20'
+                    : 'glass-morphism text-foreground rounded-bl-lg border border-white/20'
                 }`}
               >
-                <p className="text-sm">{message.text}</p>
-                <p className={`text-xs mt-1 ${
-                  message.sender === 'me' ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                <p className="text-base leading-relaxed">{message.text}</p>
+                <p className={`text-xs mt-2 ${
+                  message.sender === 'me' ? 'text-white/70' : 'text-muted-foreground'
                 }`}>
                   {formatTime(message.timestamp)}
                 </p>
@@ -153,18 +166,18 @@ const Chat = () => {
         ))}
 
         {isTyping && (
-          <div className="flex justify-start">
-            <div className="flex items-end gap-2 max-w-xs">
+          <div className="flex justify-start group">
+            <div className="flex items-end gap-3 max-w-sm">
               <img
-                src="https://images.unsplash.com/photo-1544568100-847a948585b9?w=32&h=32&fit=crop&crop=face"
+                src="https://images.unsplash.com/photo-1544568100-847a948585b9?w=40&h=40&fit=crop&crop=face"
                 alt="Avatar"
-                className="w-8 h-8 rounded-full"
+                className="w-10 h-10 rounded-full border-2 border-white/30 shadow-lg group-hover:scale-110 transition-transform"
               />
-              <div className="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-2xl rounded-bl-md border border-border/50 shadow-sm">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="glass-morphism px-6 py-4 rounded-3xl rounded-bl-lg border border-white/20 shadow-lg">
+                <div className="flex space-x-2">
+                  <div className="w-3 h-3 bg-primary rounded-full animate-bounce"></div>
+                  <div className="w-3 h-3 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-3 h-3 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
                 </div>
               </div>
             </div>
@@ -174,31 +187,33 @@ const Chat = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Message Input */}
-      <div className="fixed bottom-16 left-0 right-0 bg-background/80 backdrop-blur-sm border-t border-border/50 p-4">
-        <div className="max-w-4xl mx-auto flex items-center gap-2">
-          <Button size="icon" variant="outline" className="rounded-full">
-            <Image className="w-5 h-5" />
-          </Button>
-          <Button size="icon" variant="outline" className="rounded-full">
-            <Smile className="w-5 h-5" />
-          </Button>
-          <div className="flex-1">
-            <Input
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder="Type a message..."
-              className="rounded-full bg-background/50 backdrop-blur-sm border-border/50"
-            />
+      {/* Premium Message Input */}
+      <div className="relative">
+        <div className="glass-morphism border-t border-white/20 p-6">
+          <div className="max-w-4xl mx-auto flex items-center gap-4">
+            <Button size="icon" variant="outline" className="rounded-full glass-morphism border-white/30 hover:scale-110 transition-all">
+              <Image className="w-5 h-5 text-primary" />
+            </Button>
+            <Button size="icon" variant="outline" className="rounded-full glass-morphism border-white/30 hover:scale-110 transition-all">
+              <Smile className="w-5 h-5 text-secondary" />
+            </Button>
+            <div className="flex-1">
+              <Input
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                placeholder="Type your message... 💕"
+                className="rounded-full bg-white/50 backdrop-blur-sm border-white/30 text-lg py-4 px-6 focus:ring-2 focus:ring-primary/30"
+              />
+            </div>
+            <Button
+              onClick={sendMessage}
+              disabled={!newMessage.trim()}
+              className="rounded-full bg-gradient-primary text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl px-6 py-4"
+            >
+              <Send className="w-5 h-5" />
+            </Button>
           </div>
-          <Button
-            onClick={sendMessage}
-            disabled={!newMessage.trim()}
-            className="rounded-full bg-gradient-to-r from-primary to-secondary hover:scale-105 transition-transform"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
         </div>
       </div>
     </div>

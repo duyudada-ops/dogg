@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Camera, MapPin, Calendar, Heart, Plus } from 'lucide-react';
+import { Edit, Camera, MapPin, Calendar, Heart, Plus, User, ArrowRight, CheckCircle, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { DogProfileCreation } from '@/components/dog/DogProfileCreation';
@@ -91,81 +91,138 @@ const Profile = () => {
   }
 
   return (
-    <div className="container mx-auto py-6 max-w-4xl">
-      <div className="space-y-6">
-        {/* Dog Profiles */}
-        {dogProfiles.length === 0 ? (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-center">No Dog Profiles Yet</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center space-y-4">
-              <p className="text-muted-foreground">
-                Create your first dog profile to start connecting with other dog owners!
-              </p>
-              <Button onClick={() => setShowCreateForm(true)} className="w-full sm:w-auto">
-                <Plus className="h-4 w-4 mr-2" />
-                Create Dog Profile
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
+    <div className="min-h-screen bg-gradient-warm relative overflow-hidden pb-20">
+      {/* Premium Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-16 right-10 text-primary/5 text-8xl animate-float">🐾</div>
+        <div className="absolute bottom-40 left-12 text-secondary/5 text-6xl animate-wiggle">⭐</div>
+        <div className="absolute top-1/3 right-1/4 text-accent/5 text-7xl animate-heart-beat">🎯</div>
+      </div>
+      
+      <div className="relative container mx-auto py-8 max-w-4xl">
+        <div className="space-y-8">
+          {/* Premium Profile Header */}
+          <div className="text-center glass-morphism p-8 rounded-3xl border border-white/20 mb-8">
+            <div className="mb-4">
+              <Badge className="bg-gradient-primary text-white px-6 py-3 rounded-full font-semibold shadow-lg">
+                <User className="w-4 h-4 mr-2" />
+                Your Premium Profile
+              </Badge>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Profile Dashboard
+            </h1>
+            <p className="text-xl text-muted-foreground font-body">Manage your furry friends and connect with the pack! 🐕‍🦺</p>
+          </div>
+
+          {/* Dog Profiles */}
+          {dogProfiles.length === 0 ? (
+            <Card className="glass-morphism border-0 shadow-2xl">
+              <CardHeader className="text-center pb-4">
+                <div className="mb-6">
+                  <div className="text-8xl mb-4 animate-bounce">🐕</div>
+                  <CardTitle className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                    Ready to Get Started?
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="text-center space-y-6 pb-8">
+                <p className="text-xl text-muted-foreground leading-relaxed max-w-md mx-auto">
+                  Create your first dog profile and start building amazing friendships in your community! 🎾
+                </p>
+                <Button 
+                  onClick={() => setShowCreateForm(true)} 
+                  className="bg-gradient-primary text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <Plus className="h-5 w-5 mr-3" />
+                  Create Your First Profile
+                  <ArrowRight className="h-5 w-5 ml-3" />
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
           <>
             {dogProfiles.map((dog) => (
-              <Card key={dog.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    {dog.name}'s Profile
-                    <Button variant="outline" size="sm">
+              <Card key={dog.id} className="glass-morphism border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 group">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center justify-between text-2xl">
+                    <div className="flex items-center gap-3">
+                      <div className="text-3xl animate-wiggle">{dog.gender === 'male' ? '🐕' : '🐕‍🦺'}</div>
+                      <span className="bg-gradient-primary bg-clip-text text-transparent font-bold">
+                        {dog.name}'s Profile
+                      </span>
+                    </div>
+                    <Button variant="outline" size="sm" className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 hover:scale-105 transition-all">
                       <Edit className="h-4 w-4 mr-2" />
-                      Edit
+                      Edit Profile
                     </Button>
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col md:flex-row gap-6">
-                    <div className="flex flex-col items-center space-y-4">
-                      <div className="relative">
-                        <Avatar className="h-32 w-32">
-                          <AvatarImage src={dog.photo_url || undefined} />
-                          <AvatarFallback className="text-2xl">🐕</AvatarFallback>
+                <CardContent className="space-y-6">
+                  <div className="flex flex-col lg:flex-row gap-8">
+                    <div className="flex flex-col items-center space-y-4 lg:w-1/3">
+                      <div className="relative group">
+                        <Avatar className="h-40 w-40 ring-4 ring-gradient-primary group-hover:ring-offset-4 transition-all duration-300">
+                          <AvatarImage src={dog.photo_url || undefined} className="object-cover" />
+                          <AvatarFallback className="text-4xl bg-gradient-primary text-white">🐕</AvatarFallback>
                         </Avatar>
                         <Button 
                           size="sm" 
-                          className="absolute -bottom-2 -right-2 rounded-full h-8 w-8 p-0"
+                          className="absolute -bottom-2 -right-2 rounded-full h-10 w-10 p-0 bg-gradient-secondary text-white hover:scale-110 transition-all shadow-lg"
                         >
-                          <Camera className="h-4 w-4" />
+                          <Camera className="h-5 w-5" />
                         </Button>
                       </div>
-                      <Badge variant="secondary">Verified Profile</Badge>
+                      <div className="flex flex-col items-center gap-2">
+                        <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 px-4 py-2">
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Verified Profile
+                        </Badge>
+                        <Badge className="bg-gradient-warm text-white px-4 py-2">
+                          <Star className="w-4 h-4 mr-2" />
+                          Premium Member
+                        </Badge>
+                      </div>
                     </div>
                     
-                    <div className="flex-1 space-y-4">
-                      <div>
-                        <h2 className="text-2xl font-bold">{dog.name}</h2>
-                        <p className="text-muted-foreground">
-                          {dog.breed} • {dog.gender.charAt(0).toUpperCase() + dog.gender.slice(1)} • {dog.age} years old
-                        </p>
+                    <div className="flex-1 space-y-6">
+                      <div className="space-y-3">
+                        <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          {dog.name}
+                        </h2>
+                        <div className="flex flex-wrap gap-3">
+                          <Badge variant="outline" className="text-lg px-4 py-2 bg-primary/10 text-primary border-primary/20">
+                            {dog.breed}
+                          </Badge>
+                          <Badge variant="outline" className="text-lg px-4 py-2 bg-secondary/10 text-secondary border-secondary/20">
+                            {dog.gender.charAt(0).toUpperCase() + dog.gender.slice(1)}
+                          </Badge>
+                          <Badge variant="outline" className="text-lg px-4 py-2 bg-accent/10 text-accent border-accent/20">
+                            {dog.age} years old
+                          </Badge>
+                        </div>
                       </div>
                       
                       {dog.bio && (
-                        <p className="text-sm">{dog.bio}</p>
+                        <div className="p-4 bg-muted/50 rounded-xl border border-muted/20">
+                          <p className="text-base leading-relaxed italic">"{dog.bio}"</p>
+                        </div>
                       )}
                       
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {dog.location && (
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            {dog.location}
+                          <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg">
+                            <MapPin className="h-5 w-5 text-primary" />
+                            <span className="font-medium text-sm">{dog.location}</span>
                           </div>
                         )}
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          Joined {new Date(dog.created_at).toLocaleDateString()}
+                        <div className="flex items-center gap-2 p-3 bg-secondary/5 rounded-lg">
+                          <Calendar className="h-5 w-5 text-secondary" />
+                          <span className="font-medium text-sm">Joined {new Date(dog.created_at).toLocaleDateString()}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Heart className="h-4 w-4" />
-                          0 matches
+                        <div className="flex items-center gap-2 p-3 bg-accent/5 rounded-lg">
+                          <Heart className="h-5 w-5 text-accent" />
+                          <span className="font-medium text-sm">0 matches</span>
                         </div>
                       </div>
                     </div>
@@ -175,53 +232,88 @@ const Profile = () => {
             ))}
             
             {/* Add Another Dog Button */}
-            <Card>
-              <CardContent className="p-6 text-center">
-                <Button onClick={() => setShowCreateForm(true)} variant="outline" className="w-full sm:w-auto">
-                  <Plus className="h-4 w-4 mr-2" />
+            <Card className="glass-morphism border-0 shadow-xl hover:shadow-2xl transition-all duration-500">
+              <CardContent className="p-8 text-center">
+                <div className="mb-4">
+                  <div className="text-6xl mb-4 animate-bounce">➕</div>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-foreground">Add Another Furry Friend</h3>
+                <p className="text-muted-foreground mb-6">Expand your pack and double the fun!</p>
+                <Button 
+                  onClick={() => setShowCreateForm(true)} 
+                  className="bg-gradient-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg"
+                >
+                  <Plus className="h-5 w-5 mr-3" />
                   Add Another Dog
+                  <ArrowRight className="h-5 w-5 ml-3" />
                 </Button>
               </CardContent>
             </Card>
           </>
-        )}
+          )}
 
-        {/* Owner Profile Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              Owner Profile
-              <Button variant="outline" size="sm">
-                <Edit className="h-4 w-4 mr-2" />
-                Edit
-              </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16">
-                <AvatarImage src={user?.user_metadata?.avatar_url} />
-                <AvatarFallback>
-                  {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h3 className="text-lg font-semibold">
-                  {user?.user_metadata?.full_name || 'Dog Owner'}
-                </h3>
-                <p className="text-muted-foreground">{user?.email}</p>
-                <p className="text-sm text-muted-foreground">Dog lover since 2020</p>
+          {/* Owner Profile Card */}  
+          <Card className="glass-morphism border-0 shadow-2xl hover:shadow-3xl transition-all duration-500">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center justify-between text-2xl">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl">👤</div>
+                  <span className="bg-gradient-secondary bg-clip-text text-transparent font-bold">
+                    Owner Profile
+                  </span>
+                </div>
+                <Button variant="outline" size="sm" className="bg-gradient-to-r from-secondary/10 to-accent/10 border-secondary/20 hover:scale-105 transition-all">
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Profile
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center gap-6">
+                <div className="relative">
+                  <Avatar className="h-24 w-24 ring-4 ring-gradient-secondary group-hover:ring-offset-4 transition-all duration-300">
+                    <AvatarImage src={user?.user_metadata?.avatar_url} className="object-cover" />
+                    <AvatarFallback className="text-2xl bg-gradient-secondary text-white">
+                      {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+                </div>
+                <div className="flex-1 space-y-2">
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">
+                    {user?.user_metadata?.full_name || 'Dog Owner'}
+                  </h3>
+                  <p className="text-muted-foreground text-lg">{user?.email}</p>  
+                  <div className="flex gap-3">
+                    <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Dog lover since 2020
+                    </Badge>
+                    <Badge className="bg-gradient-warm text-white">
+                      <Star className="w-4 h-4 mr-2" />
+                      Premium Member
+                    </Badge>
+                  </div>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        {/* Photo Gallery */}
-        <Card>
-          <CardContent className="p-6">
-            <PhotoGallery />
-          </CardContent>
-        </Card>
+          {/* Photo Gallery */}
+          <Card className="glass-morphism border-0 shadow-2xl hover:shadow-3xl transition-all duration-500">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <div className="text-3xl">📸</div>
+                <span className="bg-gradient-warm bg-clip-text text-transparent font-bold">
+                  Photo Gallery
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <PhotoGallery />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

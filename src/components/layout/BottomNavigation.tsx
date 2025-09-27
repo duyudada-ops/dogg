@@ -19,22 +19,24 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-50 safe-area-pb">
-      <div className="flex items-center justify-around py-2 px-2 max-w-md mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 glass-morphism border-t border-white/20 z-50 safe-area-pb backdrop-blur-xl shadow-2xl">
+      <div className="flex items-center justify-around py-3 px-4 max-w-md mx-auto">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex flex-col items-center py-2 px-3 rounded-lg transition-colors min-h-[44px] min-w-[44px] ${
+              `group flex flex-col items-center py-3 px-4 rounded-2xl transition-all duration-300 min-h-[60px] min-w-[60px] hover:scale-110 ${
                 isActive
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-gradient-primary text-white shadow-lg transform scale-105'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-white/10'
               }`
             }
           >
-            <Icon className="h-5 w-5 mb-1" />
-            <span className="text-xs font-medium">{label}</span>
+            <Icon className={`h-6 w-6 mb-1 transition-all duration-300 ${
+              window.location.pathname === to ? 'animate-bounce' : 'group-hover:scale-110'
+            }`} />
+            <span className="text-xs font-semibold tracking-wide">{label}</span>
           </NavLink>
         ))}
       </div>

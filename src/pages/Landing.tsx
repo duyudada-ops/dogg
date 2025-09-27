@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Crown, MapPin, Heart, Calendar, ArrowRight, CheckCircle, Users } from 'lucide-react';
+import { Crown, MapPin, Heart, Calendar, ArrowRight, CheckCircle, Users, Star, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -45,61 +45,77 @@ const Landing = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-secondary to-primary/80 min-h-screen flex items-center">
+      <section className="relative overflow-hidden bg-gradient-primary min-h-screen flex items-center">
+        {/* Premium Animated Background */}
         <div className="absolute inset-0">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="absolute rounded-full bg-white/10 animate-pulse"
+              className="absolute rounded-full bg-white/5 animate-glow-pulse"
               style={{
-                width: Math.random() * 200 + 50,
-                height: Math.random() * 200 + 50,
+                width: Math.random() * 300 + 100,
+                height: Math.random() * 300 + 100,
                 left: Math.random() * 100 + '%',
                 top: Math.random() * 100 + '%',
-                animationDelay: Math.random() * 2 + 's',
-                animationDuration: Math.random() * 3 + 2 + 's'
+                animationDelay: Math.random() * 3 + 's',
+                animationDuration: Math.random() * 4 + 3 + 's'
               }}
             />
           ))}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
         </div>
         <div className="relative container mx-auto px-4 text-center">
-          <div className="mb-8">
-            <div className="text-6xl mb-4 animate-bounce">🐕</div>
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              Tail<span className="text-yellow-300">Circle</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Connect your furry friend with compatible playmates and build pawsome friendships in your community! 🎾
+          {/* Premium Hero Content */}
+          <div className="mb-12">
+            <Badge className="mb-6 bg-white/10 backdrop-blur-md text-white border-white/20 rounded-full px-6 py-3 font-heading animate-bounce-gentle glass-morphism">
+              <Sparkles className="w-4 h-4 mr-2" />
+              #1 Dog Connection Platform
+            </Badge>
+            
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="text-8xl animate-heart-beat">🐕</div>
+              <h1 className="text-6xl md:text-8xl font-bold text-white leading-tight font-heading">
+                Tail<span className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent animate-shimmer">Circle</span>
+              </h1>
+              <div className="text-8xl animate-paw-bounce">🐾</div>
+            </div>
+            
+            <p className="text-2xl md:text-3xl text-white/95 mb-12 max-w-3xl mx-auto leading-relaxed font-body">
+              Where every pup finds their perfect <span className="text-yellow-300 font-semibold">playmate</span> and every tail gets to wag with joy! 
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
+          {/* Premium CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 mb-16 justify-center">
             <Link to="/auth">
-              <Button className="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-full font-bold text-lg border border-white/30 hover:scale-105 transition-all duration-300 hover:bg-white/30">
-                <span className="mr-2">🚀</span>
-                Try Free Now
+              <Button className="glass-morphism text-white px-12 py-6 rounded-full font-bold text-xl border border-white/30 hover:scale-110 transition-all duration-500 hover:shadow-2xl hover:shadow-white/20 group">
+                <span className="mr-3 text-2xl group-hover:animate-bounce">🚀</span>
+                Start Matching Now
+                <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/premium">
-              <Button className="bg-yellow-400 text-gray-800 px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 hover:bg-yellow-300">
-                <span className="mr-2">👑</span>
+              <Button className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 text-white px-12 py-6 rounded-full font-bold text-xl hover:scale-110 transition-all duration-500 hover:shadow-2xl hover:shadow-yellow-500/30 group">
+                <Crown className="mr-3 h-6 w-6 group-hover:animate-wiggle" />
                 Go Premium
+                <Sparkles className="ml-3 h-6 w-6 group-hover:animate-spin" />
               </Button>
             </Link>
           </div>
 
-          <div className="flex items-center gap-8 text-white/80 flex-wrap justify-center">
-            <div className="text-center">
-              <div className="text-2xl font-bold">10K+</div>
-              <div className="text-sm">Happy Dogs</div>
+          {/* Enhanced Stats */}
+          <div className="flex items-center gap-12 text-white/90 flex-wrap justify-center">
+            <div className="text-center group">
+              <div className="text-4xl font-bold mb-2 group-hover:scale-110 transition-transform">10K+</div>
+              <div className="text-lg opacity-80">Happy Dogs</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold">500+</div>
-              <div className="text-sm">Daily Matches</div>
+            <div className="text-center group">
+              <div className="text-4xl font-bold mb-2 group-hover:scale-110 transition-transform">500+</div>  
+              <div className="text-lg opacity-80">Daily Matches</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold">50+</div>
-              <div className="text-sm">Cities</div>
+            <div className="text-center group">
+              <div className="text-4xl font-bold mb-2 group-hover:scale-110 transition-transform">50+</div>
+              <div className="text-lg opacity-80">Cities</div>
             </div>
           </div>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
