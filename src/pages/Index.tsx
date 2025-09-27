@@ -86,7 +86,7 @@ const Index = () => {
           <div className="relative">
             <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl p-8 border border-border/20 overflow-hidden">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
-                <AutoCarousel className="w-full h-full" autoSlideInterval={2500}>
+                <AutoCarousel className="w-full h-full" autoSlideInterval={3000}>
                   <CarouselContent className="h-full">
                     {displayPhotos.map((dog, i) => (
                       <CarouselItem key={i} className="h-full">
