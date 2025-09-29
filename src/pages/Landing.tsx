@@ -10,7 +10,7 @@ import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@
 import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
 import { galleryService, GalleryPhoto } from '@/lib/galleryService';
-import premiumDogLogo from '@/assets/premium-dog-logo.png';
+
 
 const Landing = () => {
   const [displayPhotos, setDisplayPhotos] = React.useState<(GalleryPhoto | { src: string; alt: string; vibe: string })[]>(
@@ -74,12 +74,29 @@ const Landing = () => {
             </Badge>
             
             <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="w-24 h-24 animate-heart-beat">
-                <img 
-                  src={premiumDogLogo} 
-                  alt="TailCircle Premium Dog Logo" 
-                  className="w-full h-full object-contain"
-                />
+              <div className="w-24 h-24 animate-heart-beat flex items-center justify-center gap-1">
+                <div className="relative">
+                  {/* First paw print */}
+                  <div className="w-8 h-8 bg-white rounded-full relative shadow-lg">
+                    {/* Main pad */}
+                    <div className="absolute inset-x-1 inset-y-1 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
+                    {/* Four toe pads */}
+                    <div className="absolute -top-1 left-1 w-2 h-2 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
+                    <div className="absolute -top-1 right-1 w-2 h-2 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
+                    <div className="absolute -top-2 left-2 w-1.5 h-1.5 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
+                    <div className="absolute -top-2 right-2 w-1.5 h-1.5 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
+                  </div>
+                  {/* Second paw print */}
+                  <div className="w-8 h-8 bg-white rounded-full relative shadow-lg ml-2">
+                    {/* Main pad */}
+                    <div className="absolute inset-x-1 inset-y-1 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
+                    {/* Four toe pads */}
+                    <div className="absolute -top-1 left-1 w-2 h-2 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
+                    <div className="absolute -top-1 right-1 w-2 h-2 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
+                    <div className="absolute -top-2 left-2 w-1.5 h-1.5 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
+                    <div className="absolute -top-2 right-2 w-1.5 h-1.5 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
+                  </div>
+                </div>
               </div>
               <h1 className="text-6xl md:text-8xl font-bold text-white leading-tight font-heading">
                 Tail<span className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent animate-shimmer">Circle</span>
