@@ -9,69 +9,69 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Base colors - warm cream background */
-    --background: 28 45% 97%;
-    --foreground: 25 15% 20%;
+    /* Base colors - clean white background */
+    --background: 0 0% 100%;
+    --foreground: 222 84% 5%;
 
-    /* Card colors with subtle warmth */
+    /* Card colors */
     --card: 0 0% 100%;
-    --card-foreground: 25 15% 20%;
+    --card-foreground: 222 84% 5%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 25 15% 20%;
+    --popover-foreground: 222 84% 5%;
 
-    /* Primary - Coral #FF7875 (warm and friendly) */
-    --primary: 1 100% 73%;
+    /* Primary - Light Teal #20B2AA */
+    --primary: 177 70% 41%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Soft Blue #87CEEB (calming sky blue) */
+    /* Secondary - Soft Light Blue #87CEEB */
     --secondary: 197 71% 73%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary-foreground: 222 84% 5%;
 
-    /* Muted - warm beige tones */
-    --muted: 28 25% 94%;
-    --muted-foreground: 25 10% 50%;
+    /* Muted - light platinum tones */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    /* Accent - Grass Green #90EE90 (fresh and natural) */
-    --accent: 120 73% 75%;
-    --accent-foreground: 25 15% 20%;
+    /* Accent - Medium Teal #48CAE4 */
+    --accent: 191 77% 58%;
+    --accent-foreground: 222 84% 5%;
 
     /* Destructive - soft red */
     --destructive: 0 70% 58%;
     --destructive-foreground: 0 0% 98%;
 
-    /* Success - vibrant grass green */
-    --success: 120 61% 50%;
+    /* Success - teal green */
+    --success: 173 58% 39%;
     --success-foreground: 0 0% 98%;
 
-    /* Border and inputs - warm neutral */
-    --border: 25 15% 85%;
-    --input: 25 15% 85%;
-    --ring: 1 100% 73%;
+    /* Border and inputs - platinum */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 177 70% 41%;
 
     --radius: 1rem;
 
     /* Sidebar colors */
-    --sidebar-background: 28 35% 96%;
-    --sidebar-foreground: 25 15% 25%;
-    --sidebar-primary: 1 100% 73%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 222 84% 5%;
+    --sidebar-primary: 177 70% 41%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 28 20% 92%;
-    --sidebar-accent-foreground: 25 15% 25%;
-    --sidebar-border: 25 15% 80%;
-    --sidebar-ring: 1 100% 73%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 84% 5%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 177 70% 41%;
 
-    /* Pet-friendly gradients with new colors */
-    --gradient-primary: linear-gradient(135deg, hsl(1 100% 73%), hsl(35 100% 65%));
-    --gradient-secondary: linear-gradient(135deg, hsl(197 71% 73%), hsl(120 61% 50%));
-    --gradient-hero: linear-gradient(135deg, hsl(1 100% 73%), hsl(197 71% 73%));
-    --gradient-warm: linear-gradient(135deg, hsl(35 100% 75%), hsl(120 73% 75%));
+    /* Light Blue & Teal gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(177 70% 41%), hsl(191 77% 58%));
+    --gradient-secondary: linear-gradient(135deg, hsl(197 71% 73%), hsl(173 58% 39%));
+    --gradient-hero: linear-gradient(135deg, hsl(177 70% 41%), hsl(197 71% 73%));
+    --gradient-warm: linear-gradient(135deg, hsl(191 77% 58%), hsl(197 71% 73%));
     
-    /* Paw-themed shadows with new colors */
-    --shadow-primary: 1 100% 73%;
+    /* Teal-themed shadows */
+    --shadow-primary: 177 70% 41%;
     --shadow-secondary: 197 71% 73%;
-    --shadow-warm: 35 100% 75%;
-    --shadow-accent: 120 73% 75%;
+    --shadow-warm: 191 77% 58%;
+    --shadow-accent: 173 58% 39%;
   }
 
   .paw-pattern {
