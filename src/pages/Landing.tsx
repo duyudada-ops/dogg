@@ -22,13 +22,13 @@ const Landing = () => {
     const loadGalleryPhotos = async () => {
       try {
         const galleryPhotos = await galleryService.getPublicPhotos(12);
-        if (galleryPhotos.length > 0) {
+        // Only use gallery photos if they are all local dog photos
+        if (galleryPhotos && galleryPhotos.length > 0 && 
+            galleryPhotos.every(photo => photo.src.startsWith('/dog-profiles/'))) {
           setDisplayPhotos(galleryPhotos);
         }
-        // If no gallery photos, keep static photos as fallback
       } catch (error) {
-        console.error('Error loading gallery photos:', error);
-        // Keep static photos as fallback
+        console.error('Failed to load gallery photos, using local fallback:', error);
       }
     };
 
@@ -186,7 +186,7 @@ const Landing = () => {
                                 src={dog.src}
                                 alt={dog.alt}
                                 priority={i === 0}
-                                className="w-full h-full object-cover object-center"
+                                className="w-full h-full object-contain bg-white/80"
                               />
                             </div>
                           </CarouselItem>
