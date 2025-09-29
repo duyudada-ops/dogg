@@ -10,6 +10,7 @@ import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@
 import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
 import { galleryService, GalleryPhoto } from '@/lib/galleryService';
+import premiumDogLogo from '@/assets/premium-dog-logo.png';
 
 const Landing = () => {
   const [displayPhotos, setDisplayPhotos] = React.useState<(GalleryPhoto | { src: string; alt: string; vibe: string })[]>(
@@ -73,7 +74,13 @@ const Landing = () => {
             </Badge>
             
             <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="text-8xl animate-heart-beat">🐕</div>
+              <div className="w-24 h-24 animate-heart-beat">
+                <img 
+                  src={premiumDogLogo} 
+                  alt="TailCircle Premium Dog Logo" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <h1 className="text-6xl md:text-8xl font-bold text-white leading-tight font-heading">
                 Tail<span className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent animate-shimmer">Circle</span>
               </h1>
