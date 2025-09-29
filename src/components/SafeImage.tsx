@@ -24,20 +24,24 @@ export const SafeImage: React.FC<SafeImageProps> = ({
   }, [src]);
 
   const handleError = () => {
+    console.log('SafeImage: Image failed to load:', src);
     if (!hasError) {
-      // Use verified real dog photos from Pexels as fallbacks
+      // Use local fallback images
       const fallbacks = [
-        'https://images.pexels.com/photos/19846653/pexels-photo-19846653.jpeg?auto=compress&cs=tinysrgb&w=800',
-        'https://images.pexels.com/photos/16539152/pexels-photo-16539152.jpeg?auto=compress&cs=tinysrgb&w=800',
-        'https://images.pexels.com/photos/21821337/pexels-photo-21821337.jpeg?auto=compress&cs=tinysrgb&w=800'
+        '/dog-profiles/dog01.jpg',
+        '/dog-profiles/dog02.jpg'
       ];
       const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+      console.log('SafeImage: Using fallback:', randomFallback);
       setImgSrc(randomFallback);
       setHasError(true);
+    } else {
+      console.log('SafeImage: All fallbacks failed for:', src);
     }
   };
 
   const handleLoad = () => {
+    console.log('SafeImage: Image loaded successfully:', src);
     setIsLoading(false);
   };
 

@@ -7,8 +7,8 @@ export type DogPhoto = {
 };
 
 export const dogPhotos: DogPhoto[] = [
-  { src: 'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Brown curly dog lying on grass', vibe: 'playing' },
-  { src: 'https://images.pexels.com/photos/1629781/pexels-photo-1629781.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'White puppy with green collar on a deck', vibe: 'cute' },
+  { src: '/dog-profiles/dog01.jpg', alt: 'Happy Golden Retriever playing in the park', vibe: 'playful' },
+  { src: '/dog-profiles/dog02.jpg', alt: 'Cute Beagle exploring outdoors', vibe: 'adventurous' },
   { src: 'https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Close‑up of golden retriever puppy', vibe: 'show' },
   { src: 'https://images.pexels.com/photos/2023384/pexels-photo-2023384.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Wet black labrador in a kayak', vibe: 'water' },
   { src: 'https://images.pexels.com/photos/1490908/pexels-photo-1490908.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Brown puppy looking into camera', vibe: 'normal' },
