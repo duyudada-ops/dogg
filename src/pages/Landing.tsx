@@ -11,7 +11,6 @@ import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
 import { galleryService, GalleryPhoto } from '@/lib/galleryService';
 
-
 const Landing = () => {
   const [displayPhotos, setDisplayPhotos] = React.useState<(GalleryPhoto | { src: string; alt: string; vibe: string })[]>(
     dogPhotos.slice(0, 12) // Fallback to static photos
@@ -22,13 +21,13 @@ const Landing = () => {
     const loadGalleryPhotos = async () => {
       try {
         const galleryPhotos = await galleryService.getPublicPhotos(12);
-        // Only use gallery photos if they are all local dog photos
-        if (galleryPhotos && galleryPhotos.length > 0 && 
-            galleryPhotos.every(photo => photo.src.startsWith('/dog-profiles/'))) {
+        if (galleryPhotos.length > 0) {
           setDisplayPhotos(galleryPhotos);
         }
+        // If no gallery photos, keep static photos as fallback
       } catch (error) {
-        console.error('Failed to load gallery photos, using local fallback:', error);
+        console.error('Error loading gallery photos:', error);
+        // Keep static photos as fallback
       }
     };
 
@@ -74,30 +73,7 @@ const Landing = () => {
             </Badge>
             
             <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="w-24 h-24 animate-heart-beat flex items-center justify-center gap-1">
-                <div className="relative">
-                  {/* First paw print */}
-                  <div className="w-8 h-8 bg-white rounded-full relative shadow-lg">
-                    {/* Main pad */}
-                    <div className="absolute inset-x-1 inset-y-1 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
-                    {/* Four toe pads */}
-                    <div className="absolute -top-1 left-1 w-2 h-2 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
-                    <div className="absolute -top-1 right-1 w-2 h-2 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
-                    <div className="absolute -top-2 left-2 w-1.5 h-1.5 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
-                    <div className="absolute -top-2 right-2 w-1.5 h-1.5 bg-gradient-to-br from-primary to-primary/80 rounded-full"></div>
-                  </div>
-                  {/* Second paw print */}
-                  <div className="w-8 h-8 bg-white rounded-full relative shadow-lg ml-2">
-                    {/* Main pad */}
-                    <div className="absolute inset-x-1 inset-y-1 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
-                    {/* Four toe pads */}
-                    <div className="absolute -top-1 left-1 w-2 h-2 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
-                    <div className="absolute -top-1 right-1 w-2 h-2 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
-                    <div className="absolute -top-2 left-2 w-1.5 h-1.5 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
-                    <div className="absolute -top-2 right-2 w-1.5 h-1.5 bg-gradient-to-br from-secondary to-secondary/80 rounded-full"></div>
-                  </div>
-                </div>
-              </div>
+              <div className="text-8xl animate-heart-beat">🐕</div>
               <h1 className="text-6xl md:text-8xl font-bold text-white leading-tight font-heading">
                 Tail<span className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent animate-shimmer">Circle</span>
               </h1>
@@ -203,7 +179,7 @@ const Landing = () => {
                                 src={dog.src}
                                 alt={dog.alt}
                                 priority={i === 0}
-                                className="w-full h-full object-contain bg-white/80"
+                                className="w-full h-full object-cover object-center"
                               />
                             </div>
                           </CarouselItem>
