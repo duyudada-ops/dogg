@@ -27,24 +27,6 @@ const Landing = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-primary min-h-screen flex items-center">
-        {/* Premium Animated Background */}
-        <div className="absolute inset-0">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-white/5 animate-glow-pulse"
-              style={{
-                width: Math.random() * 300 + 100,
-                height: Math.random() * 300 + 100,
-                left: Math.random() * 100 + '%',
-                top: Math.random() * 100 + '%',
-                animationDelay: Math.random() * 3 + 's',
-                animationDuration: Math.random() * 4 + 3 + 's'
-              }}
-            />
-          ))}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-        </div>
         <div className="relative container mx-auto px-4 text-center">
           {/* Premium Hero Content */}
           <div className="mb-12">
