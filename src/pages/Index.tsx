@@ -15,7 +15,8 @@ const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [showDogProfileForm, setShowDogProfileForm] = useState(false);
-  const displayPhotos = usePhotoFallbacks(dogPhotos.slice(0, 15), REAL_DOG_FALLBACKS);
+  const localOnly = dogPhotos.filter(p => p.src.startsWith('/dog-profiles/'));
+  const displayPhotos = usePhotoFallbacks(localOnly, REAL_DOG_FALLBACKS);
 
   if (loading) {
     return (

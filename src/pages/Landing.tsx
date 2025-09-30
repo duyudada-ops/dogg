@@ -13,7 +13,8 @@ import { usePhotoFallbacks } from '@/hooks/usePhotoFallbacks';
 import { REAL_DOG_FALLBACKS } from '@/lib/realDogFallbacks';
 
 const Landing = () => {
-  const displayPhotos = usePhotoFallbacks(dogPhotos.slice(0, 12), REAL_DOG_FALLBACKS);
+  const localOnly = dogPhotos.filter(p => p.src.startsWith('/dog-profiles/'));
+  const displayPhotos = usePhotoFallbacks(localOnly, REAL_DOG_FALLBACKS);
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
