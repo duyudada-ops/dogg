@@ -9,30 +9,11 @@ import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
-import { galleryService, GalleryPhoto } from '@/lib/galleryService';
+import { usePhotoFallbacks } from '@/hooks/usePhotoFallbacks';
+import { REAL_DOG_FALLBACKS } from '@/lib/realDogFallbacks';
 
 const Landing = () => {
-  const [displayPhotos, setDisplayPhotos] = React.useState<(GalleryPhoto | { src: string; alt: string; vibe: string })[]>(
-    dogPhotos.slice(0, 12) // Fallback to static photos
-  );
-
-  // Load gallery photos on mount
-  React.useEffect(() => {
-    const loadGalleryPhotos = async () => {
-      try {
-        const galleryPhotos = await galleryService.getPublicPhotos(12);
-        if (galleryPhotos.length > 0) {
-          setDisplayPhotos(galleryPhotos);
-        }
-        // If no gallery photos, keep static photos as fallback
-      } catch (error) {
-        console.error('Error loading gallery photos:', error);
-        // Keep static photos as fallback
-      }
-    };
-
-    loadGalleryPhotos();
-  }, []);
+  const displayPhotos = usePhotoFallbacks(dogPhotos.slice(0, 12), REAL_DOG_FALLBACKS);
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
