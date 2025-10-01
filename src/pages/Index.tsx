@@ -8,15 +8,33 @@ import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
-import { usePhotoFallbacks } from '@/hooks/usePhotoFallbacks';
-import { REAL_DOG_FALLBACKS } from '@/lib/realDogFallbacks';
+import { galleryService, GalleryPhoto } from '@/lib/galleryService';
 
 const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [showDogProfileForm, setShowDogProfileForm] = useState(false);
-  const localOnly = dogPhotos.filter(p => p.src.startsWith('/dog-profiles/'));
-  const displayPhotos = usePhotoFallbacks(localOnly, REAL_DOG_FALLBACKS);
+  const [displayPhotos, setDisplayPhotos] = React.useState<(GalleryPhoto | { src: string; alt: string; vibe: string })[]>(
+    dogPhotos.slice(0, 15) // Fallback to static photos
+  );
+
+  // Load gallery photos on mount
+  React.useEffect(() => {
+    const loadGalleryPhotos = async () => {
+      try {
+        const galleryPhotos = await galleryService.getPublicPhotos(15);
+        if (galleryPhotos.length > 0) {
+          setDisplayPhotos(galleryPhotos);
+        }
+        // If no gallery photos, keep static photos as fallback
+      } catch (error) {
+        console.error('Error loading gallery photos:', error);
+        // Keep static photos as fallback
+      }
+    };
+
+    loadGalleryPhotos();
+  }, []);
 
   if (loading) {
     return (
@@ -68,7 +86,7 @@ const Index = () => {
           <div className="relative">
             <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl p-8 border border-border/20 overflow-hidden">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
-                <AutoCarousel className="w-full h-full" autoSlideInterval={4000}>
+                <AutoCarousel className="w-full h-full" autoSlideInterval={3000}>
                   <CarouselContent className="h-full">
                     {displayPhotos.map((dog, i) => (
                       <CarouselItem key={i} className="h-full">
