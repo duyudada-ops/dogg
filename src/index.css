@@ -299,4 +299,11 @@ All colors MUST be HSL.
       rgba(255, 255, 255, 0.05) 100%);
     backdrop-filter: blur(10px);
   }
+
+  /* Global animation kill switch */
+  .no-motion,
+  .no-motion * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

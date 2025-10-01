@@ -36,14 +36,6 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Animated paw prints */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-10 text-primary/5 text-8xl animate-float">🐾</div>
-        <div className="absolute top-32 right-16 text-secondary/5 text-6xl animate-float" style={{animationDelay: '1s'}}>🐾</div>
-        <div className="absolute bottom-40 left-20 text-accent/5 text-7xl animate-float" style={{animationDelay: '2s'}}>🐾</div>
-        <div className="absolute bottom-16 right-32 text-primary/5 text-5xl animate-float" style={{animationDelay: '0.5s'}}>🐾</div>
-      </div>
-
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-primary min-h-screen flex items-center">
         {/* Premium Animated Background */}
