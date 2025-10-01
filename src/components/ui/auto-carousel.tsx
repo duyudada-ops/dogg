@@ -22,7 +22,14 @@ export function AutoCarousel({ children, autoSlideInterval = 5000, className }: 
   }, [api, autoSlideInterval])
 
   return (
-    <Carousel setApi={setApi} className={className} opts={{ loop: true }}>
+    <Carousel 
+      setApi={setApi} 
+      className={className} 
+      opts={{ 
+        loop: true,
+        duration: 20
+      }}
+    >
       {children}
     </Carousel>
   )
