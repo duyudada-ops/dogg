@@ -53,11 +53,11 @@ const ACTION_TO_VIBE_MAP: Record<string, DogVibe> = {
   eating: 'normal',
   jumping: 'playing',
   swimming: 'swimming',
-  costume: 'sunglasses',
-  running: 'normal',
-  beach: 'swimming',
+  costume: 'cool',
+  running: 'running',
+  beach: 'water',
   park: 'playing',
-  hiking: 'normal'
+  hiking: 'adventurous'
 };
 
 const ACTIONS = Object.keys(ACTION_TO_VIBE_MAP);

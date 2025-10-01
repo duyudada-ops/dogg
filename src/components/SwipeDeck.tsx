@@ -114,7 +114,7 @@ export const SwipeDeck: React.FC<SwipeDeckProps> = ({ dogs, onSwipe }) => {
           <CardContent className="p-0 h-96">
             <div className="relative h-full rounded-lg overflow-hidden">
               <img
-                src={nextDog.photo_url || '/src/assets/dog-1.jpg'}
+                src={nextDog.photo_url || '/dog-profiles/dog01.jpg'}
                 alt={nextDog.name}
                 className="w-full h-full object-cover"
               />
@@ -155,7 +155,7 @@ export const SwipeDeck: React.FC<SwipeDeckProps> = ({ dogs, onSwipe }) => {
             </div>
 
             <img
-              src={currentDog.photo_url || '/src/assets/dog-1.jpg'}
+              src={currentDog.photo_url || '/dog-profiles/dog01.jpg'}
               alt={currentDog.name}
               className="w-full h-full object-cover"
               draggable={false}
