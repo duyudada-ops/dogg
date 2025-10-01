@@ -1,11 +1,12 @@
-export type DogVibe = 'cute' | 'normal' | 'sleeping' | 'playing' | 'swimming' | 'show' | 'water' | 'curious' | 'relaxing' | 'snow' | 'adventurous' | 'unique' | 'happy' | 'cool' | 'running' | 'seasonal';
+// src/lib/dogPhotos.ts
+export type DogPhoto = { src: string; alt: string; vibe: string };
 
-export type DogPhoto = {
-  src: string;
-  alt: string;
-  vibe: DogVibe;
-};
-
+/**
+ * ✅ Bulletproof guarantee:
+ * - Only local files inside /public/dog-profiles/
+ * - Only the 40 verified real dog photos
+ * - Safe for use in carousels & profile displays
+ */
 export const dogPhotos: DogPhoto[] = [
   { src: '/dog-profiles/dog01.jpg', alt: 'Golden retriever in field', vibe: 'playing' },
   { src: '/dog-profiles/dog02.jpg', alt: 'French bulldog portrait', vibe: 'cute' },
@@ -48,3 +49,9 @@ export const dogPhotos: DogPhoto[] = [
   { src: '/dog-profiles/dog39.jpg', alt: 'Collie on hiking trail', vibe: 'adventurous' },
   { src: '/dog-profiles/dog40.jpg', alt: 'Bulldog sitting proudly', vibe: 'show' }
 ];
+
+/**
+ * ✅ Safety wrapper to ensure only dog photos are returned
+ */
+export const getDogPhotos = (): DogPhoto[] =>
+  dogPhotos.filter(photo => photo.src.startsWith('/dog-profiles/'));

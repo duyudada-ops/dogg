@@ -43,11 +43,11 @@ const TRAITS = ["Friendly","Energetic","Playful","Calm","Social","Smart","Gentle
 const AREAS = ["Downtown","Riverside","North Park","South Hills","Midtown","Capitol","Lakeside","Old Town","Uptown","Harbor"];
 
 // Import verified clean dog photos
-import { dogPhotos, type DogVibe } from '../../data/dogPhotos';
+import { dogPhotos } from '../../data/dogPhotos';
 import { galleryService } from './galleryService';
 
 // Map actions to appropriate dog photo vibes
-const ACTION_TO_VIBE_MAP: Record<string, DogVibe> = {
+const ACTION_TO_VIBE_MAP: Record<string, string> = {
   playful: 'playing',
   sleeping: 'sleeping', 
   eating: 'normal',
