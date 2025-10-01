@@ -8,7 +8,7 @@ interface AutoCarouselProps {
   className?: string
 }
 
-export function AutoCarousel({ children, autoSlideInterval = 5000, className }: AutoCarouselProps) {
+export function AutoCarousel({ children, autoSlideInterval = 3000, className }: AutoCarouselProps) {
   const [api, setApi] = React.useState<CarouselApi>()
 
   React.useEffect(() => {

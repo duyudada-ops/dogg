@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { DogProfileCreation } from '@/components/dog/DogProfileCreation';
 import { PhotoGallery } from '@/components/gallery/PhotoGallery';
+import { SafeImage } from '@/components/SafeImage';
 
 interface DogProfile {
   id: string;
@@ -163,7 +164,11 @@ const Profile = () => {
                     <div className="flex flex-col items-center space-y-4 lg:w-1/3">
                       <div className="relative group">
                         <Avatar className="h-40 w-40 ring-4 ring-gradient-primary group-hover:ring-offset-4 transition-all duration-300">
-                          <AvatarImage src={dog.photo_url || undefined} className="object-cover" />
+                          <SafeImage 
+                            src={dog.photo_url || ''} 
+                            alt={`${dog.name} - ${dog.breed}`}
+                            className="object-cover rounded-full"
+                          />
                           <AvatarFallback className="text-4xl bg-gradient-primary text-white">🐕</AvatarFallback>
                         </Avatar>
                         <Button 

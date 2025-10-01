@@ -8,33 +8,11 @@ import { AutoCarousel } from '@/components/ui/auto-carousel';
 import { CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { dogPhotos } from '../../data/dogPhotos';
 import { SafeImage } from '@/components/SafeImage';
-import { galleryService, GalleryPhoto } from '@/lib/galleryService';
 
 const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [showDogProfileForm, setShowDogProfileForm] = useState(false);
-  const [displayPhotos, setDisplayPhotos] = React.useState<(GalleryPhoto | { src: string; alt: string; vibe: string })[]>(
-    dogPhotos.slice(0, 15) // Fallback to static photos
-  );
-
-  // Load gallery photos on mount
-  React.useEffect(() => {
-    const loadGalleryPhotos = async () => {
-      try {
-        const galleryPhotos = await galleryService.getPublicPhotos(15);
-        if (galleryPhotos.length > 0) {
-          setDisplayPhotos(galleryPhotos);
-        }
-        // If no gallery photos, keep static photos as fallback
-      } catch (error) {
-        console.error('Error loading gallery photos:', error);
-        // Keep static photos as fallback
-      }
-    };
-
-    loadGalleryPhotos();
-  }, []);
 
   if (loading) {
     return (
@@ -88,7 +66,7 @@ const Index = () => {
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
                 <AutoCarousel className="w-full h-full" autoSlideInterval={3000}>
                   <CarouselContent className="h-full">
-                    {displayPhotos.map((dog, i) => (
+                    {dogPhotos.slice(0, 15).map((dog, i) => (
                       <CarouselItem key={i} className="h-full">
                         <div className="relative w-full h-full overflow-hidden rounded-xl">
                           <SafeImage 

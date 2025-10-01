@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Crown, MessageCircle } from 'lucide-react';
 import { usePremiumLimits } from '@/hooks/usePremiumLimits';
 import UpsellModal from '@/components/ui/upsell-modal';
+import { SafeImage } from '@/components/SafeImage';
 
 interface MatchWithProfiles {
   id: string;
@@ -71,9 +72,9 @@ const PremiumMatchesSection: React.FC<PremiumMatchesSectionProps> = ({ matches }
                 return (
                   <div key={match.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <img 
-                        src={otherDog.photo_url || '/placeholder.svg'} 
-                        alt={otherDog.name}
+                      <SafeImage 
+                        src={otherDog.photo_url || ''} 
+                        alt={`${otherDog.name} - ${otherDog.breed}`}
                         className="w-12 h-12 rounded-full object-cover"
                       />
                       <div>

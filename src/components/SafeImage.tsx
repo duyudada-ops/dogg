@@ -1,4 +1,5 @@
 import React from 'react';
+import { dogPhotos } from '../../data/dogPhotos';
 
 interface SafeImageProps {
   src: string;
@@ -6,6 +7,17 @@ interface SafeImageProps {
   className?: string;
   priority?: boolean;
 }
+
+// Simple hash function to deterministically pick a fallback
+const hashString = (str: string): number => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+};
 
 export const SafeImage: React.FC<SafeImageProps> = ({ 
   src, 
@@ -18,21 +30,24 @@ export const SafeImage: React.FC<SafeImageProps> = ({
   const [hasError, setHasError] = React.useState(false);
   
   React.useEffect(() => {
-    setImgSrc(src);
-    setIsLoading(true);
-    setHasError(false);
-  }, [src]);
+    // If src is empty or not a local dog photo, use approved fallback immediately
+    if (!src || !src.startsWith('/dog-profiles/')) {
+      const index = hashString(alt) % dogPhotos.length;
+      setImgSrc(dogPhotos[index].src);
+      setHasError(false);
+      setIsLoading(true);
+    } else {
+      setImgSrc(src);
+      setIsLoading(true);
+      setHasError(false);
+    }
+  }, [src, alt]);
 
   const handleError = () => {
     if (!hasError) {
-      // Use verified real dog photos from Pexels as fallbacks
-      const fallbacks = [
-        'https://images.pexels.com/photos/19846653/pexels-photo-19846653.jpeg?auto=compress&cs=tinysrgb&w=800',
-        'https://images.pexels.com/photos/16539152/pexels-photo-16539152.jpeg?auto=compress&cs=tinysrgb&w=800',
-        'https://images.pexels.com/photos/21821337/pexels-photo-21821337.jpeg?auto=compress&cs=tinysrgb&w=800'
-      ];
-      const randomFallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-      setImgSrc(randomFallback);
+      // Use local dogPhotos as fallback - deterministic based on alt text
+      const index = hashString(alt) % dogPhotos.length;
+      setImgSrc(dogPhotos[index].src);
       setHasError(true);
     }
   };

@@ -6,6 +6,7 @@ import { MessageCircle, Heart, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import PremiumMatchesSection from '@/components/home/PremiumMatchesSection';
+import { SafeImage } from '@/components/SafeImage';
 
 interface MatchWithDog {
   id: string;
@@ -173,7 +174,11 @@ const Matches = () => {
                     <div key={match.id} className="flex flex-col items-center space-y-3 min-w-fit group hover:scale-105 transition-all duration-300">
                       <div className="relative">
                         <Avatar className="h-20 w-20 ring-4 ring-gradient-primary group-hover:ring-offset-4 transition-all duration-300">
-                          <AvatarImage src={dog.photo_url || undefined} className="object-cover" />
+                          <SafeImage 
+                            src={dog.photo_url || ''} 
+                            alt={`${dog.name} - ${dog.breed}`}
+                            className="object-cover rounded-full"
+                          />
                           <AvatarFallback className="text-2xl">🐕</AvatarFallback>
                         </Avatar>
                         <div className="absolute -top-2 -right-2 h-6 w-6 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center animate-glow-pulse">

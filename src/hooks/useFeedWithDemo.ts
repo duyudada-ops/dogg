@@ -6,6 +6,18 @@ import {
   regionKeyFromLatLng,
   DemoProfile,
 } from "@/lib/seededDemoProfiles";
+import { dogPhotos } from "../../data/dogPhotos";
+
+// Simple hash function for deterministic photo selection
+const hashString = (str: string): number => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+};
 
 export type NormalizedProfile = {
   id: string;
@@ -77,20 +89,32 @@ export function useFeedWithDemo(opts: {
 
         if (data && data.length > 0) {
           const normalized: NormalizedProfile[] = (data as RealDogProfile[]).map(
-            (p) => ({
-              id: p.id,
-              name: p.name,
-              age: p.age,
-              breed: p.breed,
-              size: "Medium" as const, // Default since not in schema
-              temperament: ["Friendly", "Playful"], // Default traits
-              bio: p.bio ?? "Friendly and excited to meet new friends!",
-              photoUrl: p.photo_url ?? undefined,
-              distanceMiles: Math.round(Math.random() * 10 + 1), // Mock distance
-              location: p.location ?? "Nearby",
-              verified: true,
-              isDemo: false,
-            })
+            (p) => {
+              // Sanitize photo_url - only allow local dog photos
+              let safePhotoUrl: string | undefined;
+              if (p.photo_url && p.photo_url.startsWith('/dog-profiles/')) {
+                safePhotoUrl = p.photo_url;
+              } else {
+                // Use deterministic local photo based on dog's ID
+                const index = hashString(p.id) % dogPhotos.length;
+                safePhotoUrl = dogPhotos[index].src;
+              }
+              
+              return {
+                id: p.id,
+                name: p.name,
+                age: p.age,
+                breed: p.breed,
+                size: "Medium" as const, // Default since not in schema
+                temperament: ["Friendly", "Playful"], // Default traits
+                bio: p.bio ?? "Friendly and excited to meet new friends!",
+                photoUrl: safePhotoUrl,
+                distanceMiles: Math.round(Math.random() * 10 + 1), // Mock distance
+                location: p.location ?? "Nearby",
+                verified: true,
+                isDemo: false,
+              };
+            }
           );
           setItems(normalized);
           setLoading(false);

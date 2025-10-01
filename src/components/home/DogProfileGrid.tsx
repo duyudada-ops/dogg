@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremiumLimits } from '@/hooks/usePremiumLimits';
 import UpsellModal from '@/components/ui/upsell-modal';
+import { SafeImage } from '@/components/SafeImage';
 
 interface DogProfile {
   id: string;
@@ -92,9 +93,9 @@ const DogProfileGrid = () => {
         {dogProfiles.map((dog) => (
           <Card key={dog.id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="relative h-48">
-              <img
-                src={dog.photo_url || '/placeholder.svg'}
-                alt={dog.name}
+              <SafeImage
+                src={dog.photo_url || ''}
+                alt={`${dog.name} - ${dog.breed}`}
                 className="w-full h-full object-cover"
               />
             </div>

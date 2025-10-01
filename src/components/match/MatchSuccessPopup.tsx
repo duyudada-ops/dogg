@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Heart, MessageCircle, Calendar, X } from 'lucide-react';
+import { SafeImage } from '@/components/SafeImage';
 
 interface DogProfile {
   id: string;
@@ -111,7 +112,11 @@ const MatchSuccessPopup: React.FC<MatchSuccessPopupProps> = ({
           <div className="flex justify-center items-center gap-4 mb-8">
             <div className="text-center">
               <Avatar className="h-20 w-20 border-4 border-primary">
-                <AvatarImage src={userDog.photo_url || undefined} />
+                <SafeImage 
+                  src={userDog.photo_url || ''} 
+                  alt={`${userDog.name} - ${userDog.breed}`}
+                  className="object-cover rounded-full"
+                />
                 <AvatarFallback className="text-2xl">🐕</AvatarFallback>
               </Avatar>
               <p className="text-sm font-medium mt-2">{userDog.name}</p>
@@ -121,7 +126,11 @@ const MatchSuccessPopup: React.FC<MatchSuccessPopupProps> = ({
             
             <div className="text-center">
               <Avatar className="h-20 w-20 border-4 border-primary">
-                <AvatarImage src={matchedDog.photo_url || undefined} />
+                <SafeImage 
+                  src={matchedDog.photo_url || ''} 
+                  alt={`${matchedDog.name} - ${matchedDog.breed}`}
+                  className="object-cover rounded-full"
+                />
                 <AvatarFallback className="text-2xl">🐕</AvatarFallback>
               </Avatar>
               <p className="text-sm font-medium mt-2">{matchedDog.name}</p>
