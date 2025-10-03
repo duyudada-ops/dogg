@@ -20,12 +20,12 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 25 15% 20%;
 
-    /* Primary - Coral #FF7875 (warm and friendly) */
-    --primary: 1 100% 73%;
+    /* Primary - Teal (vibrant and modern) */
+    --primary: 180 100% 40%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Soft Blue #87CEEB (calming sky blue) */
-    --secondary: 197 71% 73%;
+    /* Secondary - Blue (cool and calming) */
+    --secondary: 220 70% 60%;
     --secondary-foreground: 0 0% 100%;
 
     /* Muted - warm beige tones */
@@ -47,29 +47,29 @@ All colors MUST be HSL.
     /* Border and inputs - warm neutral */
     --border: 25 15% 85%;
     --input: 25 15% 85%;
-    --ring: 1 100% 73%;
+    --ring: 180 100% 40%;
 
     --radius: 1rem;
 
     /* Sidebar colors */
     --sidebar-background: 28 35% 96%;
     --sidebar-foreground: 25 15% 25%;
-    --sidebar-primary: 1 100% 73%;
+    --sidebar-primary: 180 100% 40%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 28 20% 92%;
     --sidebar-accent-foreground: 25 15% 25%;
     --sidebar-border: 25 15% 80%;
-    --sidebar-ring: 1 100% 73%;
+    --sidebar-ring: 180 100% 40%;
 
     /* Pet-friendly gradients with new colors */
-    --gradient-primary: linear-gradient(135deg, hsl(1 100% 73%), hsl(35 100% 65%));
-    --gradient-secondary: linear-gradient(135deg, hsl(197 71% 73%), hsl(120 61% 50%));
-    --gradient-hero: linear-gradient(135deg, hsl(1 100% 73%), hsl(197 71% 73%));
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 40%), hsl(200 100% 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 70% 60%), hsl(120 61% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(180 100% 40%), hsl(220 70% 60%));
     --gradient-warm: linear-gradient(135deg, hsl(35 100% 75%), hsl(120 73% 75%));
     
     /* Paw-themed shadows with new colors */
-    --shadow-primary: 1 100% 73%;
-    --shadow-secondary: 197 71% 73%;
+    --shadow-primary: 180 100% 40%;
+    --shadow-secondary: 220 70% 60%;
     --shadow-warm: 35 100% 75%;
     --shadow-accent: 120 73% 75%;
   }
@@ -111,12 +111,12 @@ All colors MUST be HSL.
     --popover: 25 20% 10%;
     --popover-foreground: 38 40% 95%;
 
-    /* Primary - warm orange for dark mode */
-    --primary: 14 90% 55%;
+    /* Primary - teal for dark mode */
+    --primary: 180 80% 45%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - muted teal */
-    --secondary: 177 40% 50%;
+    /* Secondary - blue for dark mode */
+    --secondary: 220 60% 55%;
     --secondary-foreground: 0 0% 100%;
 
     /* Muted - warm dark grays */
@@ -137,22 +137,22 @@ All colors MUST be HSL.
 
     --border: 25 15% 20%;
     --input: 25 15% 20%;
-    --ring: 14 90% 55%;
+    --ring: 180 80% 45%;
 
     /* Dark sidebar */
     --sidebar-background: 25 20% 6%;
     --sidebar-foreground: 38 40% 90%;
-    --sidebar-primary: 14 90% 55%;
+    --sidebar-primary: 180 80% 45%;
     --sidebar-primary-foreground: 25 20% 8%;
     --sidebar-accent: 25 15% 12%;
     --sidebar-accent-foreground: 38 40% 90%;
     --sidebar-border: 25 15% 18%;
-    --sidebar-ring: 14 90% 55%;
+    --sidebar-ring: 180 80% 45%;
 
     /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(14 90% 55%), hsl(35 80% 60%));
-    --gradient-secondary: linear-gradient(135deg, hsl(177 40% 50%), hsl(102 50% 40%));
-    --gradient-hero: linear-gradient(135deg, hsl(14 90% 55%), hsl(177 40% 50%));
+    --gradient-primary: linear-gradient(135deg, hsl(180 80% 45%), hsl(200 80% 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 60% 55%), hsl(102 50% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(180 80% 45%), hsl(220 60% 55%));
     --gradient-warm: linear-gradient(135deg, hsl(35 80% 60%), hsl(45 80% 65%));
   }
 }
@@ -198,20 +198,20 @@ All colors MUST be HSL.
 
   @keyframes color-cycle {
     0% {
-      background: linear-gradient(135deg, hsl(1 100% 73%), hsl(35 100% 65%));
-      box-shadow: 0 10px 30px -10px hsl(1 100% 73% / 0.3);
+      background: linear-gradient(135deg, hsl(180 100% 40%), hsl(200 100% 50%));
+      box-shadow: 0 10px 30px -10px hsl(180 100% 40% / 0.3);
     }
     33% {
-      background: linear-gradient(135deg, hsl(197 71% 73%), hsl(120 61% 50%));
-      box-shadow: 0 10px 30px -10px hsl(197 71% 73% / 0.3);
+      background: linear-gradient(135deg, hsl(220 70% 60%), hsl(120 61% 50%));
+      box-shadow: 0 10px 30px -10px hsl(220 70% 60% / 0.3);
     }
     66% {
       background: linear-gradient(135deg, hsl(120 73% 75%), hsl(35 100% 75%));
       box-shadow: 0 10px 30px -10px hsl(120 73% 75% / 0.3);
     }
     100% {
-      background: linear-gradient(135deg, hsl(1 100% 73%), hsl(35 100% 65%));
-      box-shadow: 0 10px 30px -10px hsl(1 100% 73% / 0.3);
+      background: linear-gradient(135deg, hsl(180 100% 40%), hsl(200 100% 50%));
+      box-shadow: 0 10px 30px -10px hsl(180 100% 40% / 0.3);
     }
   }
 
